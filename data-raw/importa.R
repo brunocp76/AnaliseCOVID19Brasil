@@ -2,9 +2,11 @@
 library(tidyr)
 library(dplyr)
 
+cls <- function() cat("\f")
+
 
 # Dados do Curso R --------------------------------------------------------
-covid_R4DS2 <- readRDS("data-raw/covid.rds") %>%
+covid_R4DS2 <- readRDS("../CursoR4DS2/data/covid.rds") %>%
    # Filtrando só as linhas necessárias...
    filter(
       regiao != "Brasil",
@@ -70,7 +72,9 @@ covid_R4DS2 <- readRDS("data-raw/covid.rds") %>%
       )
    ) %>%
    # Ordenando para auxiliar no cruzamento dos dados...
-   arrange(date, cod_mun, estado, municipio)
+   arrange(date, cod_mun, estado, municipio) %>%
+   # Garantindo que todos os nomes estejam arrumados...
+   janitor::clean_names()
 
 covid_R4DS2 %>%
    glimpse()
@@ -129,7 +133,9 @@ covid_brasilio <- datacovidbr::brasilio() %>%
       )
    ) %>%
    # Ordenando para auxiliar no cruzamento dos dados...
-   arrange(date, cod_ibge, estado, municipio)
+   arrange(date, cod_ibge, estado, municipio) %>%
+   # Garantindo que todos os nomes estejam arrumados...
+   janitor::clean_names()
 
 
 covid_brasilio %>%
@@ -203,7 +209,9 @@ covid_ministerio <- datacovidbr::brMinisterioSaude() %>%
       )
    ) %>%
    # Ordenando para auxiliar no cruzamento dos dados...
-   arrange(date, cod_mun, estado, municipio)
+   arrange(date, cod_mun, estado, municipio) %>%
+   # Garantindo que todos os nomes estejam arrumados...
+   janitor::clean_names()
 
 covid_ministerio %>%
    glimpse()
@@ -211,6 +219,36 @@ covid_ministerio %>%
 covid_ministerio %>%
    object.size()
 
+
+# Separando só o que eu preciso do arquivo da Curso R ---------------------
+cls()
+
+covid_R4DS2 %>%
+   glimpse()
+
+covid_ministerio %>%
+   glimpse()
+
+# Basicamente só tenho de extra lat/long e o indicador de capitais...
+
+covid_R4DS2 %>%
+   select(cod_mun) %>%
+   distinct() %>%
+   count()
+
+covid_ministerio %>%
+   select(cod_mun) %>%
+   distinct() %>%
+   count()
+
+# Bastante municípios sem coordenadas...
+
+
+# Conseguindo Coordenadas dos Municípios Brasileiros ----------------------
+
+# coordenadas <-
+   readr::read_csv(file = "https://raw.githubusercontent.com/kelvins/Municipios-Brasileiros/main/csv/municipios.csv") %>%
+   glimpse()
 
 # Salvando arquivos temporários... ----------------------------------------
 
