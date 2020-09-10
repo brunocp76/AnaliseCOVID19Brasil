@@ -156,10 +156,10 @@ covid_R4DS2 %>%
       qtd_data = n_distinct(date),
       data_min = min(date, na.rm = TRUE),
       data_max = max(date, na.rm = TRUE),
-      soma_aco = sum(em_acompanh_novos, na.rm = TRUE),
+      # soma_aco = sum(em_acompanh_novos, na.rm = TRUE),
       soma_con = sum(contagios_novos, na.rm = TRUE),
-      soma_obi = sum(obitos_novos, na.rm = TRUE),
-      soma_rec = sum(recuperados_novos, na.rm = TRUE)
+      soma_obi = sum(obitos_novos, na.rm = TRUE)
+      # soma_rec = sum(recuperados_novos, na.rm = TRUE)
    )
 
 covid_R4DS2 %>%
@@ -270,14 +270,15 @@ covid_brasilio %>%
    select(
       date,
       contagios_novos,
-      obitos_novos
+      obitos_novos,
    ) %>%
+   arrange(date) %>%
    summarise(
-      qtd_data = n_distinct(date),
       data_min = min(date, na.rm = TRUE),
       data_max = max(date, na.rm = TRUE),
-      soma_con = sum(contagios_novos, na.rm = TRUE),
-      soma_obi = sum(obitos_novos, na.rm = TRUE)
+      data_dist = n_distinct(date),
+      soma_cont = sum(contagios_novos, na.rm = TRUE),
+      soma_obit = sum(obitos_novos, na.rm = TRUE)
    )
 
 covid_brasilio %>%
@@ -403,14 +404,15 @@ covid_ministerio %>%
    select(
       date,
       contagios_novos,
-      obitos_novos
+      obitos_novos,
    ) %>%
+   arrange(date) %>%
    summarise(
-      qtd_data = n_distinct(date),
       data_min = min(date, na.rm = TRUE),
       data_max = max(date, na.rm = TRUE),
-      soma_con = sum(contagios_novos, na.rm = TRUE),
-      soma_obi = sum(obitos_novos, na.rm = TRUE)
+      data_dist = n_distinct(date),
+      soma_cont = sum(contagios_novos, na.rm = TRUE),
+      soma_obit = sum(obitos_novos, na.rm = TRUE)
    )
 
 covid_ministerio %>%
@@ -636,7 +638,7 @@ sem_pri_sint %>%
       semana_epidem
    ) -> semana_epid
 
-rm(sem_notif, sem_pri_sint)
+rm(sem_pri_sint)
 
 
 # Rápida conferência...
@@ -657,63 +659,123 @@ semana_epid %>%
    )
 
 
+# Conseguindo a Informação de ser Interior ou Região Metropolitana --------
+
+covid_ministerio %>%
+   filter(!is.na(interior_metropol)) %>%
+   select(
+      cod_mun,
+      interior_metropol
+   ) %>%
+   arrange(
+      cod_mun,
+      interior_metropol
+   ) %>%
+   distinct(
+      cod_mun,
+      interior_metropol
+   ) %>%
+   arrange(
+      cod_mun,
+      interior_metropol
+   ) -> mun_inter_metrop
+
+# Rápida conferência...
+cls()
+
+mun_inter_metrop %>%
+   glimpse()
+
+mun_inter_metrop %>%
+   object.size()
+
+
 # Organizando as Informações que temos... ---------------------------------
 
 cls()
 
-# covid_R4DS2 %>% glimpse()
+covid_R4DS2 %>% glimpse()
 
 covid_ministerio %>% glimpse()
 
 covid_brasilio %>% glimpse()
 
-# coords_munic %>% glimpse()
-#
-# area_munic %>% glimpse()
+coords_munic %>% glimpse()
 
+area_munic %>% glimpse()
 
-covid_brasilio %>%
-   select(
-      date,
-      contagios_novos,
-      obitos_novos,
-   ) %>%
-   arrange(date) %>%
-   summarise(
-      data_min = min(date, na.rm = TRUE),
-      data_max = max(date, na.rm = TRUE),
-      data_dist = n_distinct(date),
-      soma_cont = sum(contagios_novos, na.rm = TRUE),
-      soma_obit = sum(obitos_novos, na.rm = TRUE)
-   )
+semana_epid %>% glimpse()
 
-covid_ministerio %>%
-   select(
-      date,
-      contagios_novos,
-      obitos_novos,
-   ) %>%
-   arrange(date) %>%
-   summarise(
-      data_min = min(date, na.rm = TRUE),
-      data_max = max(date, na.rm = TRUE),
-      data_dist = n_distinct(date),
-      soma_cont = sum(contagios_novos, na.rm = TRUE),
-      soma_obit = sum(obitos_novos, na.rm = TRUE)
-   )
-
-covid_R4DS2 %>%
-   select(date) %>%
-   distinct(date) %>%
-   arrange(date) %>%
-   summarise(
-      data_min = min(date, na.rm = TRUE),
-      data_max = max(date, na.rm = TRUE),
-      data_dist = n_distinct(date))
+mun_inter_metrop %>% glimpse()
 
 
 
 cls()
+
+covid_brasilio %>%
+   mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
+   arrange(
+      cod_mun,
+      date
+   ) %>%
+   full_join(
+      y = covid_ministerio,
+      by = c("cod_mun", "date"),
+      suffix = c("_brasilio", "_ministerio")
+   ) %>%
+   select(
+      cod_ibge,
+      cod_mun,
+      date,
+      # lat_brasilio,
+      # lat_ministerio,
+      # lon_brasilio,
+      # lon_ministerio,
+      # capital_brasilio,
+      # capital_ministerio,
+      # area_mun_km2_brasilio,
+      # area_mun_km2_ministerio,
+      estado_brasilio,
+      estado_ministerio,
+      municipio_brasilio,
+      municipio_ministerio,
+      pop_est_2019,
+      pop_tcu_2019,
+      contagios_novos_brasilio,
+      contagios_novos_ministerio,
+      obitos_novos_brasilio,
+      obitos_novos_ministerio,
+      contagios_acumulados_brasilio,
+      contagios_acumulados_ministerio,
+      obitos_acumulados_brasilio,
+      obitos_acumulados_ministerio,
+      everything()
+   ) %>% glimpse()
+   mutate(
+      cont_nov_brasilio_ministerio = coalesce(
+         contagios_novos_brasilio,
+         contagios_novos_ministerio
+      ),
+      cont_nov_ministerio_brasilio = coalesce(
+         contagios_novos_ministerio,
+         contagios_novos_brasilio
+      ),
+      obit_nov_brasilio_ministerio = coalesce(
+         obitos_novos_brasilio,
+         obitos_novos_ministerio
+      ),
+      obit_nov_ministerio_brasilio = coalesce(
+         obitos_novos_ministerio,
+         obitos_novos_brasilio
+      )
+   ) %>%
+   arrange(
+      cod_ibge,
+      date
+   )
+
+
+
 
 temp_brasilio <- coords_munic %>%
    full_join(
@@ -725,6 +787,11 @@ temp_brasilio <- coords_munic %>%
       by = "cod_ibge"
    ) %>%
    mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
+   arrange(date, cod_ibge) %>%
+   left_join(
+      y = semana_epid,
+      by = "date"
+   ) %>%
    select(
       cod_ibge,
       cod_mun,
@@ -742,6 +809,7 @@ temp_brasilio <- coords_munic %>%
       obitos_acumulados,
       everything()
    ) %>%
+
    arrange(cod_ibge, date, cod_mun)
 
 temp_brasilio %>%
@@ -946,6 +1014,9 @@ big_temp %>%
    arrange(cod_ibge, date) -> covid
 
 covid %>%
+   glimpse()
+
+covid %>%
    select(date, where(is.numeric)) %>%
    summary()
 
@@ -958,12 +1029,55 @@ covid %>%
       obitos = sum(obitos_novos, na.rm = TRUE)
    )
 
+cls()
+
 covid %>%
    group_by(semana_epidem) %>%
    summarise(
       data_min = min(date, na.rm = TRUE),
       data_max = max(date, na.rm = TRUE),
       data_qtd = n_distinct(date)
+   )
+
+semana_epid %>%
+   group_by(semana_epidem) %>%
+   summarise(
+      data_min = min(date, na.rm = TRUE),
+      data_max = max(date, na.rm = TRUE),
+      data_qtd = n_distinct(date)
+   )
+
+
+
+covid %>%
+   select(
+      date,
+      semana_epidem
+   ) %>%
+   arrange(
+      date,
+      semana_epidem
+   ) %>%
+   distinct(
+      date,
+      semana_epidem
+   ) %>%
+   arrange(
+      date,
+      semana_epidem
+   ) %>%
+   full_join(
+      y = semana_epid,
+      by = "date",
+      suffix = c("_covid", "_sem_epid")
+   ) %>%
+   arrange(
+      date
+   ) %>%
+   filter(
+      !is.na(semana_epidem_covid),
+      !is.na(semana_epidem_sem_epid),
+      semana_epidem_covid != semana_epidem_sem_epid
    )
 
 
