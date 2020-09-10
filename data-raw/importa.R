@@ -162,6 +162,16 @@ covid_R4DS2 %>%
       soma_rec = sum(recuperados_novos, na.rm = TRUE)
    )
 
+covid_R4DS2 %>%
+   select(
+      date,
+      em_acompanh_novos,
+      contagios_novos,
+      obitos_novos,
+      recuperados_novos
+   ) %>%
+   summary()
+
 
 # Dados do Brasil.io ------------------------------------------------------
 covid_brasilio <- datacovidbr::brasilio() %>%
@@ -520,6 +530,133 @@ area_munic %>%
    )
 
 
+# Conseguindo a Semana Epidemiológica... ----
+cls()
+
+vroom::vroom(
+   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD-07-09-2020.csv"
+   , delim = ";"
+   , col_names = TRUE
+   , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")
+   # , n_max = 5
+   , trim_ws = TRUE
+   , num_threads = 4
+) %>%
+   mutate(
+      data_pri_sin = lubridate::dmy(DT_SIN_PRI),
+      sem_pri_sint = as.integer(SEM_PRI),
+      data_notif = lubridate::dmy(DT_NOTIFIC),
+      sem_notif = as.integer(SEM_NOT)
+   ) %>%
+   select(
+      data_pri_sin,
+      sem_pri_sint,
+      data_notif,
+      sem_notif
+   ) %>%
+   arrange(
+      data_pri_sin,
+      sem_pri_sint,
+      data_notif,
+      sem_notif
+   ) %>%
+   distinct(
+      data_pri_sin,
+      sem_pri_sint,
+      data_notif,
+      sem_notif
+   ) -> temp_sem_epid
+
+
+# Rápida conferência...
+temp_sem_epid %>%
+   glimpse()
+
+temp_sem_epid %>%
+   object.size()
+
+temp_sem_epid %>%
+   select(
+      date = data_pri_sin,
+      sem_pri_sint
+   ) %>%
+   arrange(
+      date,
+      sem_pri_sint
+   ) %>%
+   distinct(
+      date,
+      sem_pri_sint
+   ) -> sem_pri_sint
+
+temp_sem_epid %>%
+   select(
+      date = data_notif,
+      sem_notif
+   ) %>%
+   arrange(
+      date,
+      sem_notif
+   ) %>%
+   distinct(
+      date,
+      sem_notif
+   ) -> sem_notif
+
+
+sem_pri_sint %>%
+   full_join(
+      y = sem_notif,
+      by = "date"
+      ) %>%
+   as.data.frame()
+
+sem_pri_sint %>%
+   full_join(
+      y = sem_notif,
+      by = "date"
+   ) %>%
+   filter(sem_pri_sint != sem_notif)
+
+sem_pri_sint %>%
+   full_join(
+      y = sem_notif,
+      by = "date"
+   ) %>%
+   select(
+      date,
+      semana_epidem = sem_notif
+   ) %>%
+   arrange(
+      date,
+      semana_epidem
+   ) %>%
+   distinct(
+      date,
+      semana_epidem
+   ) -> semana_epid
+
+rm(sem_notif, sem_pri_sint)
+
+
+# Rápida conferência...
+cls()
+
+semana_epid %>%
+   glimpse()
+
+semana_epid %>%
+   object.size()
+
+semana_epid %>%
+   group_by(semana_epidem) %>%
+   summarise(
+      data_min = min(date, na.rm = TRUE),
+      data_max = max(date, na.rm = TRUE),
+      qtd_data = n_distinct(date)
+   )
+
+
 # Organizando as Informações que temos... ---------------------------------
 
 cls()
@@ -689,6 +826,24 @@ big_temp <- temp_brasilio %>%
       obitos_acumulados_ministerio,
       everything()
    ) %>%
+   mutate(
+      cont_nov_brasilio_ministerio = coalesce(
+         contagios_novos_brasilio,
+         contagios_novos_ministerio
+      ),
+      cont_nov_ministerio_brasilio = coalesce(
+         contagios_novos_ministerio,
+         contagios_novos_brasilio
+      ),
+      obit_nov_brasilio_ministerio = coalesce(
+         obitos_novos_brasilio,
+         obitos_novos_ministerio
+      ),
+      obit_nov_ministerio_brasilio = coalesce(
+         obitos_novos_ministerio,
+         obitos_novos_brasilio
+      )
+   ) %>%
    arrange(
       cod_ibge,
       date
@@ -701,8 +856,16 @@ big_temp %>%
    summarise(
       cont_brasil = sum(contagios_novos_brasilio, na.rm = TRUE),
       cont_minist = sum(contagios_novos_ministerio, na.rm = TRUE),
+      bras_minist = sum(cont_nov_brasilio_ministerio, na.rm = TRUE),
+      minist_bras = sum(cont_nov_ministerio_brasilio, na.rm = TRUE)
+   )
+
+big_temp %>%
+   summarise(
       obit_brasil = sum(obitos_novos_brasilio, na.rm = TRUE),
-      obit_minist = sum(obitos_novos_ministerio, na.rm = TRUE)
+      obit_minist = sum(obitos_novos_ministerio, na.rm = TRUE),
+      bras_minist = sum(obit_nov_brasilio_ministerio, na.rm = TRUE),
+      minist_bras = sum(obit_nov_ministerio_brasilio, na.rm = TRUE)
    )
 
 testa <- function(var){
@@ -803,9 +966,6 @@ covid %>%
       data_qtd = n_distinct(date)
    )
 
-#####
-### Falta corrigir a semana epidemiológica...
-#####
 
 
 # Salvando arquivos temporários... ----------------------------------------
