@@ -150,6 +150,22 @@ covid_R4DS2 %>%
       em_acompanh_novos,
       contagios_novos,
       obitos_novos,
+      recuperados_novos,
+      em_acompanh_acumulados,
+      contagios_acumulados,
+      obitos_acumulados,
+      recuperados_acumulados,
+      log2_obitos_novos,
+      log2_obitos_acumulados
+   ) %>%
+   summary()
+
+covid_R4DS2 %>%
+   select(
+      date,
+      em_acompanh_novos,
+      contagios_novos,
+      obitos_novos,
       recuperados_novos
    ) %>%
    summarise(
@@ -161,16 +177,6 @@ covid_R4DS2 %>%
       soma_obi = sum(obitos_novos, na.rm = TRUE)
       # soma_rec = sum(recuperados_novos, na.rm = TRUE)
    )
-
-covid_R4DS2 %>%
-   select(
-      date,
-      em_acompanh_novos,
-      contagios_novos,
-      obitos_novos,
-      recuperados_novos
-   ) %>%
-   summary()
 
 
 # Dados do Brasil.io ------------------------------------------------------
@@ -269,6 +275,17 @@ covid_brasilio %>%
 covid_brasilio %>%
    select(
       date,
+      pop_est_2019,
+      contagios_novos,
+      obitos_novos,
+      contagios_acumulados,
+      obitos_acumulados
+   ) %>%
+   summary()
+
+covid_brasilio %>%
+   select(
+      date,
       contagios_novos,
       obitos_novos,
    ) %>%
@@ -280,16 +297,6 @@ covid_brasilio %>%
       soma_cont = sum(contagios_novos, na.rm = TRUE),
       soma_obit = sum(obitos_novos, na.rm = TRUE)
    )
-
-covid_brasilio %>%
-   select(
-      date,
-      contagios_novos,
-      obitos_novos,
-      contagios_acumulados,
-      obitos_acumulados
-   ) %>%
-   summary()
 
 
 # Dados do Ministério da Saúde --------------------------------------------
@@ -403,6 +410,17 @@ covid_ministerio %>%
 covid_ministerio %>%
    select(
       date,
+      pop_tcu_2019,
+      contagios_novos,
+      obitos_novos,
+      contagios_acumulados,
+      obitos_acumulados
+   ) %>%
+   summary()
+
+covid_ministerio %>%
+   select(
+      date,
       contagios_novos,
       obitos_novos,
    ) %>%
@@ -414,16 +432,6 @@ covid_ministerio %>%
       soma_cont = sum(contagios_novos, na.rm = TRUE),
       soma_obit = sum(obitos_novos, na.rm = TRUE)
    )
-
-covid_ministerio %>%
-   select(
-      date,
-      contagios_novos,
-      obitos_novos,
-      contagios_acumulados,
-      obitos_acumulados
-   ) %>%
-   summary()
 
 
 # Conseguindo as Coordenadas dos Municípios Brasileiros -------------------
@@ -523,6 +531,9 @@ area_munic %>%
    object.size()
 
 area_munic %>%
+   summary()
+
+area_munic %>%
    select(area_mun_km2) %>%
    sum() %>%
    scales::comma(
@@ -542,7 +553,7 @@ vroom::vroom(
    , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")
    # , n_max = 5
    , trim_ws = TRUE
-   , num_threads = 4
+   # , num_threads = 4
 ) %>%
    mutate(
       data_pri_sin = lubridate::dmy(DT_SIN_PRI),
@@ -571,6 +582,8 @@ vroom::vroom(
 
 
 # Rápida conferência...
+cls()
+
 temp_sem_epid %>%
    glimpse()
 
@@ -638,7 +651,7 @@ sem_pri_sint %>%
       semana_epidem
    ) -> semana_epid
 
-rm(sem_pri_sint)
+rm(sem_pri_sint, sem_pri_sint)
 
 
 # Rápida conferência...
@@ -651,12 +664,16 @@ semana_epid %>%
    object.size()
 
 semana_epid %>%
+   summary()
+
+semana_epid %>%
    group_by(semana_epidem) %>%
    summarise(
       data_min = min(date, na.rm = TRUE),
       data_max = max(date, na.rm = TRUE),
       qtd_data = n_distinct(date)
-   )
+   ) %>%
+   as.data.frame()
 
 
 # Conseguindo a Informação de ser Interior ou Região Metropolitana --------
@@ -709,15 +726,13 @@ semana_epid %>% glimpse()
 mun_inter_metrop %>% glimpse()
 
 
-
-cls()
-
 covid_brasilio %>%
    mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
    arrange(
       cod_mun,
       date
    ) %>%
+   # Juntando as 2 bases grandes...
    full_join(
       y = covid_ministerio,
       by = c("cod_mun", "date"),
@@ -727,30 +742,17 @@ covid_brasilio %>%
       cod_ibge,
       cod_mun,
       date,
-      # lat_brasilio,
-      # lat_ministerio,
-      # lon_brasilio,
-      # lon_ministerio,
-      # capital_brasilio,
-      # capital_ministerio,
-      # area_mun_km2_brasilio,
-      # area_mun_km2_ministerio,
-      estado_brasilio,
-      estado_ministerio,
-      municipio_brasilio,
-      municipio_ministerio,
-      pop_est_2019,
-      pop_tcu_2019,
-      contagios_novos_brasilio,
-      contagios_novos_ministerio,
-      obitos_novos_brasilio,
-      obitos_novos_ministerio,
-      contagios_acumulados_brasilio,
-      contagios_acumulados_ministerio,
-      obitos_acumulados_brasilio,
-      obitos_acumulados_ministerio,
-      everything()
-   ) %>% glimpse()
+      everything(),
+      -semana_epidem,
+      -interior_metropol
+   ) %>%
+   select(date, where(is.numeric)) %>%
+   summary()
+
+
+
+
+
    mutate(
       cont_nov_brasilio_ministerio = coalesce(
          contagios_novos_brasilio,
@@ -769,121 +771,62 @@ covid_brasilio %>%
          obitos_novos_brasilio
       )
    ) %>%
+   # Agregando a Informação de ser interior ou região metropolitana...
+   arrange(
+      cod_mun,
+      date
+   ) %>%
+   left_join(
+      y = mun_inter_metrop,
+      by = "cod_mun"
+   ) %>%
+   # Agregando as Coordenadas de Centróide e a marcação de ser capital (ou não)...
    arrange(
       cod_ibge,
       date
-   )
-
-
-
-
-temp_brasilio <- coords_munic %>%
-   full_join(
+   ) %>%
+   left_join(
+      y = coords_munic,
+      by = "cod_ibge"
+   ) %>%
+   # Agregando a Área de cada município...
+   arrange(
+      cod_ibge,
+      date
+   ) %>%
+   left_join(
       y = area_munic,
       by = "cod_ibge"
    ) %>%
-   right_join(
-      y = covid_brasilio,
-      by = "cod_ibge"
+   # Agregando a Semana Epidemiológica...
+   arrange(
+      date,
+      cod_ibge
    ) %>%
-   mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
-   arrange(date, cod_ibge) %>%
    left_join(
       y = semana_epid,
       by = "date"
    ) %>%
+   # Enfim, finalizando a base...
    select(
+      date,
+      semana_epidem,
       cod_ibge,
       cod_mun,
-      date,
       lat,
       lon,
-      capital,
       area_mun_km2,
-      estado,
-      municipio,
+      capital,
+      interior_metropol,
       pop_est_2019,
-      contagios_novos,
-      obitos_novos,
-      contagios_acumulados,
-      obitos_acumulados,
-      everything()
-   ) %>%
-
-   arrange(cod_ibge, date, cod_mun)
-
-temp_brasilio %>%
-   glimpse()
-
-
-temp_ministerio <- coords_munic %>%
-   full_join(
-      y = area_munic,
-      by = "cod_ibge"
-   ) %>%
-   mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
-   arrange(cod_mun, cod_ibge) %>%
-   right_join(
-      y = covid_ministerio,
-      by = "cod_mun"
-   ) %>%
-   select(
-      cod_ibge,
-      cod_mun,
-      date,
-      lat,
-      lon,
-      capital,
-      area_mun_km2,
-      estado,
-      municipio,
       pop_tcu_2019,
-      contagios_novos,
-      obitos_novos,
-      contagios_acumulados,
-      obitos_acumulados,
-      everything(),
-      -cod_uf
-   ) %>%
-   arrange(cod_ibge, date, cod_mun)
-
-temp_ministerio %>%
-   glimpse()
-
-
-cls()
-
-temp_ministerio %>% glimpse()
-
-temp_brasilio %>% glimpse()
-
-
-
-big_temp <- temp_brasilio %>%
-   full_join(
-      y = temp_ministerio,
-      by = c("cod_ibge", "date"),
-      suffix = c("_brasilio", "_ministerio")
-   ) %>%
-   select(
-      cod_ibge,
-      cod_mun_brasilio,
-      cod_mun_ministerio,
-      date,
-      lat_brasilio,
-      lat_ministerio,
-      lon_brasilio,
-      lon_ministerio,
-      capital_brasilio,
-      capital_ministerio,
-      area_mun_km2_brasilio,
-      area_mun_km2_ministerio,
-      estado_brasilio,
-      estado_ministerio,
       municipio_brasilio,
       municipio_ministerio,
-      pop_est_2019,
-      pop_tcu_2019,
+      cod_regiao_saude,
+      nome_regiao_saude,
+      estado_brasilio,
+      estado_ministerio,
+      regiao,
       contagios_novos_brasilio,
       contagios_novos_ministerio,
       obitos_novos_brasilio,
@@ -892,50 +835,26 @@ big_temp <- temp_brasilio %>%
       contagios_acumulados_ministerio,
       obitos_acumulados_brasilio,
       obitos_acumulados_ministerio,
-      everything()
-   ) %>%
-   mutate(
-      cont_nov_brasilio_ministerio = coalesce(
-         contagios_novos_brasilio,
-         contagios_novos_ministerio
-      ),
-      cont_nov_ministerio_brasilio = coalesce(
-         contagios_novos_ministerio,
-         contagios_novos_brasilio
-      ),
-      obit_nov_brasilio_ministerio = coalesce(
-         obitos_novos_brasilio,
-         obitos_novos_ministerio
-      ),
-      obit_nov_ministerio_brasilio = coalesce(
-         obitos_novos_ministerio,
-         obitos_novos_brasilio
-      )
+      everything(),
+      -cod_uf
    ) %>%
    arrange(
       cod_ibge,
       date
-   )
+   ) -> big_temp
+
+
+# Rápida Conferência...
+cls()
 
 big_temp %>%
    glimpse()
 
 big_temp %>%
-   summarise(
-      cont_brasil = sum(contagios_novos_brasilio, na.rm = TRUE),
-      cont_minist = sum(contagios_novos_ministerio, na.rm = TRUE),
-      bras_minist = sum(cont_nov_brasilio_ministerio, na.rm = TRUE),
-      minist_bras = sum(cont_nov_ministerio_brasilio, na.rm = TRUE)
-   )
+   object.size()
 
-big_temp %>%
-   summarise(
-      obit_brasil = sum(obitos_novos_brasilio, na.rm = TRUE),
-      obit_minist = sum(obitos_novos_ministerio, na.rm = TRUE),
-      bras_minist = sum(obit_nov_brasilio_ministerio, na.rm = TRUE),
-      minist_bras = sum(obit_nov_ministerio_brasilio, na.rm = TRUE)
-   )
 
+# Testando a semelhança de informações similares... -----------------------
 testa <- function(var){
    cat(var,"\n")
 
@@ -960,30 +879,21 @@ testa2 <- function(var1, var2){
 }
 
 cls()
+
 big_temp %>%
    glimpse()
 
-testa("cod_mun")
-testa("lat")
-testa("lon")
-testa("capital")
-testa("area_mun_km2")
-testa("estado")
+testa2("pop_est_2019", "pop_tcu_2019")
 testa("municipio")
+testa("estado")
 testa("contagios_novos")
 testa("obitos_novos")
 testa("contagios_acumulados")
 testa("obitos_acumulados")
-testa2("pop_est_2019", "pop_tcu_2019")
 
 big_temp %>%
    mutate(
-      cod_mun = coalesce(cod_mun_ministerio, cod_mun_brasilio),
-      lat = coalesce(lat_ministerio, lat_brasilio),
-      lon = coalesce(lon_ministerio, lon_brasilio),
-      capital = coalesce(capital_ministerio, capital_brasilio),
-      area_mun_km2 = coalesce(area_mun_km2_ministerio, area_mun_km2_brasilio),
-      estado = coalesce(estado_brasilio, estado_ministerio),
+      uf = coalesce(estado_brasilio, estado_ministerio),
       municipio = coalesce(municipio_brasilio, municipio_ministerio),
       contagios_novos = coalesce(contagios_novos_ministerio, contagios_novos_brasilio),
       obitos_novos = coalesce(obitos_novos_ministerio, obitos_novos_brasilio),
@@ -992,26 +902,33 @@ big_temp %>%
       pop_2019 = coalesce(pop_est_2019, pop_tcu_2019)
    ) %>%
    select(
-      cod_ibge,
-      lat,
-      lon,
-      municipio,
-      capital,
-      interior_metropol,
-      area_mun_km2,
-      pop_2019,
-      cod_regiao_saude,
-      nome_regiao_saude,
-      estado,
-      regiao,
       date,
       semana_epidem,
+      cod_ibge,
+      # cod_mun,
+      lat,
+      lon,
+      area_mun_km2,
+      capital,
+      interior_metropol,
+      pop_2019,
+      municipio,
+      cod_regiao_saude,
+      nome_regiao_saude,
+      uf,
+      regiao,
       contagios_novos,
       obitos_novos,
       contagios_acumulados,
       obitos_acumulados
    ) %>%
    arrange(cod_ibge, date) -> covid
+
+# Rápida Conferência...
+cls()
+
+covid %>%
+   object.size()
 
 covid %>%
    glimpse()
