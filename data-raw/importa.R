@@ -470,7 +470,6 @@ coords_munic <- readr::read_csv(
    # Garantindo que todos os nomes estejam arrumados...
    janitor::clean_names()
 
-
 # Rápida conferência...
 cls()
 
@@ -519,7 +518,6 @@ area_munic <- readr::read_delim(
    ) %>%
    # Garantindo que todos os nomes estejam arrumados...
    janitor::clean_names()
-
 
 # Rápida conferência...
 cls()
@@ -579,7 +577,6 @@ vroom::vroom(
       data_notif,
       sem_notif
    ) -> temp_sem_epid
-
 
 # Rápida conferência...
 cls()
@@ -651,8 +648,7 @@ sem_pri_sint %>%
       semana_epidem
    ) -> semana_epid
 
-rm(sem_pri_sint, sem_pri_sint)
-
+rm(temp_sem_epid, sem_pri_sint, sem_notif)
 
 # Rápida conferência...
 cls()
@@ -707,24 +703,7 @@ mun_inter_metrop %>%
    object.size()
 
 
-# Organizando as Informações que temos... ---------------------------------
-
-cls()
-
-covid_R4DS2 %>% glimpse()
-
-covid_ministerio %>% glimpse()
-
-covid_brasilio %>% glimpse()
-
-coords_munic %>% glimpse()
-
-area_munic %>% glimpse()
-
-semana_epid %>% glimpse()
-
-mun_inter_metrop %>% glimpse()
-
+# Conseguindo as Chaves de Códigos de Municípios --------------------------
 
 covid_brasilio %>%
    mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
@@ -746,13 +725,85 @@ covid_brasilio %>%
       -semana_epidem,
       -interior_metropol
    ) %>%
-   select(date, where(is.numeric)) %>%
+   filter(
+      !is.na(cod_ibge),
+      !is.na(cod_mun),
+      !is.na(cod_regiao_saude),
+      !is.na(nome_regiao_saude)
+   ) %>%
+   arrange(
+      cod_ibge,
+      cod_mun,
+      cod_regiao_saude,
+      nome_regiao_saude
+   ) %>%
+   distinct(
+      cod_ibge,
+      cod_mun,
+      cod_regiao_saude,
+      nome_regiao_saude
+   ) %>%
+   arrange(
+      cod_mun,
+      cod_ibge,
+      cod_regiao_saude,
+      nome_regiao_saude
+   ) -> infos_chaves
+
+# Rápida conferência...
+cls()
+
+infos_chaves %>%
+   glimpse()
+
+infos_chaves %>%
+   object.size()
+
+infos_chaves %>%
    summary()
 
 
+# Organizando as Informações que temos... ---------------------------------
+
+cls()
+
+covid_R4DS2 %>% glimpse()
+
+covid_ministerio %>% glimpse()
+
+covid_brasilio %>% glimpse()
+
+infos_chaves %>% glimpse()
+
+mun_inter_metrop %>% glimpse()
+
+coords_munic %>% glimpse()
+
+area_munic %>% glimpse()
+
+semana_epid %>% glimpse()
 
 
-
+covid_brasilio %>%
+   mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
+   arrange(
+      cod_mun,
+      date
+   ) %>%
+   # Juntando as 2 bases grandes...
+   full_join(
+      y = covid_ministerio,
+      by = c("cod_mun", "date"),
+      suffix = c("_brasilio", "_ministerio")
+   ) %>%
+   select(
+      # cod_ibge,
+      cod_mun,
+      date,
+      everything(),
+      -semana_epidem,
+      -interior_metropol
+   ) %>%
    mutate(
       cont_nov_brasilio_ministerio = coalesce(
          contagios_novos_brasilio,
@@ -771,25 +822,45 @@ covid_brasilio %>%
          obitos_novos_brasilio
       )
    ) %>%
-   # Agregando a Informação de ser interior ou região metropolitana...
+   # Agregando a chave do Código de Município do IBGE...
    arrange(
+      cod_mun
+   ) %>%
+   left_join(
+      y = infos_chaves,
+      by = "cod_mun",
+      suffix = (c("_big", "_key"))
+   ) %>%
+   mutate(
+      cod_ibge = coalesce(cod_ibge_key, cod_ibge_big),
+      cod_regiao_saude = coalesce(cod_regiao_saude_key, cod_regiao_saude_big),
+      nome_regiao_saude = coalesce(nome_regiao_saude_key, nome_regiao_saude_big)
+   ) %>%
+   select(
+      date,
+      cod_ibge,
       cod_mun,
-      date
+      everything(),
+      -ends_with("_big"),
+      -ends_with("_key")
+   ) %>%
+# Agregando a Informação de ser interior ou região metropolitana...
+   arrange(
+      cod_mun
    ) %>%
    left_join(
       y = mun_inter_metrop,
       by = "cod_mun"
    ) %>%
-   # Agregando as Coordenadas de Centróide e a marcação de ser capital (ou não)...
+# Agregando as Coordenadas de Centróide e a marcação de ser capital (ou não)...
    arrange(
       cod_ibge,
-      date
    ) %>%
    left_join(
       y = coords_munic,
       by = "cod_ibge"
    ) %>%
-   # Agregando a Área de cada município...
+# Agregando a Área de cada município...
    arrange(
       cod_ibge,
       date
@@ -798,16 +869,15 @@ covid_brasilio %>%
       y = area_munic,
       by = "cod_ibge"
    ) %>%
-   # Agregando a Semana Epidemiológica...
+# Agregando a Semana Epidemiológica...
    arrange(
-      date,
-      cod_ibge
+      date
    ) %>%
    left_join(
       y = semana_epid,
       by = "date"
    ) %>%
-   # Enfim, finalizando a base...
+# Enfim, finalizando a base...
    select(
       date,
       semana_epidem,
@@ -843,7 +913,6 @@ covid_brasilio %>%
       date
    ) -> big_temp
 
-
 # Rápida Conferência...
 cls()
 
@@ -852,6 +921,14 @@ big_temp %>%
 
 big_temp %>%
    object.size()
+
+big_temp %>%
+   summarise(
+      cont_nov_bras_minist = sum(cont_nov_brasilio_ministerio, na.rm = TRUE),
+      cont_nov_minist_bras = sum(cont_nov_ministerio_brasilio, na.rm = TRUE),
+      obit_nov_bras_minist = sum(obit_nov_brasilio_ministerio, na.rm = TRUE),
+      obit_nov_minist_bras = sum(obit_nov_ministerio_brasilio, na.rm = TRUE)
+   )
 
 
 # Testando a semelhança de informações similares... -----------------------
@@ -946,8 +1023,6 @@ covid %>%
       obitos = sum(obitos_novos, na.rm = TRUE)
    )
 
-cls()
-
 covid %>%
    group_by(semana_epidem) %>%
    summarise(
@@ -957,6 +1032,7 @@ covid %>%
    )
 
 semana_epid %>%
+   filter(semana_epidem >= 9) %>%
    group_by(semana_epidem) %>%
    summarise(
       data_min = min(date, na.rm = TRUE),
@@ -965,41 +1041,17 @@ semana_epid %>%
    )
 
 
+# Salvando arquivos temporários... ----------------------------------------
+cls()
 
 covid %>%
-   select(
-      date,
-      semana_epidem
-   ) %>%
-   arrange(
-      date,
-      semana_epidem
-   ) %>%
-   distinct(
-      date,
-      semana_epidem
-   ) %>%
-   arrange(
-      date,
-      semana_epidem
-   ) %>%
-   full_join(
-      y = semana_epid,
-      by = "date",
-      suffix = c("_covid", "_sem_epid")
-   ) %>%
-   arrange(
-      date
-   ) %>%
-   filter(
-      !is.na(semana_epidem_covid),
-      !is.na(semana_epidem_sem_epid),
-      semana_epidem_covid != semana_epidem_sem_epid
-   )
+   glimpse()
 
+covid %>%
+   summary()
 
-
-# Salvando arquivos temporários... ----------------------------------------
+covid %>%
+   object.size()
 
 saveRDS(
    object = covid,
@@ -1010,10 +1062,13 @@ saveRDS(
 )
 
 
+# Removendo arquivos temporários ------------------------------------------
+rm(list = ls(pattern = "_"))
+
 ## code to prepare `importa` dataset goes here
 
 usethis::use_data(
-   importa,
+   covid,
    internal = FALSE,
    overwrite = TRUE,
    compress = "xz",
