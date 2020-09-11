@@ -180,7 +180,7 @@ covid_R4DS2 %>%
 
 
 # Dados do Brasil.io ------------------------------------------------------
-covid_brasilio <- datacovidbr::brasilio() %>%
+datacovidbr::brasilio() %>%
    # Filtrando só as linhas necessárias...
    filter(
       place_type == "city",
@@ -261,7 +261,7 @@ covid_brasilio <- datacovidbr::brasilio() %>%
       municipio
    ) %>%
    # Garantindo que todos os nomes estejam arrumados...
-   janitor::clean_names()
+   janitor::clean_names() -> covid_brasilio
 
 # Conferência rápida...
 cls()
@@ -300,7 +300,7 @@ covid_brasilio %>%
 
 
 # Dados do Ministério da Saúde --------------------------------------------
-covid_ministerio <- datacovidbr::brMinisterioSaude() %>%
+datacovidbr::brMinisterioSaude() %>%
    # Filtrando só as linhas necessárias...
    filter(
       regiao != "Brasil",
@@ -396,7 +396,7 @@ covid_ministerio <- datacovidbr::brMinisterioSaude() %>%
       municipio
    ) %>%
    # Garantindo que todos os nomes estejam arrumados...
-   janitor::clean_names()
+   janitor::clean_names() -> covid_ministerio
 
 # Rápida conferência...
 cls()
@@ -434,9 +434,10 @@ covid_ministerio %>%
    )
 
 
-# Conseguindo as Coordenadas dos Municípios Brasileiros -------------------
+# Conseguindo as Informações Geográficas dos Municípios Brasileiros -------
 
-coords_munic <- readr::read_csv(
+## Latitude, Longitude e Indicador de Capital...
+readr::read_csv(
    file = "https://raw.githubusercontent.com/kelvins/Municipios-Brasileiros/main/csv/municipios.csv"
 ) %>%
    # Filtrando só as linhas necessárias...
@@ -467,8 +468,17 @@ coords_munic <- readr::read_csv(
    arrange(
       cod_ibge
    ) %>%
+   distinct(
+      cod_ibge,
+      lat,
+      lon,
+      capital
+   ) %>%
+   arrange(
+      cod_ibge
+   ) %>%
    # Garantindo que todos os nomes estejam arrumados...
-   janitor::clean_names()
+   janitor::clean_names() -> coords_munic
 
 # Rápida conferência...
 cls()
@@ -484,15 +494,14 @@ coords_munic %>%
    sum()
 
 
-# Conseguindo as Áreas dos Municípios Brasileiros -------------------------
-
-area_munic <- readr::read_delim(
+## Área dos Municípios...
+readr::read_delim(
    file = "data-raw/Dados_Area_Municipios.txt",
    delim = "\t",
    col_names = TRUE,
    trim_ws = TRUE,
-   guess_max = 6000,
-   skip_empty_rows = TRUE,
+   guess_max = 5700,
+   skip_empty_rows = TRUE
 ) %>%
    # Filtrando só as linhas necessárias...
    filter(
@@ -516,8 +525,15 @@ area_munic <- readr::read_delim(
    arrange(
       cod_ibge
    ) %>%
+   distinct(
+      cod_ibge,
+      area_mun_km2
+   ) %>%
+   arrange(
+      cod_ibge
+   ) %>%
    # Garantindo que todos os nomes estejam arrumados...
-   janitor::clean_names()
+   janitor::clean_names() -> area_munic
 
 # Rápida conferência...
 cls()
@@ -539,6 +555,64 @@ area_munic %>%
       big.mark = ".",
       decimal.mark = ","
    )
+
+
+## Combinando todas as Informações Geográficas...
+coords_munic %>%
+   full_join(
+      y = area_munic,
+      by = "cod_ibge"
+   ) %>%
+   mutate(
+      capital = as.integer(
+         ifelse(test = !is.na(capital),
+                yes = capital,
+                no = 0)
+      )
+   ) %>%
+   select(
+      cod_ibge,
+      lat,
+      lon,
+      area_mun_km2,
+      capital
+   ) %>%
+   arrange(cod_ibge) %>%
+   distinct(
+      cod_ibge,
+      lat,
+      lon,
+      area_mun_km2,
+      capital
+   ) %>%
+   arrange(cod_ibge) -> infos_geograficas
+
+# Rápida conferência...
+cls()
+
+infos_geograficas %>%
+   glimpse()
+
+infos_geograficas %>%
+   object.size()
+
+infos_geograficas %>%
+   summary()
+
+infos_geograficas %>%
+   select(capital) %>%
+   sum()
+
+infos_geograficas %>%
+   select(area_mun_km2) %>%
+   sum() %>%
+   scales::comma(
+      accuracy = 0.01,
+      big.mark = ".",
+      decimal.mark = ","
+   )
+
+rm(coords_munic, area_munic)
 
 
 # Conseguindo a Semana Epidemiológica... ----
@@ -672,39 +746,7 @@ semana_epid %>%
    as.data.frame()
 
 
-# Conseguindo a Informação de ser Interior ou Região Metropolitana --------
-
-covid_ministerio %>%
-   filter(!is.na(interior_metropol)) %>%
-   select(
-      cod_mun,
-      interior_metropol
-   ) %>%
-   arrange(
-      cod_mun,
-      interior_metropol
-   ) %>%
-   distinct(
-      cod_mun,
-      interior_metropol
-   ) %>%
-   arrange(
-      cod_mun,
-      interior_metropol
-   ) -> mun_inter_metrop
-
-# Rápida conferência...
-cls()
-
-mun_inter_metrop %>%
-   glimpse()
-
-mun_inter_metrop %>%
-   object.size()
-
-
 # Conseguindo as Chaves de Códigos de Municípios --------------------------
-
 covid_brasilio %>%
    mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
    arrange(
@@ -720,34 +762,51 @@ covid_brasilio %>%
    select(
       cod_ibge,
       cod_mun,
-      date,
-      everything(),
-      -semana_epidem,
-      -interior_metropol
+      cod_regiao_saude,
+      nome_regiao_saude,
+      interior_metropol
    ) %>%
    filter(
       !is.na(cod_ibge),
-      !is.na(cod_mun),
-      !is.na(cod_regiao_saude),
-      !is.na(nome_regiao_saude)
+      !is.na(cod_mun)
    ) %>%
    arrange(
-      cod_ibge,
       cod_mun,
+      cod_ibge,
       cod_regiao_saude,
-      nome_regiao_saude
+      nome_regiao_saude,
+      interior_metropol
+   ) %>%
+   group_by(
+      cod_mun,
+      cod_ibge
+   ) %>%
+   summarise(
+      cod_regiao_saude_budega = min(cod_regiao_saude, na.rm = TRUE),
+      nome_regiao_saude_budega = min(nome_regiao_saude, na.rm = TRUE),
+      interior_metropol_budega = min(interior_metropol, na.rm = TRUE)
+   ) %>%
+   ungroup() %>%
+   select(
+      cod_mun,
+      cod_ibge,
+      cod_regiao_saude = cod_regiao_saude_budega,
+      nome_regiao_saude = nome_regiao_saude_budega,
+      interior_metropol = interior_metropol_budega
    ) %>%
    distinct(
-      cod_ibge,
       cod_mun,
+      cod_ibge,
       cod_regiao_saude,
-      nome_regiao_saude
+      nome_regiao_saude,
+      interior_metropol
    ) %>%
    arrange(
-      cod_mun,
-      cod_ibge,
-      cod_regiao_saude,
-      nome_regiao_saude
+      cod_mun
+      , cod_ibge
+      , cod_regiao_saude
+      , nome_regiao_saude
+      , interior_metropol
    ) -> infos_chaves
 
 # Rápida conferência...
@@ -764,7 +823,6 @@ infos_chaves %>%
 
 
 # Organizando as Informações que temos... ---------------------------------
-
 cls()
 
 covid_R4DS2 %>% glimpse()
@@ -775,11 +833,7 @@ covid_brasilio %>% glimpse()
 
 infos_chaves %>% glimpse()
 
-mun_inter_metrop %>% glimpse()
-
-coords_munic %>% glimpse()
-
-area_munic %>% glimpse()
+infos_geograficas %>% glimpse()
 
 semana_epid %>% glimpse()
 
@@ -797,7 +851,7 @@ covid_brasilio %>%
       suffix = c("_brasilio", "_ministerio")
    ) %>%
    select(
-      # cod_ibge,
+      cod_ibge,
       cod_mun,
       date,
       everything(),
@@ -844,32 +898,15 @@ covid_brasilio %>%
       -ends_with("_big"),
       -ends_with("_key")
    ) %>%
-# Agregando a Informação de ser interior ou região metropolitana...
-   arrange(
-      cod_mun
-   ) %>%
-   left_join(
-      y = mun_inter_metrop,
-      by = "cod_mun"
-   ) %>%
-# Agregando as Coordenadas de Centróide e a marcação de ser capital (ou não)...
+   # Agregando as Informações Geográficas do Município...
    arrange(
       cod_ibge,
    ) %>%
    left_join(
-      y = coords_munic,
+      y = infos_geograficas,
       by = "cod_ibge"
    ) %>%
-# Agregando a Área de cada município...
-   arrange(
-      cod_ibge,
-      date
-   ) %>%
-   left_join(
-      y = area_munic,
-      by = "cod_ibge"
-   ) %>%
-# Agregando a Semana Epidemiológica...
+   # Agregando a Semana Epidemiológica...
    arrange(
       date
    ) %>%
@@ -877,7 +914,7 @@ covid_brasilio %>%
       y = semana_epid,
       by = "date"
    ) %>%
-# Enfim, finalizando a base...
+   # Enfim, finalizando a base...
    select(
       date,
       semana_epidem,
@@ -1042,6 +1079,8 @@ semana_epid %>%
 
 
 # Salvando arquivos temporários... ----------------------------------------
+
+## Base Principal - COVID
 cls()
 
 covid %>%
@@ -1062,15 +1101,63 @@ saveRDS(
 )
 
 
-# Removendo arquivos temporários ------------------------------------------
-rm(list = ls(pattern = "_"))
+## Base Auxiliar - Informações Geográficas
+cls()
 
-## code to prepare `importa` dataset goes here
+infos_geograficas %>%
+   glimpse()
+
+infos_geograficas %>%
+   object.size()
+
+saveRDS(
+   object = infos_geograficas,
+   file = "data-raw/infos_geograficas.rds",
+   ascii = FALSE,
+   version = 3,
+   compress = "xz"
+)
+
+
+## Base Auxiliar - Primeiras Semanas Epidemiológicas
+cls()
+
+semana_epid %>%
+   glimpse()
+
+semana_epid %>%
+   object.size()
+
+saveRDS(
+   object = semana_epid,
+   file = "data-raw/semanas_epidemiologicas.rds",
+   ascii = FALSE,
+   version = 3,
+   compress = "xz"
+)
+
+
+## code to prepare `infos_geograficas` dataset goes here
 
 usethis::use_data(
-   covid,
+   infos_geograficas,
    internal = FALSE,
    overwrite = TRUE,
    compress = "xz",
    version = 3
 )
+
+
+## code to prepare `semana_epid` dataset goes here
+
+usethis::use_data(
+   semana_epid,
+   internal = FALSE,
+   overwrite = TRUE,
+   compress = "xz",
+   version = 3
+)
+
+
+# Removendo arquivos temporários ------------------------------------------
+rm(list = ls(pattern = "_"))
