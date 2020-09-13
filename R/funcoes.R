@@ -45,7 +45,7 @@ atualiza_dados <- function() {
            tempo_semana_epid, tempo_infos_municip, tempo_base_covid),
        " segundos.", "\n\n", "Segue um resumo da base:", "\n\n", sep = "")
 
-   rm(list = ls(pattern = "_"))
+   rm(list = ls(pattern = "_"), envir = globalenv())
 
    covid %>%
       dplyr::glimpse()
