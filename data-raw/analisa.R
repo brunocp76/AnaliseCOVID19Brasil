@@ -82,6 +82,95 @@ covid_cidades %>%
    glimpse()
 
 
+## Base ao nível de Região de Saúde
+cls()
+
+covid %>%
+   select(
+      -c(cod_ibge:lon),
+      area_regiao_saude_km2 = area_km2,
+      -c(capital:interior_metropol),
+      pop_regiao_saude_2019 = pop_2019,
+      -municipio,
+      -uf,
+      -regiao,
+      contagios_novos_regiao_saude = contagios_novos,
+      obitos_novos_regiao_saude = obitos_novos,
+      contagios_acumulados_regiao_saude = contagios_acumulados,
+      obitos_acumulados_regiao_saude = obitos_acumulados
+   ) %>%
+   group_by(
+      cod_regiao_saude,
+      nome_regiao_saude
+   ) %>% glimpse()
+
+covid %>%
+   filter(cod_regiao_saude == 35016,
+          date > '2020-03-26') %>%
+   select(
+      -c(cod_ibge:lon),
+      area_regiao_saude_km2 = area_km2,
+      -c(capital:interior_metropol),
+      pop_regiao_saude_2019 = pop_2019,
+      -municipio,
+      -uf,
+      -regiao,
+      contagios_novos_regiao_saude = contagios_novos,
+      obitos_novos_regiao_saude = obitos_novos,
+      contagios_acumulados_regiao_saude = contagios_acumulados,
+      obitos_acumulados_regiao_saude = obitos_acumulados
+   ) %>%
+   arrange(
+      cod_regiao_saude,
+      nome_regiao_saude,
+      date,
+      semana_epidem
+   ) %>%
+   group_by(
+      cod_regiao_saude,
+      nome_regiao_saude,
+      date,
+      semana_epidem
+   ) %>%
+   summarise(
+      area_km2 = sum(area_regiao_saude_km2, na.rm = TRUE),
+      pop_2019 = sum(pop_regiao_saude_2019, na.rm = TRUE),
+      contagios_novos = sum(contagios_novos_regiao_saude, na.rm = TRUE),
+      obitos_novos = sum(obitos_novos_regiao_saude, na.rm = TRUE)
+   ) %>%
+   ungroup() %>%
+   arrange(
+      cod_regiao_saude,
+      date
+   ) %>%
+   group_by(cod_regiao_saude) %>%
+   mutate(
+      contagios_acumulados = cumsum(contagios_novos),
+      obitos_acumulados = cumsum(obitos_novos)
+   ) %>%
+   ungroup() %>%
+   arrange(
+      cod_regiao_saude,
+      nome_regiao_saude,
+      date,
+      semana_epidem
+   ) %>%
+   glimpse()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
    select(

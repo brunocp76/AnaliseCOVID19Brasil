@@ -922,7 +922,7 @@ covid_brasilio %>%
       cod_mun,
       lat,
       lon,
-      area_mun_km2,
+      area_km2 = area_mun_km2,
       capital,
       interior_metropol,
       pop_est_2019,
@@ -961,6 +961,7 @@ big_temp %>%
 
 big_temp %>%
    summarise(
+      date_max = max(date, na.rm = TRUE),
       cont_nov_bras_minist = sum(cont_nov_brasilio_ministerio, na.rm = TRUE),
       cont_nov_minist_bras = sum(cont_nov_ministerio_brasilio, na.rm = TRUE),
       obit_nov_bras_minist = sum(obit_nov_brasilio_ministerio, na.rm = TRUE),
@@ -1029,7 +1030,7 @@ big_temp %>%
       # cod_mun,
       lat,
       lon,
-      area_mun_km2,
+      area_km2,
       capital,
       interior_metropol,
       pop_2019,

@@ -21,8 +21,8 @@ le_brasil_io <- function() {
       dplyr::arrange(city_ibge_code, date) %>%
       dplyr::mutate(
          contagios_novos = ifelse(
-            test = city_ibge_code == lag(city_ibge_code),
-            yes = confirmed - lag(confirmed),
+            test = city_ibge_code == dplyr::lag(city_ibge_code),
+            yes = confirmed - dplyr::lag(confirmed),
             no = ifelse(
                test = is.na(confirmed),
                yes = 0,
@@ -30,8 +30,8 @@ le_brasil_io <- function() {
             )
          ),
          obitos_novos = ifelse(
-            test = city_ibge_code == lag(city_ibge_code),
-            yes = deaths - lag(deaths),
+            test = city_ibge_code == dplyr::lag(city_ibge_code),
+            yes = deaths - dplyr::lag(deaths),
             no = ifelse(
                test = is.na(deaths),
                yes = 0,
@@ -359,7 +359,7 @@ processa_final <- function() {
          cod_mun,
          lat,
          lon,
-         area_mun_km2,
+         area_km2 = area_mun_km2,
          capital,
          interior_metropol,
          pop_est_2019,
@@ -409,7 +409,7 @@ processa_final <- function() {
          cod_ibge,
          lat,
          lon,
-         area_mun_km2,
+         area_km2,
          capital,
          interior_metropol,
          pop_2019,
