@@ -1,32 +1,7 @@
-# Bibliotecas - Tentar manter isso o mínimo possível... -------------------
-# library(tidyr)
-# library(dplyr)
-
-
 #' Limpa a tela do Console do RStudio
 #'
 #' @export
 cls <- function() cat("\f")
-
-
-#' Carrega dados auxiliares.
-#'
-#' Carrega e processa dados auxiliares para uso na montagem da base posteriormente.
-#'
-#' @param arquivo Base de Dados a ser carregada.
-#'
-#' @return Base auxiliar processada.
-#'
-#' @export
-carrega_auxiliares <- function(arquivo) {
-   arquivo <- load(
-      file = paste0("data/", arquivo, ".rda", sep = ""),
-      verbose = FALSE
-   )
-
-   return(arquivo)
-}
-
 
 #' Importa dados da COVID do Portal Brasil.io
 #'
@@ -36,7 +11,7 @@ carrega_auxiliares <- function(arquivo) {
 #'
 #' @export
 le_brasil_io <- function() {
-   datacovidbr::brasilio() %>%
+   covid_brasilio <<- datacovidbr::brasilio() %>%
       dplyr::filter(
          place_type == "city",
          !is.na(city),
@@ -109,7 +84,7 @@ le_brasil_io <- function() {
          date,
          estado,
          municipio
-      ) -> covid_brasilio
+      )
 
    return(covid_brasilio)
 }
@@ -125,7 +100,7 @@ le_brasil_io <- function() {
 #'
 #' @export
 le_ministerio <- function() {
-   datacovidbr::brMinisterioSaude() %>%
+   covid_ministerio <<- datacovidbr::brMinisterioSaude() %>%
       # Filtrando só as linhas necessárias...
       dplyr::filter(
          regiao != "Brasil",
@@ -217,7 +192,7 @@ le_ministerio <- function() {
          date,
          estado,
          municipio
-      ) -> covid_ministerio
+      )
 
    return(covid_ministerio)
 }
@@ -229,7 +204,7 @@ le_ministerio <- function() {
 #'
 #' @export
 deriva_codigo_municipio <- function() {
-   covid_brasilio %>%
+   infos_chaves <<- covid_brasilio %>%
       dplyr::mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
       dplyr::arrange(
          cod_mun,
@@ -289,7 +264,7 @@ deriva_codigo_municipio <- function() {
          , cod_regiao_saude
          , nome_regiao_saude
          , interior_metropol
-      ) -> infos_chaves
+      )
 
    return(infos_chaves)
 }
@@ -300,7 +275,7 @@ deriva_codigo_municipio <- function() {
 #'
 #' @export
 processa_final <- function() {
-   covid_brasilio %>%
+   covid <<- covid_brasilio %>%
       dplyr::mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
       dplyr::arrange(
          cod_mun,
@@ -321,19 +296,19 @@ processa_final <- function() {
          -interior_metropol
       ) %>%
       dplyr::mutate(
-         cont_nov_brasilio_ministerio = coalesce(
+         cont_nov_brasilio_ministerio = dplyr::coalesce(
             contagios_novos_brasilio,
             contagios_novos_ministerio
          ),
-         cont_nov_ministerio_brasilio = coalesce(
+         cont_nov_ministerio_brasilio = dplyr::coalesce(
             contagios_novos_ministerio,
             contagios_novos_brasilio
          ),
-         obit_nov_brasilio_ministerio = coalesce(
+         obit_nov_brasilio_ministerio = dplyr::coalesce(
             obitos_novos_brasilio,
             obitos_novos_ministerio
          ),
-         obit_nov_ministerio_brasilio = coalesce(
+         obit_nov_ministerio_brasilio = dplyr::coalesce(
             obitos_novos_ministerio,
             obitos_novos_brasilio
          )
@@ -348,9 +323,9 @@ processa_final <- function() {
          suffix = (c("_big", "_key"))
       ) %>%
       dplyr::mutate(
-         cod_ibge = coalesce(cod_ibge_key, cod_ibge_big),
-         cod_regiao_saude = coalesce(cod_regiao_saude_key, cod_regiao_saude_big),
-         nome_regiao_saude = coalesce(nome_regiao_saude_key, nome_regiao_saude_big)
+         cod_ibge = dplyr::coalesce(cod_ibge_key, cod_ibge_big),
+         cod_regiao_saude = dplyr::coalesce(cod_regiao_saude_key, cod_regiao_saude_big),
+         nome_regiao_saude = dplyr::coalesce(nome_regiao_saude_key, nome_regiao_saude_big)
       ) %>%
       dplyr::select(
          date,
@@ -412,13 +387,21 @@ processa_final <- function() {
          date
       )  %>%
       dplyr::mutate(
-         uf = coalesce(estado_brasilio, estado_ministerio),
-         municipio = coalesce(municipio_brasilio, municipio_ministerio),
-         contagios_novos = coalesce(contagios_novos_ministerio, contagios_novos_brasilio),
-         obitos_novos = coalesce(obitos_novos_ministerio, obitos_novos_brasilio),
-         contagios_acumulados = coalesce(contagios_acumulados_ministerio, contagios_acumulados_brasilio),
-         obitos_acumulados = coalesce(obitos_acumulados_ministerio, obitos_acumulados_brasilio),
-         pop_2019 = coalesce(pop_est_2019, pop_tcu_2019)
+         pop_2019 = dplyr::coalesce(pop_est_2019, pop_tcu_2019),
+         municipio = dplyr::coalesce(municipio_brasilio, municipio_ministerio),
+         uf = dplyr::coalesce(estado_brasilio, estado_ministerio),
+         regiao = dplyr::case_when(
+            uf %in% c("ES", "MG", "RJ", "SP") ~ "Sudeste",
+            uf %in% c("AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE") ~ "Nordeste",
+            uf %in% c("PR", "RS", "SC") ~ "Sul",
+            uf %in% c("DF", "GO", "MS", "MT") ~ "Centro-Oeste",
+            uf %in% c("AC", "AM", "AP", "PA", "RO", "RR", "TO") ~ "Norte",
+            TRUE ~ NA_character_
+         ),
+         contagios_novos = dplyr::coalesce(contagios_novos_ministerio, contagios_novos_brasilio),
+         obitos_novos = dplyr::coalesce(obitos_novos_ministerio, obitos_novos_brasilio),
+         contagios_acumulados = dplyr::coalesce(contagios_acumulados_ministerio, contagios_acumulados_brasilio),
+         obitos_acumulados = dplyr::coalesce(obitos_acumulados_ministerio, obitos_acumulados_brasilio)
       ) %>%
       dplyr::select(
          date,
@@ -440,7 +423,27 @@ processa_final <- function() {
          contagios_acumulados,
          obitos_acumulados
       ) %>%
-      dplyr::arrange(cod_ibge, date) -> covid
+      dplyr::arrange(cod_ibge, date)
 
    return(covid)
+}
+
+#' Faz um backup da ultima atualizacao disponivel
+#'
+#' Quando invocado, faz uma copia do arquivo final covid para a pasta de dados brutos. Para uso interno no pacote.
+#'
+#' @return Backup da base mais atualizada disponivel.
+#'
+#' @export
+backup_base <- function() {
+   cat("\n", "Fazendo copia de seguranca da base mais atualizada disponivel",
+       "\n\n", "Por favor aguarde...")
+
+   saveRDS(
+      object = covid,
+      file = "data-raw/covid.rds",
+      ascii = FALSE,
+      version = 3,
+      compress = "xz"
+   )
 }

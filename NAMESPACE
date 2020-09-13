@@ -2,7 +2,7 @@
 
 export("%>%")
 export(atualiza_dados)
-export(carrega_auxiliares)
+export(backup_base)
 export(cls)
 export(deriva_codigo_municipio)
 export(le_brasil_io)

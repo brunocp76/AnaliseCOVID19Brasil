@@ -974,7 +974,6 @@ testa <- function(var){
 
    filter <- paste0(var,"_brasilio != ",var,"_ministerio", sep = "")
 
-
    big_temp %>%
       filter(!! rlang::parse_expr(filter)) %>%
       count() %>%
@@ -1007,13 +1006,21 @@ testa("obitos_acumulados")
 
 big_temp %>%
    mutate(
-      uf = coalesce(estado_brasilio, estado_ministerio),
+      pop_2019 = coalesce(pop_est_2019, pop_tcu_2019),
       municipio = coalesce(municipio_brasilio, municipio_ministerio),
+      uf = coalesce(estado_brasilio, estado_ministerio),
+      regiao = case_when(
+         uf %in% c("ES", "MG", "RJ", "SP") ~ "Sudeste",
+         uf %in% c("AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE") ~ "Nordeste",
+         uf %in% c("PR", "RS", "SC") ~ "Sul",
+         uf %in% c("DF", "GO", "MS", "MT") ~ "Centro-Oeste",
+         uf %in% c("AC", "AM", "AP", "PA", "RO", "RR", "TO") ~ "Norte",
+         TRUE ~ NA_character_
+      ),
       contagios_novos = coalesce(contagios_novos_ministerio, contagios_novos_brasilio),
       obitos_novos = coalesce(obitos_novos_ministerio, obitos_novos_brasilio),
       contagios_acumulados = coalesce(contagios_acumulados_ministerio, contagios_acumulados_brasilio),
-      obitos_acumulados = coalesce(obitos_acumulados_ministerio, obitos_acumulados_brasilio),
-      pop_2019 = coalesce(pop_est_2019, pop_tcu_2019)
+      obitos_acumulados = coalesce(obitos_acumulados_ministerio, obitos_acumulados_brasilio)
    ) %>%
    select(
       date,

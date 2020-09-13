@@ -10,38 +10,43 @@
 atualiza_dados <- function() {
    cls()
 
-   cat("\n", "Carregando dados do Portal Brasil.io.", "\n", "Por favor aguarde...", "\n", sep = "")
+   cat("\n", "Etapa 1: Carregando dados do Portal Brasil.io.",
+       "\n\n", "Por favor aguarde...", "\n\n", sep = "")
    tempo_covid_brasilio <- as.double(system.time(covid_brasilio <- le_brasil_io())[3])
-   cat("\n", "Concluida a importacao de dados do Portal Brasil.io em ", tempo_covid_brasilio, "segundos.", "\n", sep = "")
-   rm(tempo_covid_brasilio)
+   cat("\n", "Concluida a importacao de dados do Portal Brasil.io em ",
+       tempo_covid_brasilio, " segundos.", "\n\n", sep = "")
 
-   cat("\n", "Carregando dados do Ministerio da Saude.", "\n", "Por favor aguarde...", "\n", sep = "")
+   cat("\n\n", "Etapa 2: Carregando dados do Ministerio da Saude.",
+       "\n\n", "Por favor aguarde mais um pouco...", "\n\n", sep = "")
    tempo_covid_minister <- as.double(system.time(covid_ministerio <- le_ministerio())[3])
-   cat("\n", "Concluida a importacao de dados do Ministerio da Saude em ", tempo_covid_minister, "segundos.", "\n", sep = "")
-   rm(tempo_covid_minister)
+   cat("\n", "Concluida a importacao de dados do Ministerio da Saude em ",
+       tempo_covid_minister, " segundos.", "\n\n", sep = "")
 
-   cat("\n", "Carregando Informacoes Geograficas Auxiliares.", "\n", sep = "")
-   tempo_infos_geo <- as.double(system.time(infos_geograficas <- carrega_auxiliares(infos_geograficas))[3])
-   cat("\n", "Concluida a carga de Informacoes Geograficas Auxiliares em ", tempo_infos_geo, "segundos.", "\n", sep = "")
-   rm(tempo_infos_geo)
+   cat("\n\n", "Etapa 3: Carregando Informacoes Auxiliares.", "\n\n", sep = "")
+   tempo_infos_geo <- as.double(system.time(load(file = "data/infos_geograficas.rda",
+                                                        envir = globalenv()))[3])
+   tempo_semana_epid <- as.double(system.time(load(file = "data/semana_epid.rda",
+                                                   envir = globalenv()))[3])
+   tempo_infos_municip <- as.double(system.time(deriva_codigo_municipio())[3])
+   cat("\n", "Concluida a carga de Informacoes Auxiliares em ",
+       sum(tempo_infos_geo, tempo_semana_epid, tempo_infos_municip),
+       " segundos.", "\n\n", sep = "")
 
-   cat("\n", "Carregando Informacoes Auxiliares de Semanas Epidemiologicas.", "\n", sep = "")
-   tempo_semana_epidem <- as.double(system.time(semana_epid <- carrega_auxiliares(semanas_epidemiologicas))[3])
-   cat("\n", "Concluida a carga de Informacoes Auxiliares de Semanas Epidemiologicas em ", tempo_semana_epidem, "segundos.", "\n", sep = "")
-   rm(tempo_semana_epidem)
+   cat("\n\n", "Etapa 4: Organizando todas as informacoes levantadas.", "\n",
+       "Por favor aguarde...", "\n", sep = "")
+   tempo_base_covid <- as.double(system.time(processa_final())[3])
+   cat("\n", "Concluida a organizacao de todas as informacoes levantadas em ",
+       tempo_base_covid, " segundos.", "\n\n", sep = "")
 
-   cat("\n", "Carregando Informacoes Auxiliares dos Muncipios.", "\n", sep = "")
-   tempo_infos_municip <- as.double(system.time(infos_chaves <- deriva_codigo_municipio())[3])
-   cat("\n", "Concluida a carga de Informacoes Auxiliares dos Muncipios em ", tempo_infos_municip, "segundos.", "\n", sep = "")
-   rm(tempo_infos_municip)
 
-   cat("\n", "Organizando todas as informacoes levantadas.", "\n", "Por favor aguarde...", "\n", sep = "")
-   tempo_base_covid <- as.double(system.time(covid <- processa_final())[3])
-   cat("\n", "Concluida a organizacao de todas as informacoes levantadas em ", tempo_base_covid, "segundos.", "\n", sep = "")
-   rm(tempo_base_covid)
+   cat("\n\n", "Parabens! Agora voce esta com a base atualizada!",
+       "\n\n", "O processamento foi concluido em ",
+       sum(tempo_covid_brasilio, tempo_covid_minister, tempo_infos_geo,
+           tempo_semana_epid, tempo_infos_municip, tempo_base_covid),
+       " segundos.", "\n\n", "Segue um resumo da base:", "\n\n", sep = "")
+
+   rm(list = ls(pattern = "_"))
+
+   covid %>%
+      dplyr::glimpse()
 }
-
-
-
-
-
