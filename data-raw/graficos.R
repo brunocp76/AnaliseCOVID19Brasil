@@ -19,10 +19,10 @@ tema_bruno <- function() {
       plot.background = element_rect(fill = "black", color = "cyan"),
       # panel.grid.minor = element_line(color = "white"),
       # Bloco sobre as linhas de grade...
-      panel.grid.major.x = element_line(color = "#324C63", size = 0.5),
+      panel.grid.major.x = element_line(color = "#324C63", size = 0.5, linetype = "dotted"),
       panel.grid.major.y = element_line(color = "#324C63", size = 0.5),
-      panel.grid.minor.x = element_line(color = "#324C63", size = 0.2),
-      panel.grid.minor.y = element_line(color = "#324C63", size = 0.2),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.minor.y = element_line(color = "#324C63", size = 0.2, linetype = "dotted"),
       # Bloco sobre os textos...
       plot.title = element_text(
          # family = "Get Schwifty",
@@ -35,7 +35,7 @@ tema_bruno <- function() {
          # size = 16
       ),
       # Bloco sobre os eixos...
-      axis.text = element_text(color = "#244167"),
+      axis.text = element_text(color = "#3465A4"),
       axis.ticks.x = element_line(color = "#324C63"),
       axis.ticks.y = element_line(color = "#324C63"),
       axis.line.x = element_blank()
@@ -107,13 +107,11 @@ covid_estados %>%
    geom_boxplot(aes(x = estado, y = contagios_novos), fill = "white", color = "black") +
    ylim(c(0, 20000))
 
-covid_estados %>%
-   filter(contagios_novos > 0) %>%
-   group_by(uf) %>%
-   summarize(
-      obit_ac_q0 = min(obitos_novos, na.rm = TRUE),
-      obit_ac_q1 = quantile(obitos_acumulados, probs = 0.25, na.rm = TRUE),
-      obit_ac_q2 = quantile(obitos_acumulados, probs = 0.50, na.rm = TRUE),
-      obit_ac_q3 = quantile(obitos_acumulados, probs = 0.75, na.rm = TRUE),
-      obit_ac_q4 = quantile(obitos_acumulados, probs = 1, na.rm = TRUE)
-   )
+ggplot(covid_estados) +
+   aes(x = date, y = taxa_mortalidade) +
+   geom_line(size = 1L, colour = "#0c4c8a") +
+   tema_bruno() +
+   facet_wrap(vars(uf))
+
+
+temporal_facetada <- function

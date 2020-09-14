@@ -23,12 +23,16 @@ covid %>%
    select(
       area_temp_km2 = area_km2,
       pop_temp_2019 = pop_2019,
+      uf_temp = uf,
+      regiao_temp = regiao,
       everything()
    ) %>%
    group_by(cod_regiao_saude) %>%
    summarise(
       area_km2 = sum(area_temp_km2, na.rm = TRUE),
-      pop_2019 = sum(pop_temp_2019, na.rm = TRUE)
+      pop_2019 = sum(pop_temp_2019, na.rm = TRUE),
+      uf = min(uf_temp, na.rm = TRUE),
+      regiao = min(regiao_temp, na.rm = TRUE)
    ) %>%
    ungroup() %>%
    arrange(cod_regiao_saude) -> sumario_regioes_saude
@@ -40,12 +44,14 @@ covid %>%
    select(
       area_temp_km2 = area_km2,
       pop_temp_2019 = pop_2019,
+      regiao_temp = regiao,
       everything()
    ) %>%
    group_by(uf) %>%
    summarise(
       area_km2 = sum(area_temp_km2, na.rm = TRUE),
-      pop_2019 = sum(pop_temp_2019, na.rm = TRUE)
+      pop_2019 = sum(pop_temp_2019, na.rm = TRUE),
+      regiao = min(regiao_temp, na.rm = TRUE)
    ) %>%
    ungroup() %>%
    arrange(uf) -> sumario_estados
@@ -117,7 +123,7 @@ sumario_regioes_brasil %>%
 
 # Bases Derivadas - Cidades -----------------------------------------------
 covid %>%
-   select(-c(cod_regiao_saude:regiao)) %>%
+   # select(-c(cod_regiao_saude:regiao)) %>%
    arrange(cod_ibge, date) %>%
    ## Média Móvel (7 dias) - Cidades
    group_by(cod_ibge) %>%
@@ -226,8 +232,7 @@ covid_cidades %>%
 covid %>%
    select(
       -c(cod_ibge:municipio),
-      -uf,
-      -regiao,
+      # uf:regiao,
       contagios_novos_regiao_saude = contagios_novos,
       obitos_novos_regiao_saude = obitos_novos,
       contagios_acumulados_regiao_saude = contagios_acumulados,
@@ -365,6 +370,8 @@ covid %>%
       nome_regiao_saude,
       area_km2,
       pop_2019,
+      uf,
+      regiao,
       everything()
    ) %>%
    arrange(
@@ -395,7 +402,7 @@ covid_regioes_saude %>%
 covid %>%
    select(
       -c(cod_ibge:nome_regiao_saude),
-      -regiao,
+      # -regiao,
       contagios_novos_estado = contagios_novos,
       obitos_novos_estado = obitos_novos,
       contagios_acumulados_estado = contagios_acumulados,
@@ -528,6 +535,7 @@ covid %>%
       uf,
       area_km2,
       pop_2019,
+      regiao,
       everything()
    ) %>%
    arrange(

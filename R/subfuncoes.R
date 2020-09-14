@@ -463,12 +463,16 @@ sumarios_derivacoes <- function() {
       dplyr::select(
          area_temp_km2 = area_km2,
          pop_temp_2019 = pop_2019,
+         uf_temp = uf,
+         regiao_temp = regiao,
          dplyr::everything()
       ) %>%
       dplyr::group_by(cod_regiao_saude) %>%
       dplyr::summarise(
          area_km2 = sum(area_temp_km2, na.rm = TRUE),
-         pop_2019 = sum(pop_temp_2019, na.rm = TRUE)
+         pop_2019 = sum(pop_temp_2019, na.rm = TRUE),
+         uf = min(uf_temp, na.rm = TRUE),
+         regiao = min(regiao_temp, na.rm = TRUE)
       ) %>%
       dplyr::ungroup() %>%
       dplyr::arrange(cod_regiao_saude)
@@ -480,12 +484,14 @@ sumarios_derivacoes <- function() {
       dplyr::select(
          area_temp_km2 = area_km2,
          pop_temp_2019 = pop_2019,
+         regiao_temp = regiao,
          dplyr::everything()
       ) %>%
       dplyr::group_by(uf) %>%
       dplyr::summarise(
          area_km2 = sum(area_temp_km2, na.rm = TRUE),
-         pop_2019 = sum(pop_temp_2019, na.rm = TRUE)
+         pop_2019 = sum(pop_temp_2019, na.rm = TRUE),
+         regiao = min(regiao_temp, na.rm = TRUE)
       ) %>%
       dplyr::ungroup() %>%
       dplyr::arrange(uf)
@@ -531,7 +537,6 @@ sumarios_derivacoes <- function() {
 #' @export
 base_cidades <- function() {
    covid_cidades <<- covid %>%
-      dplyr::select(-c(cod_regiao_saude:regiao)) %>%
       dplyr::arrange(cod_ibge, date) %>%
       ## Média Móvel (7 dias) - Cidades
       dplyr::group_by(cod_ibge) %>%
@@ -629,8 +634,6 @@ base_regioes_saude <- function() {
    covid_regioes_saude <<- covid %>%
       dplyr::select(
          -c(cod_ibge:municipio),
-         -uf,
-         -regiao,
          contagios_novos_regiao_saude = contagios_novos,
          obitos_novos_regiao_saude = obitos_novos,
          contagios_acumulados_regiao_saude = contagios_acumulados,
@@ -768,6 +771,8 @@ base_regioes_saude <- function() {
          nome_regiao_saude,
          area_km2,
          pop_2019,
+         uf,
+         regiao,
          dplyr::everything()
       ) %>%
       dplyr::arrange(
@@ -787,7 +792,6 @@ base_estados <- function() {
    covid_estados <<- covid %>%
       dplyr::select(
          -c(cod_ibge:nome_regiao_saude),
-         -regiao,
          contagios_novos_estado = contagios_novos,
          obitos_novos_estado = obitos_novos,
          contagios_acumulados_estado = contagios_acumulados,
@@ -920,6 +924,7 @@ base_estados <- function() {
          uf,
          area_km2,
          pop_2019,
+         regiao,
          dplyr::everything()
       ) %>%
       dplyr::arrange(
