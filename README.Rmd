@@ -22,10 +22,11 @@ O objetivo do pacote AnaliseCOVID19Brasil é o de prover análises práticas e a
 
 Aí você pode se perguntar...
 
-Se tantos pacotes já fazem análises de dados da COVID-19, por que usar este aqui?
+Se tantos pacotes já fazem análises de dados da COVID-19, por que usar este aqui ~~e não algum outro~~?
 
 Meu primeiro enfoque foi o de fazer um pacote que permita, *de maneira muito simples*, **atualizar** os dados da pandemia no Brasil **antes** de proceder às análises. Em outras palavras, toda a dinâmica da pandemia no Brasil vai se revelando conforme este pacote é utilizado ao longo do tempo.
 
+***
 
 ## Instalação
 
@@ -49,6 +50,8 @@ A função `atualiza_dados()` é uma das funções principais, pois aciona uma s
 
 Desta forma, depois de executada esta função você terá a base `covid` construída com dados atualizados disponíveis tanto no portal [Brasil.io](https://brasil.io/) quanto no [Ministério da Saúde](https://covid.saude.gov.br/)
 
+***
+
 ## Utilização - Agregações de Dados
 
 ```{r Organizando a informação atualizada em diversos níveis para análise, warning=FALSE}
@@ -61,20 +64,22 @@ Então após executar esta função você terá as bases derivadas com os dados 
 
 Segue a relação de bases disponíveis:
 
-1. `covid`
-      + A base atualizada "original".
+- `covid`
+    - A base atualizada "original".
 
-2. `covid_cidades`
-      + Dados agregados ao nível de municípios. Embora seja estruturalmente similar à base `covid`, esta base e as seguintes possuem mais alguns indicadores derivados para análise.
+- `covid_cidades`
+    - Dados agregados ao nível de municípios. Embora seja estruturalmente similar à base `covid`, esta base e as seguintes possuem mais alguns indicadores derivados para análise.
 
-3. `covid_regioes_saude`
-      + Dados agregados ao nível de regiões de saúde (regiões intraestaduais de gestão de saúde).
+- `covid_regioes_saude`
+    - Dados agregados ao nível de regiões de saúde (regiões intraestaduais de gestão de saúde).
 
-4. `covid_estados`
-      + Dados agregados ao nível de estados.
+- `covid_estados`
+    - Dados agregados ao nível de estados.
 
-5. `covid_regioes_brasil`
-      + Dados agregados ao nível de regiões políticas do Brasil.
+- `covid_regioes_brasil`
+    - Dados agregados ao nível de regiões políticas do Brasil.
 
-6. `covid_brasil`
-      + Dados agregados ao nível do Brasil.
+- `covid_brasil`
+    - Dados agregados ao nível do Brasil.
+
+***

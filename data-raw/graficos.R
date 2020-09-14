@@ -1,13 +1,10 @@
 # Não entram no código principal... ---------------------------------------
 library(dplyr)
-# library(ggdark)
 library(ggplot2)
-# library(ggthemes)
 library(patchwork)
 library(gganimate)
 
 # Tentando definir um tema padrão para meus gráficos... -------------------
-
 tema_bruno <- function() {
    ggplot2::theme(
       # Bloco sobre a legenda...
@@ -35,9 +32,7 @@ tema_bruno <- function() {
 }
 
 
-
-# Tentando alguns gráficos ------------------------------------------------
-## Gráficos de Linha - Escala Normal
+# Graficos de Linha - Escala Normal - Novos Contágios ---------------------
 covid_cidades %>%
    filter(municipio %in% c("Sao Paulo", "Campinas", "Indaiatuba", "Atibaia")) %>%
    ggplot() +
@@ -46,7 +41,7 @@ covid_cidades %>%
    labs(x = "Data") +
    tema_bruno()
 
-## Gráficos de Linha - Escala Normalizada
+# Graficos de Linha - Escala Normalizada - Novos Contágios por 100 mil ----
 covid_cidades %>%
    filter(municipio %in% c("Sao Paulo", "Campinas", "Indaiatuba", "Atibaia")) %>%
    ggplot() +
@@ -55,7 +50,7 @@ covid_cidades %>%
    labs(x = "Data") +
    tema_bruno()
 
-## Gráficos de Linha - Escala Normalizada
+# Gráficos de Linha - Escala Normalizada - Log dos Novos Contágios --------
 covid_cidades %>%
    filter(municipio %in% c("Sao Paulo", "Campinas", "Indaiatuba", "Atibaia")) %>%
    ggplot() +
@@ -66,7 +61,7 @@ covid_cidades %>%
    scale_linetype_manual(values = c("white", "orange", "olive", "yellow"))
 
 
-## Boxplots
+# Boxplots - Semana Epidemiológica x Novos Óbitos -------------------------
 covid_cidades %>%
    mutate(
       semana_epidemiologica = as.factor(semana_epidem)
@@ -83,8 +78,7 @@ covid_estados %>%
    ylim(c(0, 20000))
 
 
-
-## Gráfico mesclando linhas e colunas
+# Gráfico mesclando linhas e colunas - Como os do jornal... ---------------
 covid_estados %>%
    group_by(uf) %>%
    summarise(
@@ -134,7 +128,6 @@ temporal_facetada <- function(arquivo, quebra, variavel) {
    # print(variavel)
 
    arquivo %>%
-      # if (!is.na(filtro)) {filter(!! rlang::parse_expr()) %>%}
       ggplot() +
       geom_line(aes_string(x = "date", y = variavel), size = 1L, colour = "cyan") +
       labs(x = "Data") +

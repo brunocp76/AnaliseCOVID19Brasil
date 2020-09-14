@@ -15,13 +15,15 @@ trabalho de conclusão do curso R para Ciência de Dados 2 da
 Aí você pode se perguntar…
 
 Se tantos pacotes já fazem análises de dados da COVID-19, por que usar
-este aqui?
+este aqui ~~e não algum outro~~?
 
 Meu primeiro enfoque foi o de fazer um pacote que permita, *de maneira
 muito simples*, **atualizar** os dados da pandemia no Brasil **antes**
 de proceder às análises. Em outras palavras, toda a dinâmica da pandemia
 no Brasil vai se revelando conforme este pacote é utilizado ao longo do
 tempo.
+
+-----
 
 ## Instalação
 
@@ -44,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-14 18:43:28
+#> Atualizacao de dados iniciada em 2020-09-14 20:15:31
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -65,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.59 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 14.81 segundos.
 #> 
 #> 
 #> 
@@ -74,27 +76,27 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 59.06 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 59.23 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.38 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 1.47 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.25 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.29 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 78.28 segundos.
+#> O processamento foi concluido em 78.8 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
@@ -130,6 +132,8 @@ construída com dados atualizados disponíveis tanto no portal
 [Brasil.io](https://brasil.io/) quanto no [Ministério da
 Saúde](https://covid.saude.gov.br/)
 
+-----
+
 ## Utilização - Agregações de Dados
 
 ``` r
@@ -145,7 +149,7 @@ bases_derivadas()
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.45 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.43 segundos.
 #> 
 #> 
 #> 
@@ -159,27 +163,27 @@ bases_derivadas()
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.4 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.42 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.22 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.2 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.23 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.24 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 20.97 segundos.
+#> O processamento foi concluido em 20.96 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -197,18 +201,20 @@ dados sumarizados em 5 níveis crescentes de agregação:
 
 Segue a relação de bases disponíveis:
 
-1.  `covid`
+  - `covid`
       - A base atualizada “original”.
-2.  `covid_cidades`
+  - `covid_cidades`
       - Dados agregados ao nível de municípios. Embora seja
         estruturalmente similar à base `covid`, esta base e as seguintes
         possuem mais alguns indicadores derivados para análise.
-3.  `covid_regioes_saude`
+  - `covid_regioes_saude`
       - Dados agregados ao nível de regiões de saúde (regiões
         intraestaduais de gestão de saúde).
-4.  `covid_estados`
+  - `covid_estados`
       - Dados agregados ao nível de estados.
-5.  `covid_regioes_brasil`
+  - `covid_regioes_brasil`
       - Dados agregados ao nível de regiões políticas do Brasil.
-6.  `covid_brasil`
+  - `covid_brasil`
       - Dados agregados ao nível do Brasil.
+
+-----
