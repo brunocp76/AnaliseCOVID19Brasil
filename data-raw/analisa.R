@@ -1,10 +1,5 @@
 # Não entram no código principal... ---------------------------------------
 library(dplyr)
-library(ggdark)
-library(ggplot2)
-library(ggthemes)
-library(patchwork)
-library(gganimate)
 
 covid <- readRDS("data-raw/covid.rds")
 
@@ -862,7 +857,7 @@ covid_brasil %>%
 covid_brasil %>%
    filter(date == max(date)) %>%
    summarise(
-      date_max = max(date, na.rm = TRUE),
+      date_max = max(date, na.rm = TRUE, 0.7),
       area_sum = sum(area_km2, na.rm = TRUE),
       pop_sum = sum(pop_2019, na.rm = TRUE),
       cont_sum = sum(contagios_acumulados, na.rm = TRUE),
@@ -944,64 +939,3 @@ covid_brasil %>% filter(date == max(date)) %>%
 
 
 
-# Tentando alguns gráficos ------------------------------------------------
-## Gráficos de Linha - Escala Normal
-covid_cidades %>%
-   filter(municipio %in% c("Sao Paulo", "Campinas", "Indaiatuba", "Atibaia")) %>%
-   ggplot() +
-   geom_line(aes(x = date, y = contagios_novos, color = municipio)) +
-   scale_x_date(date_breaks = "1 month") +
-   labs(x = "Data")
-
-## Gráficos de Linha - Escala Normalizada
-covid_cidades %>%
-   filter(municipio %in% c("Sao Paulo", "Campinas", "Indaiatuba", "Atibaia")) %>%
-   ggplot() +
-   geom_line(aes(x = date, y = contagios_novos_100k, color = municipio)) +
-   scale_x_date(date_breaks = "1 month") +
-   labs(x = "Data")
-
-## Gráficos de Linha - Escala Normalizada
-covid_cidades %>%
-   filter(municipio %in% c("Sao Paulo", "Campinas", "Indaiatuba", "Atibaia")) %>%
-   ggplot() +
-   geom_line(aes(x = date, y = contagios_novos_ln, color = municipio)) +
-   scale_x_date(date_breaks = "1 month") +
-   labs(x = "Data")
-
-## Gráfico mesclando linhas e colunas
-covid_cidades %>%
-   filter(municipio == "Sao Paulo") %>%
-   ggplot() +
-   geom_col(aes(x = date, y = contagios_novos), color = "blue") +
-   geom_line(aes(x = date, y = contagios_novos_mma7), color = "red") +
-   scale_x_date(date_breaks = "2 weeks") +
-   dark_mode() +
-   labs(x = "Data")
-
-## Boxplots
-covid_cidades %>%
-   mutate(
-      semana_epidemiologica = as.factor(semana_epidem)
-   ) %>%
-   ggplot() +
-   geom_boxplot(aes(x = semana_epidemiologica, y = obitos_novos), fill = "white", color = "black")
-
-covid_estados %>%
-   mutate(
-      estado = as.factor(uf)
-   ) %>%
-   ggplot() +
-   geom_boxplot(aes(x = estado, y = contagios_novos), fill = "white", color = "black") +
-   ylim(c(0, 20000))
-
-covid_estados %>%
-   filter(contagios_novos > 0) %>%
-   group_by(uf) %>%
-   summarize(
-      obit_ac_q0 = min(obitos_novos, na.rm = TRUE),
-      obit_ac_q1 = quantile(obitos_acumulados, probs = 0.25, na.rm = TRUE),
-      obit_ac_q2 = quantile(obitos_acumulados, probs = 0.50, na.rm = TRUE),
-      obit_ac_q3 = quantile(obitos_acumulados, probs = 0.75, na.rm = TRUE),
-      obit_ac_q4 = quantile(obitos_acumulados, probs = 1, na.rm = TRUE)
-   )
