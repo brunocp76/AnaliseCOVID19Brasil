@@ -45,8 +45,74 @@ atualiza_dados <- function() {
            tempo_semana_epid, tempo_infos_municip, tempo_base_covid),
        " segundos.", "\n\n", "Segue um resumo da base:", "\n\n", sep = "")
 
-   rm(list = ls(pattern = "_"), envir = globalenv())
+   rm(semana_epid, envir = globalenv())
+   rm(infos_chaves, envir = globalenv())
+   rm(covid_brasilio, envir = globalenv())
+   rm(covid_ministerio, envir = globalenv())
+   rm(infos_geograficas, envir = globalenv())
 
    covid %>%
       dplyr::glimpse()
+}
+
+#' Gera as Bases de Dados Derivadas para a geracao de graficos.
+#'
+#' A partir da para de dados atualizada com dados da pandemia de COVID-19 (com dados do Portal Brasil.io e do Ministerio da Saude), gera as versoes derivadas aos niveis de Cidades, Regioes de Saude, Estados, Regioes Politicas e Brasil inteiro. Indicadores normalizados tambem sao acrescentados para um leque de analises.
+#'
+#' @return Bases derivadas com sumarizacoes e indicadores normalizados nos niveis de Cidades, Regioes de Saude, Estados, Regioes Politicas e Brasil inteiro.
+#'
+#' @export
+bases_derivadas <- function() {
+   cls()
+
+   cat("\n", "Etapa 1: Gerando as sumarizacoes de area e populacao.",
+       "\n\n", sep = "")
+   tempo_bases_sumario <- as.double(system.time(sumarios_derivacoes())[3])
+   cat("\n", "Concluida a geracao das sumarizacoes de area e populacao em ",
+       tempo_bases_sumario, " segundos.", "\n\n", sep = "")
+
+   cat("\n\n", "Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.",
+       "\n\n", sep = "")
+   tempo_base_cidades <- as.double(system.time(base_cidades())[3])
+   cat("\n", "Concluida a geracao da Base Derivada ao Nivel de Cidades em ",
+       tempo_base_cidades, " segundos.", "\n\n", sep = "")
+
+   cat("\n\n", "Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.",
+       "\n\n", sep = "")
+   tempo_base_reg_saude <- as.double(system.time(base_regioes_saude())[3])
+   cat("\n", "Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em ",
+       tempo_base_reg_saude, " segundos.", "\n\n", sep = "")
+
+   cat("\n\n", "Etapa 4: Gerando a Base Derivada ao Nivel de Estados.",
+       "\n\n", sep = "")
+   tempo_base_estados <- as.double(system.time(base_estados())[3])
+   cat("\n", "Concluida a geracao da Base Derivada ao Nivel de Estados em ",
+       tempo_base_estados, " segundos.", "\n\n", sep = "")
+
+   cat("\n\n", "Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.",
+       "\n\n", sep = "")
+   tempo_base_reg_brasil <- as.double(system.time(base_regioes_brasil())[3])
+   cat("\n", "Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em ",
+       tempo_base_reg_brasil, " segundos.", "\n\n", sep = "")
+
+   cat("\n\n", "Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.",
+       "\n\n", sep = "")
+   tempo_base_brasil <- as.double(system.time(base_brasil())[3])
+   cat("\n", "Concluida a geracao da Base Derivada ao Nivel de Brasil em ",
+       tempo_base_brasil, " segundos.", "\n\n", sep = "")
+
+
+   cat("\n\n", "Parabens! Agora voce esta com todas as bases derivadas!",
+       "\n\n", "O processamento foi concluido em ",
+       sum(tempo_bases_sumario, tempo_base_cidades, tempo_base_reg_saude,
+           tempo_base_estados, tempo_base_reg_brasil, tempo_base_brasil),
+       " segundos.", "\n\n", "Segue a relacao de bases disponiveis:",
+       "\n\n", sep = "")
+
+   rm(sumario_brasil, envir = globalenv())
+   rm(sumario_estados, envir = globalenv())
+   rm(sumario_regioes_saude, envir = globalenv())
+   rm(sumario_regioes_brasil, envir = globalenv())
+
+   ls(envir = globalenv())
 }

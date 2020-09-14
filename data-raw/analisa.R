@@ -1,5 +1,4 @@
 # Não entram no código principal... ---------------------------------------
-library(zoo)
 library(dplyr)
 library(ggdark)
 library(ggplot2)
@@ -19,8 +18,6 @@ covid %>%
 
 covid %>%
    summary()
-
-rm(list = ls(pattern = "_"))
 
 
 # Criando as Sumarizações de Área e População -----------------------------
@@ -127,9 +124,44 @@ sumario_regioes_brasil %>%
 covid %>%
    select(-c(cod_regiao_saude:regiao)) %>%
    arrange(cod_ibge, date) %>%
-   ## Taxa de Mortalidade dos Casos Detectados
+   ## Média Móvel (7 dias) - Cidades
+   group_by(cod_ibge) %>%
    mutate(
-      taxa_mortalidade = as.double(obitos_acumulados / contagios_acumulados)
+      contagios_novos_mma7 = as.double(
+         coalesce(
+            (
+               dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 5L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 4L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 3L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 2L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 1L, na.rm = TRUE) +
+                  contagios_novos
+            ) / 7,
+            0
+         )
+      ),
+      obitos_novos_mma7 = as.double(
+         coalesce(
+            (
+               dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 5L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 4L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 3L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 2L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 1L, na.rm = TRUE) +
+                  obitos_novos
+            ) / 7,
+            0
+         )
+      )
+   ) %>%
+   ungroup() %>%
+   ## Taxa de Mortalidade dos Casos Detectados - Cidades
+   mutate(
+      taxa_mortalidade = as.double(ifelse(test = contagios_acumulados > 0,
+                                          yes = obitos_acumulados / contagios_acumulados,
+                                          no = 0))
    ) %>%
    ## Normalização a cada 100.000 habitantes - Cidades
    mutate(
@@ -249,9 +281,44 @@ covid %>%
       date,
       semana_epidem
    ) %>%
-   ## Taxa de Mortalidade dos Casos Detectados
+   ## Média Móvel (7 dias) - Regiões de Saúde
+   group_by(cod_regiao_saude) %>%
    mutate(
-      taxa_mortalidade = as.double(obitos_acumulados / contagios_acumulados)
+      contagios_novos_mma7 = as.double(
+         coalesce(
+            (
+               dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 5L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 4L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 3L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 2L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 1L, na.rm = TRUE) +
+                  contagios_novos
+            ) / 7,
+            0
+         )
+      ),
+      obitos_novos_mma7 = as.double(
+         coalesce(
+            (
+               dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 5L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 4L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 3L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 2L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 1L, na.rm = TRUE) +
+                  obitos_novos
+            ) / 7,
+            0
+         )
+      )
+   ) %>%
+   ungroup() %>%
+   ## Taxa de Mortalidade dos Casos Detectados - Regiões de Saúde
+   mutate(
+      taxa_mortalidade = as.double(ifelse(test = contagios_acumulados > 0,
+                                          yes = obitos_acumulados / contagios_acumulados,
+                                          no = 0))
    ) %>%
    ## Normalização a cada 100.000 habitantes - Regiões de Saúde
    mutate(
@@ -378,9 +445,44 @@ covid %>%
       date,
       semana_epidem
    ) %>%
-   ## Taxa de Mortalidade dos Casos Detectados
+   ## Média Móvel (7 dias) - Estados
+   group_by(uf) %>%
    mutate(
-      taxa_mortalidade = as.double(obitos_acumulados / contagios_acumulados)
+      contagios_novos_mma7 = as.double(
+         coalesce(
+            (
+               dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 5L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 4L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 3L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 2L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 1L, na.rm = TRUE) +
+                  contagios_novos
+            ) / 7,
+            0
+         )
+      ),
+      obitos_novos_mma7 = as.double(
+         coalesce(
+            (
+               dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 5L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 4L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 3L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 2L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 1L, na.rm = TRUE) +
+                  obitos_novos
+            ) / 7,
+            0
+         )
+      )
+   ) %>%
+   ungroup() %>%
+   ## Taxa de Mortalidade dos Casos Detectados - Estados
+   mutate(
+      taxa_mortalidade = as.double(ifelse(test = contagios_acumulados > 0,
+                                          yes = obitos_acumulados / contagios_acumulados,
+                                          no = 0))
    ) %>%
    ## Normalização a cada 100.000 habitantes - Estados
    mutate(
@@ -505,9 +607,44 @@ covid %>%
       date,
       semana_epidem
    ) %>%
-   ## Taxa de Mortalidade dos Casos Detectados
+   ## Média Móvel (7 dias) - Regiões do Brasil
+   group_by(regiao) %>%
    mutate(
-      taxa_mortalidade = as.double(obitos_acumulados / contagios_acumulados)
+      contagios_novos_mma7 = as.double(
+         coalesce(
+            (
+               dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 5L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 4L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 3L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 2L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 1L, na.rm = TRUE) +
+                  contagios_novos
+            ) / 7,
+            0
+         )
+      ),
+      obitos_novos_mma7 = as.double(
+         coalesce(
+            (
+               dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 5L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 4L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 3L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 2L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 1L, na.rm = TRUE) +
+                  obitos_novos
+            ) / 7,
+            0
+         )
+      )
+   ) %>%
+   ungroup() %>%
+   ## Taxa de Mortalidade dos Casos Detectados - Regiões do Brasil
+   mutate(
+      taxa_mortalidade = as.double(ifelse(test = contagios_acumulados > 0,
+                                          yes = obitos_acumulados / contagios_acumulados,
+                                          no = 0))
    ) %>%
    ## Normalização a cada 100.000 habitantes - Regiões do Brasil
    mutate(
@@ -625,9 +762,42 @@ covid %>%
       date,
       semana_epidem
    ) %>%
-   ## Taxa de Mortalidade dos Casos Detectados
+   ## Média Móvel (7 dias) - Brasil
    mutate(
-      taxa_mortalidade = as.double(obitos_acumulados / contagios_acumulados)
+      contagios_novos_mma7 = as.double(
+         coalesce(
+            (
+               dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 5L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 4L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 3L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 2L, na.rm = TRUE) +
+                  dplyr::lag(x = contagios_novos, n = 1L, na.rm = TRUE) +
+                  contagios_novos
+            ) / 7,
+            0
+         )
+      ),
+      obitos_novos_mma7 = as.double(
+         coalesce(
+            (
+               dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 5L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 4L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 3L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 2L, na.rm = TRUE) +
+                  dplyr::lag(x = obitos_novos, n = 1L, na.rm = TRUE) +
+                  obitos_novos
+            ) / 7,
+            0
+         )
+      )
+   ) %>%
+   ## Taxa de Mortalidade dos Casos Detectados - Brasil
+   mutate(
+      taxa_mortalidade = as.double(ifelse(test = contagios_acumulados > 0,
+                                          yes = obitos_acumulados / contagios_acumulados,
+                                          no = 0))
    ) %>%
    ## Normalização a cada 100.000 habitantes - Brasil
    mutate(
@@ -763,23 +933,6 @@ covid_brasil %>% filter(date == max(date)) %>%
 
 
 
-
-
-
-
-
-
-
-
-
-   select(
-      date,
-      cod_ibge,
-      pop_2019,
-      contagios_novos,
-      obitos_novos
-   ) %>%
-
    tidyr::pivot_wider(
       # id_cols = c("contagios_novos", "obitos_novos"),
       names_from = "date",
@@ -787,38 +940,8 @@ covid_brasil %>% filter(date == max(date)) %>%
    ) %>% head(5)
 
 
-   ## Normalização por Média Móvel (de 7 dias) - Cidades
-   group_by(cod_ibge) %>%
-   mutate(
-      contagios_novos_mm7 = as.double(rollmean(x = contagios_novos, k = 7, align = "right", na.rm = TRUE)),
-      obitos_novos_mm7 = as.double(rollmean(x = obitos_novos, k = 7, align = "right", na.rm = TRUE)),
-      contagios_acumulados_mm7 = as.double(rollmean(x = contagios_acumulados, k = 7, align = "right", na.rm = TRUE)),
-      obitos_acumulados_mm7 = as.double(rollmean(x = obitos_acumulados, k = 7, align = "right", na.rm = TRUE))
-   ) %>%
-   ungroup()
-   # group_by(cod_ibge) %>%
-   # mutate(
-   #    across(
-   #       .cols = c(
-   #          starts_with("contagios"),
-   #          starts_with("obitos")
-   #       ),
-   #       .fns = ~rollmean(x = .x, k = 7, align = "right", na.rm = TRUE),
-   #       .names = "{.col}_mm7"
-   #    )
-   # ) %>%
-   # ungroup() %>%
-   glimpse()
 
 
-
-
-covid_cidades %>%
-   select(
-      starts_with("contagios"),
-      starts_with("obitos")
-   ) %>%
-   names()
 
 
 # Tentando alguns gráficos ------------------------------------------------
@@ -851,25 +974,29 @@ covid_cidades %>%
    filter(municipio == "Sao Paulo") %>%
    ggplot() +
    geom_col(aes(x = date, y = contagios_novos), color = "blue") +
-   geom_line(aes(x = date, y = obitos_novos), color = "red") +
+   geom_line(aes(x = date, y = contagios_novos_mma7), color = "red") +
    scale_x_date(date_breaks = "2 weeks") +
    dark_mode() +
    labs(x = "Data")
 
 ## Boxplots
 covid_cidades %>%
-   # filter(lubridate::month(date) == 5, uf == "AM") %>%
    mutate(
       semana_epidemiologica = as.factor(semana_epidem)
    ) %>%
    ggplot() +
    geom_boxplot(aes(x = semana_epidemiologica, y = obitos_novos), fill = "white", color = "black")
 
-covid_cidades %>%
+covid_estados %>%
+   mutate(
+      estado = as.factor(uf)
+   ) %>%
    ggplot() +
-   geom_boxplot(aes(x = uf, y = contagios_novos), fill = "white", color = "black")
+   geom_boxplot(aes(x = estado, y = contagios_novos), fill = "white", color = "black") +
+   ylim(c(0, 20000))
 
-covid_cidades %>%
+covid_estados %>%
+   filter(contagios_novos > 0) %>%
    group_by(uf) %>%
    summarize(
       obit_ac_q0 = min(obitos_novos, na.rm = TRUE),

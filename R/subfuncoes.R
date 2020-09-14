@@ -198,7 +198,7 @@ le_ministerio <- function() {
 }
 
 
-#' Deriva dados auxiliares relacionados ao Codigio de Municipio nao-oficial.
+#' Deriva dados auxiliares relacionados ao Codigio de Municipio nao-oficial
 #'
 #' @return Dados auxiliares relacionados ao Codigio de Municipio.
 #'
@@ -446,4 +446,775 @@ backup_base <- function() {
       version = 3,
       compress = "xz"
    )
+}
+
+#' Processas as Sumarizacoes de Area e Populacao
+#'
+#' Processa externamente as sumarizacoes de Area (em Km2) e de Populacao (conforme apurado pelo TCU no ano de 2019)
+#'
+#' @return Arquivos com as sumarizacoes de Area e Populacao 2019.
+#'
+#' @export
+sumarios_derivacoes <- function() {
+   sumario_regioes_saude <<- covid %>%
+      dplyr::group_by(cod_ibge) %>%
+      dplyr::filter(date == max(date)) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(
+         area_temp_km2 = area_km2,
+         pop_temp_2019 = pop_2019,
+         dplyr::everything()
+      ) %>%
+      dplyr::group_by(cod_regiao_saude) %>%
+      dplyr::summarise(
+         area_km2 = sum(area_temp_km2, na.rm = TRUE),
+         pop_2019 = sum(pop_temp_2019, na.rm = TRUE)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(cod_regiao_saude)
+
+   sumario_estados <<- covid %>%
+      dplyr::group_by(cod_ibge) %>%
+      dplyr::filter(date == max(date)) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(
+         area_temp_km2 = area_km2,
+         pop_temp_2019 = pop_2019,
+         dplyr::everything()
+      ) %>%
+      dplyr::group_by(uf) %>%
+      dplyr::summarise(
+         area_km2 = sum(area_temp_km2, na.rm = TRUE),
+         pop_2019 = sum(pop_temp_2019, na.rm = TRUE)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(uf)
+
+   sumario_regioes_brasil <<- covid %>%
+      dplyr::group_by(cod_ibge) %>%
+      dplyr::filter(date == max(date)) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(
+         area_temp_km2 = area_km2,
+         pop_temp_2019 = pop_2019,
+         dplyr::everything()
+      ) %>%
+      dplyr::group_by(regiao) %>%
+      dplyr::summarise(
+         area_km2 = sum(area_temp_km2, na.rm = TRUE),
+         pop_2019 = sum(pop_temp_2019, na.rm = TRUE)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(regiao)
+
+   sumario_brasil <<- covid %>%
+      dplyr::group_by(cod_ibge) %>%
+      dplyr::filter(date == max(date)) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(
+         area_temp_km2 = area_km2,
+         pop_temp_2019 = pop_2019,
+         dplyr::everything()
+      ) %>%
+      dplyr::summarise(
+         area_km2 = sum(area_temp_km2, na.rm = TRUE),
+         pop_2019 = sum(pop_temp_2019, na.rm = TRUE)
+      )
+}
+
+#' Gera a Base Derivada ao nivel de Cidades
+#'
+#' Gera a Base Derivada ao nivel de Cidades com diversos indicadores normalizados para as analises graficas (medias moveis de 7 dias, taxa de mortalidade de casos detectados, taxas por 100 mil habitantes, indicadores normalizados por populacao, indicadores normalizados por area, indicadores normalizados por densidade populacional e indicadores normalizados com logaritmos).
+#'
+#' @return Base Derivada ao nivel de Cidades.
+#'
+#' @export
+base_cidades <- function() {
+   covid_cidades <<- covid %>%
+      dplyr::select(-c(cod_regiao_saude:regiao)) %>%
+      dplyr::arrange(cod_ibge, date) %>%
+      ## Média Móvel (7 dias) - Cidades
+      dplyr::group_by(cod_ibge) %>%
+      dplyr::mutate(
+         contagios_novos_mma7 = as.double(
+            dplyr::coalesce(
+               (
+                  dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 5L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 4L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 3L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 2L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 1L, na.rm = TRUE) +
+                     contagios_novos
+               ) / 7,
+               0
+            )
+         ),
+         obitos_novos_mma7 = as.double(
+            dplyr::coalesce(
+               (
+                  dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 5L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 4L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 3L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 2L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 1L, na.rm = TRUE) +
+                     obitos_novos
+               ) / 7,
+               0
+            )
+         )
+      ) %>%
+      dplyr::ungroup() %>%
+      ## Taxa de Mortalidade dos Casos Detectados - Cidades
+      dplyr::mutate(
+         taxa_mortalidade = as.double(ifelse(test = contagios_acumulados > 0,
+                                             yes = obitos_acumulados / contagios_acumulados,
+                                             no = 0))
+      ) %>%
+      ## Normalização a cada 100.000 habitantes - Cidades
+      dplyr::mutate(
+         contagios_novos_100k = as.double(contagios_novos / (pop_2019 / 100000)),
+         obitos_novos_100k = as.double(obitos_novos / (pop_2019 / 100000)),
+         contagios_acumulados_100k = as.double(contagios_acumulados / (pop_2019 / 100000)),
+         obitos_acumulados_100k = as.double(obitos_acumulados / (pop_2019 / 100000))
+      ) %>%
+      ## Normalização de População (2019) - Cidades
+      dplyr::mutate(
+         contagios_novos_pop = as.double(contagios_novos / pop_2019),
+         obitos_novos_pop = as.double(obitos_novos / pop_2019),
+         contagios_acumulados_pop = as.double(contagios_acumulados / pop_2019),
+         obitos_acumulados_pop = as.double(obitos_acumulados / pop_2019)
+      ) %>%
+      ## Normalização de Área (Km2) - Cidades
+      dplyr::mutate(
+         contagios_novos_area = as.double(contagios_novos / area_km2),
+         obitos_novos_area = as.double(obitos_novos / area_km2),
+         contagios_acumulados_area = as.double(contagios_acumulados / area_km2),
+         obitos_acumulados_area = as.double(obitos_acumulados / area_km2)
+      ) %>%
+      ## Normalização de Densidade Populacional [População (2019) / Área (Km2)] - Cidades
+      dplyr::mutate(
+         contagios_novos_area = as.double(contagios_novos / (pop_2019 / area_km2)),
+         obitos_novos_area = as.double(obitos_novos / (pop_2019 / area_km2)),
+         contagios_acumulados_area = as.double(contagios_acumulados / (pop_2019 / area_km2)),
+         obitos_acumulados_area = as.double(obitos_acumulados / (pop_2019 / area_km2))
+      ) %>%
+      ## Normalização Logarítmica (Base e) - Cidades
+      dplyr::mutate(
+         contagios_novos_ln = as.double(ifelse(test = contagios_novos > 0,
+                                               yes = log(x = contagios_novos),
+                                               no = 0)),
+         obitos_novos_ln = as.double(ifelse(test = obitos_novos > 0,
+                                            yes = log(x = obitos_novos),
+                                            no = 0)),
+         contagios_acumulados_ln = as.double(ifelse(test = contagios_acumulados > 0,
+                                                    yes = log(x = contagios_acumulados),
+                                                    no = 0)),
+         obitos_acumulados_ln = as.double(ifelse(test = obitos_acumulados > 0,
+                                                 yes = log(x = obitos_acumulados),
+                                                 no = 0))
+      ) %>%
+      dplyr::arrange(cod_ibge, date)
+}
+
+#' Gera a Base Derivada ao nivel de Regioes de Saude
+#'
+#' Gera a Base Derivada ao nivel de Regioes de Saude com diversos indicadores normalizados para as analises graficas (medias moveis de 7 dias, taxa de mortalidade de casos detectados, taxas por 100 mil habitantes, indicadores normalizados por populacao, indicadores normalizados por area, indicadores normalizados por densidade populacional e indicadores normalizados com logaritmos).
+#'
+#' @return Base Derivada ao nivel de Regioes de Saude.
+#'
+#' @export
+base_regioes_saude <- function() {
+   covid_regioes_saude <<- covid %>%
+      dplyr::select(
+         -c(cod_ibge:municipio),
+         -uf,
+         -regiao,
+         contagios_novos_regiao_saude = contagios_novos,
+         obitos_novos_regiao_saude = obitos_novos,
+         contagios_acumulados_regiao_saude = contagios_acumulados,
+         obitos_acumulados_regiao_saude = obitos_acumulados
+      ) %>%
+      dplyr::arrange(
+         cod_regiao_saude,
+         nome_regiao_saude,
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::group_by(
+         cod_regiao_saude,
+         nome_regiao_saude,
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::summarise(
+         contagios_novos = sum(contagios_novos_regiao_saude, na.rm = TRUE),
+         obitos_novos = sum(obitos_novos_regiao_saude, na.rm = TRUE)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(
+         cod_regiao_saude,
+         date
+      ) %>%
+      dplyr::group_by(cod_regiao_saude) %>%
+      dplyr::mutate(
+         contagios_acumulados = cumsum(contagios_novos),
+         obitos_acumulados = cumsum(obitos_novos)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(
+         cod_regiao_saude,
+         nome_regiao_saude,
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::left_join(
+         y = sumario_regioes_saude,
+         by = "cod_regiao_saude"
+      ) %>%
+      dplyr::arrange(
+         cod_regiao_saude,
+         nome_regiao_saude,
+         date,
+         semana_epidem
+      ) %>%
+      ## Média Móvel (7 dias) - Regiões de Saúde
+      dplyr::group_by(cod_regiao_saude) %>%
+      dplyr::mutate(
+         contagios_novos_mma7 = as.double(
+            dplyr::coalesce(
+               (
+                  dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 5L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 4L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 3L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 2L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 1L, na.rm = TRUE) +
+                     contagios_novos
+               ) / 7,
+               0
+            )
+         ),
+         obitos_novos_mma7 = as.double(
+            dplyr::coalesce(
+               (
+                  dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 5L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 4L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 3L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 2L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 1L, na.rm = TRUE) +
+                     obitos_novos
+               ) / 7,
+               0
+            )
+         )
+      ) %>%
+      dplyr::ungroup() %>%
+      ## Taxa de Mortalidade dos Casos Detectados - Regiões de Saúde
+      dplyr::mutate(
+         taxa_mortalidade = as.double(ifelse(test = contagios_acumulados > 0,
+                                             yes = obitos_acumulados / contagios_acumulados,
+                                             no = 0))
+      ) %>%
+      ## Normalização a cada 100.000 habitantes - Regiões de Saúde
+      dplyr::mutate(
+         contagios_novos_100k = as.double(contagios_novos / (pop_2019 / 100000)),
+         obitos_novos_100k = as.double(obitos_novos / (pop_2019 / 100000)),
+         contagios_acumulados_100k = as.double(contagios_acumulados / (pop_2019 / 100000)),
+         obitos_acumulados_100k = as.double(obitos_acumulados / (pop_2019 / 100000))
+      ) %>%
+      ## Normalização de População (2019) - Regiões de Saúde
+      dplyr::mutate(
+         contagios_novos_pop = as.double(contagios_novos / pop_2019),
+         obitos_novos_pop = as.double(obitos_novos / pop_2019),
+         contagios_acumulados_pop = as.double(contagios_acumulados / pop_2019),
+         obitos_acumulados_pop = as.double(obitos_acumulados / pop_2019)
+      ) %>%
+      ## Normalização de Área (Km2) - Regiões de Saúde
+      dplyr::mutate(
+         contagios_novos_area = as.double(contagios_novos / area_km2),
+         obitos_novos_area = as.double(obitos_novos / area_km2),
+         contagios_acumulados_area = as.double(contagios_acumulados / area_km2),
+         obitos_acumulados_area = as.double(obitos_acumulados / area_km2)
+      ) %>%
+      ## Normalização de Densidade Populacional [População (2019) / Área (Km2)] - Regiões de Saúde
+      dplyr::mutate(
+         contagios_novos_area = as.double(contagios_novos / (pop_2019 / area_km2)),
+         obitos_novos_area = as.double(obitos_novos / (pop_2019 / area_km2)),
+         contagios_acumulados_area = as.double(contagios_acumulados / (pop_2019 / area_km2)),
+         obitos_acumulados_area = as.double(obitos_acumulados / (pop_2019 / area_km2))
+      ) %>%
+      ## Normalização Logarítmica (Base e) - Regiões de Saúde
+      dplyr::mutate(
+         contagios_novos_ln = as.double(ifelse(test = contagios_novos > 0,
+                                               yes = log(x = contagios_novos),
+                                               no = 0)),
+         obitos_novos_ln = as.double(ifelse(test = obitos_novos > 0,
+                                            yes = log(x = obitos_novos),
+                                            no = 0)),
+         contagios_acumulados_ln = as.double(ifelse(test = contagios_acumulados > 0,
+                                                    yes = log(x = contagios_acumulados),
+                                                    no = 0)),
+         obitos_acumulados_ln = as.double(ifelse(test = obitos_acumulados > 0,
+                                                 yes = log(x = obitos_acumulados),
+                                                 no = 0))
+      ) %>%
+      dplyr::select(
+         date,
+         semana_epidem,
+         cod_regiao_saude,
+         nome_regiao_saude,
+         area_km2,
+         pop_2019,
+         dplyr::everything()
+      ) %>%
+      dplyr::arrange(
+         cod_regiao_saude,
+         date
+      )
+}
+
+#' Gera a Base Derivada ao nivel de Estados
+#'
+#' Gera a Base Derivada ao nivel de Estados com diversos indicadores normalizados para as analises graficas (medias moveis de 7 dias, taxa de mortalidade de casos detectados, taxas por 100 mil habitantes, indicadores normalizados por populacao, indicadores normalizados por area, indicadores normalizados por densidade populacional e indicadores normalizados com logaritmos).
+#'
+#' @return Base Derivada ao nivel de Estados.
+#'
+#' @export
+base_estados <- function() {
+   covid_estados <<- covid %>%
+      dplyr::select(
+         -c(cod_ibge:nome_regiao_saude),
+         -regiao,
+         contagios_novos_estado = contagios_novos,
+         obitos_novos_estado = obitos_novos,
+         contagios_acumulados_estado = contagios_acumulados,
+         obitos_acumulados_estado = obitos_acumulados
+      ) %>%
+      dplyr::arrange(
+         uf,
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::group_by(
+         uf,
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::summarise(
+         contagios_novos = sum(contagios_novos_estado, na.rm = TRUE),
+         obitos_novos = sum(obitos_novos_estado, na.rm = TRUE)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(
+         uf,
+         date
+      ) %>%
+      dplyr::group_by(uf) %>%
+      dplyr::mutate(
+         contagios_acumulados = cumsum(contagios_novos),
+         obitos_acumulados = cumsum(obitos_novos)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(
+         uf,
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::left_join(
+         y = sumario_estados,
+         by = "uf"
+      ) %>%
+      dplyr::arrange(
+         uf,
+         date,
+         semana_epidem
+      ) %>%
+      ## Média Móvel (7 dias) - Estados
+      dplyr::group_by(uf) %>%
+      dplyr::mutate(
+         contagios_novos_mma7 = as.double(
+            dplyr::coalesce(
+               (
+                  dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 5L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 4L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 3L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 2L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 1L, na.rm = TRUE) +
+                     contagios_novos
+               ) / 7,
+               0
+            )
+         ),
+         obitos_novos_mma7 = as.double(
+            dplyr::coalesce(
+               (
+                  dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 5L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 4L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 3L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 2L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 1L, na.rm = TRUE) +
+                     obitos_novos
+               ) / 7,
+               0
+            )
+         )
+      ) %>%
+      dplyr::ungroup() %>%
+      ## Taxa de Mortalidade dos Casos Detectados - Estados
+      dplyr::mutate(
+         taxa_mortalidade = as.double(ifelse(test = contagios_acumulados > 0,
+                                             yes = obitos_acumulados / contagios_acumulados,
+                                             no = 0))
+      ) %>%
+      ## Normalização a cada 100.000 habitantes - Estados
+      dplyr::mutate(
+         contagios_novos_100k = as.double(contagios_novos / (pop_2019 / 100000)),
+         obitos_novos_100k = as.double(obitos_novos / (pop_2019 / 100000)),
+         contagios_acumulados_100k = as.double(contagios_acumulados / (pop_2019 / 100000)),
+         obitos_acumulados_100k = as.double(obitos_acumulados / (pop_2019 / 100000))
+      ) %>%
+      ## Normalização de População (2019) - Estados
+      dplyr::mutate(
+         contagios_novos_pop = as.double(contagios_novos / pop_2019),
+         obitos_novos_pop = as.double(obitos_novos / pop_2019),
+         contagios_acumulados_pop = as.double(contagios_acumulados / pop_2019),
+         obitos_acumulados_pop = as.double(obitos_acumulados / pop_2019)
+      ) %>%
+      ## Normalização de Área (Km2) - Estados
+      dplyr::mutate(
+         contagios_novos_area = as.double(contagios_novos / area_km2),
+         obitos_novos_area = as.double(obitos_novos / area_km2),
+         contagios_acumulados_area = as.double(contagios_acumulados / area_km2),
+         obitos_acumulados_area = as.double(obitos_acumulados / area_km2)
+      ) %>%
+      ## Normalização de Densidade Populacional [População (2019) / Área (Km2)] - Estados
+      dplyr::mutate(
+         contagios_novos_area = as.double(contagios_novos / (pop_2019 / area_km2)),
+         obitos_novos_area = as.double(obitos_novos / (pop_2019 / area_km2)),
+         contagios_acumulados_area = as.double(contagios_acumulados / (pop_2019 / area_km2)),
+         obitos_acumulados_area = as.double(obitos_acumulados / (pop_2019 / area_km2))
+      ) %>%
+      ## Normalização Logarítmica (Base e) - Estados
+      dplyr::mutate(
+         contagios_novos_ln = as.double(ifelse(test = contagios_novos > 0,
+                                               yes = log(x = contagios_novos),
+                                               no = 0)),
+         obitos_novos_ln = as.double(ifelse(test = obitos_novos > 0,
+                                            yes = log(x = obitos_novos),
+                                            no = 0)),
+         contagios_acumulados_ln = as.double(ifelse(test = contagios_acumulados > 0,
+                                                    yes = log(x = contagios_acumulados),
+                                                    no = 0)),
+         obitos_acumulados_ln = as.double(ifelse(test = obitos_acumulados > 0,
+                                                 yes = log(x = obitos_acumulados),
+                                                 no = 0))
+      ) %>%
+      dplyr::select(
+         date,
+         semana_epidem,
+         uf,
+         area_km2,
+         pop_2019,
+         dplyr::everything()
+      ) %>%
+      dplyr::arrange(
+         uf,
+         date
+      )
+}
+
+#' Gera a Base Derivada ao nivel de Regioes do Brasil
+#'
+#' Gera a Base Derivada ao nivel de Regioes do Brasil com diversos indicadores normalizados para as analises graficas (medias moveis de 7 dias, taxa de mortalidade de casos detectados, taxas por 100 mil habitantes, indicadores normalizados por populacao, indicadores normalizados por area, indicadores normalizados por densidade populacional e indicadores normalizados com logaritmos).
+#'
+#' @return Base Derivada ao nivel de Regioes do Brasil.
+#'
+#' @export
+base_regioes_brasil <- function() {
+   covid_regioes_brasil <<- covid %>%
+      dplyr::select(
+         -c(cod_ibge:uf),
+         contagios_novos_regiao = contagios_novos,
+         obitos_novos_regiao = obitos_novos,
+         contagios_acumulados_regiao = contagios_acumulados,
+         obitos_acumulados_regiao = obitos_acumulados
+      ) %>%
+      dplyr::arrange(
+         regiao,
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::group_by(
+         regiao,
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::summarise(
+         contagios_novos = sum(contagios_novos_regiao, na.rm = TRUE),
+         obitos_novos = sum(obitos_novos_regiao, na.rm = TRUE)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(
+         regiao,
+         date
+      ) %>%
+      dplyr::group_by(regiao) %>%
+      dplyr::mutate(
+         contagios_acumulados = cumsum(contagios_novos),
+         obitos_acumulados = cumsum(obitos_novos)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(
+         regiao,
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::left_join(
+         y = sumario_regioes_brasil,
+         by = "regiao"
+      ) %>%
+      dplyr::arrange(
+         regiao,
+         date,
+         semana_epidem
+      ) %>%
+      ## Média Móvel (7 dias) - Regiões do Brasil
+      dplyr::group_by(regiao) %>%
+      dplyr::mutate(
+         contagios_novos_mma7 = as.double(
+            dplyr::coalesce(
+               (
+                  dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 5L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 4L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 3L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 2L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 1L, na.rm = TRUE) +
+                     contagios_novos
+               ) / 7,
+               0
+            )
+         ),
+         obitos_novos_mma7 = as.double(
+            dplyr::coalesce(
+               (
+                  dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 5L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 4L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 3L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 2L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 1L, na.rm = TRUE) +
+                     obitos_novos
+               ) / 7,
+               0
+            )
+         )
+      ) %>%
+      dplyr::ungroup() %>%
+      ## Taxa de Mortalidade dos Casos Detectados - Regiões do Brasil
+      dplyr::mutate(
+         taxa_mortalidade = as.double(ifelse(test = contagios_acumulados > 0,
+                                             yes = obitos_acumulados / contagios_acumulados,
+                                             no = 0))
+      ) %>%
+      ## Normalização a cada 100.000 habitantes - Regiões do Brasil
+      dplyr::mutate(
+         contagios_novos_100k = as.double(contagios_novos / (pop_2019 / 100000)),
+         obitos_novos_100k = as.double(obitos_novos / (pop_2019 / 100000)),
+         contagios_acumulados_100k = as.double(contagios_acumulados / (pop_2019 / 100000)),
+         obitos_acumulados_100k = as.double(obitos_acumulados / (pop_2019 / 100000))
+      ) %>%
+      ## Normalização de População (2019) - Regiões do Brasil
+      dplyr::mutate(
+         contagios_novos_pop = as.double(contagios_novos / pop_2019),
+         obitos_novos_pop = as.double(obitos_novos / pop_2019),
+         contagios_acumulados_pop = as.double(contagios_acumulados / pop_2019),
+         obitos_acumulados_pop = as.double(obitos_acumulados / pop_2019)
+      ) %>%
+      ## Normalização de Área (Km2) - Regiões do Brasil
+      dplyr::mutate(
+         contagios_novos_area = as.double(contagios_novos / area_km2),
+         obitos_novos_area = as.double(obitos_novos / area_km2),
+         contagios_acumulados_area = as.double(contagios_acumulados / area_km2),
+         obitos_acumulados_area = as.double(obitos_acumulados / area_km2)
+      ) %>%
+      ## Normalização de Densidade Populacional [População (2019) / Área (Km2)] - Regiões do Brasil
+      dplyr::mutate(
+         contagios_novos_area = as.double(contagios_novos / (pop_2019 / area_km2)),
+         obitos_novos_area = as.double(obitos_novos / (pop_2019 / area_km2)),
+         contagios_acumulados_area = as.double(contagios_acumulados / (pop_2019 / area_km2)),
+         obitos_acumulados_area = as.double(obitos_acumulados / (pop_2019 / area_km2))
+      ) %>%
+      ## Normalização Logarítmica (Base e) - Regiões do Brasil
+      dplyr::mutate(
+         contagios_novos_ln = as.double(ifelse(test = contagios_novos > 0,
+                                               yes = log(x = contagios_novos),
+                                               no = 0)),
+         obitos_novos_ln = as.double(ifelse(test = obitos_novos > 0,
+                                            yes = log(x = obitos_novos),
+                                            no = 0)),
+         contagios_acumulados_ln = as.double(ifelse(test = contagios_acumulados > 0,
+                                                    yes = log(x = contagios_acumulados),
+                                                    no = 0)),
+         obitos_acumulados_ln = as.double(ifelse(test = obitos_acumulados > 0,
+                                                 yes = log(x = obitos_acumulados),
+                                                 no = 0))
+      ) %>%
+      dplyr::select(
+         date,
+         semana_epidem,
+         regiao,
+         area_km2,
+         pop_2019,
+         dplyr::everything()
+      ) %>%
+      dplyr::arrange(
+         regiao,
+         date
+      )
+}
+
+#' Gera a Base Derivada ao nivel de Brasil
+#'
+#' Gera a Base Derivada ao nivel de Brasil com diversos indicadores normalizados para as analises graficas (medias moveis de 7 dias, taxa de mortalidade de casos detectados, taxas por 100 mil habitantes, indicadores normalizados por populacao, indicadores normalizados por area, indicadores normalizados por densidade populacional e indicadores normalizados com logaritmos).
+#'
+#' @return Base Derivada ao nivel de Brasil.
+#'
+#' @export
+base_brasil <- function() {
+   covid_brasil <<- covid %>%
+      dplyr::select(
+         -c(cod_ibge:regiao),
+         contagios_novos_brasil = contagios_novos,
+         obitos_novos_brasil = obitos_novos,
+         contagios_acumulados_brasil = contagios_acumulados,
+         obitos_acumulados_brasil = obitos_acumulados
+      ) %>%
+      dplyr::arrange(
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::group_by(
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::summarise(
+         contagios_novos = sum(contagios_novos_brasil, na.rm = TRUE),
+         obitos_novos = sum(obitos_novos_brasil, na.rm = TRUE)
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(
+         date
+      ) %>%
+      dplyr::mutate(
+         contagios_acumulados = cumsum(contagios_novos),
+         obitos_acumulados = cumsum(obitos_novos)
+      ) %>%
+      dplyr::arrange(
+         date,
+         semana_epidem
+      ) %>%
+      dplyr::left_join(
+         y = sumario_brasil,
+         by = character()
+      ) %>%
+      dplyr::arrange(
+         date,
+         semana_epidem
+      ) %>%
+      ## Média Móvel (7 dias) - Brasil
+      dplyr::mutate(
+         contagios_novos_mma7 = as.double(
+            dplyr::coalesce(
+               (
+                  dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 5L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 4L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 3L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 2L, na.rm = TRUE) +
+                     dplyr::lag(x = contagios_novos, n = 1L, na.rm = TRUE) +
+                     contagios_novos
+               ) / 7,
+               0
+            )
+         ),
+         obitos_novos_mma7 = as.double(
+            dplyr::coalesce(
+               (
+                  dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 5L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 4L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 3L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 2L, na.rm = TRUE) +
+                     dplyr::lag(x = obitos_novos, n = 1L, na.rm = TRUE) +
+                     obitos_novos
+               ) / 7,
+               0
+            )
+         )
+      ) %>%
+      ## Taxa de Mortalidade dos Casos Detectados - Brasil
+      dplyr::mutate(
+         taxa_mortalidade = as.double(ifelse(test = contagios_acumulados > 0,
+                                             yes = obitos_acumulados / contagios_acumulados,
+                                             no = 0))
+      ) %>%
+      ## Normalização a cada 100.000 habitantes - Brasil
+      dplyr::mutate(
+         contagios_novos_100k = as.double(contagios_novos / (pop_2019 / 100000)),
+         obitos_novos_100k = as.double(obitos_novos / (pop_2019 / 100000)),
+         contagios_acumulados_100k = as.double(contagios_acumulados / (pop_2019 / 100000)),
+         obitos_acumulados_100k = as.double(obitos_acumulados / (pop_2019 / 100000))
+      ) %>%
+      ## Normalização de População (2019) - Brasil
+      dplyr::mutate(
+         contagios_novos_pop = as.double(contagios_novos / pop_2019),
+         obitos_novos_pop = as.double(obitos_novos / pop_2019),
+         contagios_acumulados_pop = as.double(contagios_acumulados / pop_2019),
+         obitos_acumulados_pop = as.double(obitos_acumulados / pop_2019)
+      ) %>%
+      ## Normalização de Área (Km2) - Brasil
+      dplyr::mutate(
+         contagios_novos_area = as.double(contagios_novos / area_km2),
+         obitos_novos_area = as.double(obitos_novos / area_km2),
+         contagios_acumulados_area = as.double(contagios_acumulados / area_km2),
+         obitos_acumulados_area = as.double(obitos_acumulados / area_km2)
+      ) %>%
+      ## Normalização de Densidade Populacional [População (2019) / Área (Km2)] - Brasil
+      dplyr::mutate(
+         contagios_novos_area = as.double(contagios_novos / (pop_2019 / area_km2)),
+         obitos_novos_area = as.double(obitos_novos / (pop_2019 / area_km2)),
+         contagios_acumulados_area = as.double(contagios_acumulados / (pop_2019 / area_km2)),
+         obitos_acumulados_area = as.double(obitos_acumulados / (pop_2019 / area_km2))
+      ) %>%
+      ## Normalização Logarítmica (Base e) - Brasil
+      dplyr::mutate(
+         contagios_novos_ln = as.double(ifelse(test = contagios_novos > 0,
+                                               yes = log(x = contagios_novos),
+                                               no = 0)),
+         obitos_novos_ln = as.double(ifelse(test = obitos_novos > 0,
+                                            yes = log(x = obitos_novos),
+                                            no = 0)),
+         contagios_acumulados_ln = as.double(ifelse(test = contagios_acumulados > 0,
+                                                    yes = log(x = contagios_acumulados),
+                                                    no = 0)),
+         obitos_acumulados_ln = as.double(ifelse(test = obitos_acumulados > 0,
+                                                 yes = log(x = obitos_acumulados),
+                                                 no = 0))
+      ) %>%
+      dplyr::select(
+         date,
+         semana_epidem,
+         area_km2,
+         pop_2019,
+         dplyr::everything()
+      ) %>%
+      dplyr::arrange(
+         date
+      )
 }

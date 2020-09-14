@@ -2,7 +2,7 @@
 % Please edit documentation in R/subfuncoes.R
 \name{deriva_codigo_municipio}
 \alias{deriva_codigo_municipio}
-\title{Deriva dados auxiliares relacionados ao Codigio de Municipio nao-oficial.}
+\title{Deriva dados auxiliares relacionados ao Codigio de Municipio nao-oficial}
 \usage{
 deriva_codigo_municipio()
 }
@@ -10,5 +10,5 @@ deriva_codigo_municipio()
 Dados auxiliares relacionados ao Codigio de Municipio.
 }
 \description{
-Deriva dados auxiliares relacionados ao Codigio de Municipio nao-oficial.
+Deriva dados auxiliares relacionados ao Codigio de Municipio nao-oficial
 }
