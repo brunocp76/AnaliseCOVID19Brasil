@@ -10,7 +10,9 @@
 atualiza_dados <- function() {
    cls()
 
-   cat("\n", "Etapa 1: Carregando dados do Portal Brasil.io.",
+   cat("\n", "Atualizacao de dados iniciada em ", as.character(Sys.time()), sep = "")
+
+   cat("\n\n", "Etapa 1: Carregando dados do Portal Brasil.io.",
        "\n\n", "Por favor aguarde...", "\n\n", sep = "")
    tempo_covid_brasilio <- as.double(system.time(covid_brasilio <- le_brasil_io())[3])
    cat("\n", "Concluida a importacao de dados do Portal Brasil.io em ",
@@ -32,8 +34,8 @@ atualiza_dados <- function() {
        sum(tempo_infos_geo, tempo_semana_epid, tempo_infos_municip),
        " segundos.", "\n\n", sep = "")
 
-   cat("\n\n", "Etapa 4: Organizando todas as informacoes levantadas.", "\n",
-       "Por favor aguarde...", "\n", sep = "")
+   cat("\n\n", "Etapa 4: Organizando todas as informacoes levantadas.",
+       "\n\n", sep = "")
    tempo_base_covid <- as.double(system.time(processa_final())[3])
    cat("\n", "Concluida a organizacao de todas as informacoes levantadas em ",
        tempo_base_covid, " segundos.", "\n\n", sep = "")

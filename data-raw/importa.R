@@ -180,7 +180,7 @@ covid_R4DS2 %>%
 
 
 # Dados do Brasil.io ------------------------------------------------------
-datacovidbr::brasilio() %>%
+datacovidbr::brasilio(silent = TRUE) %>%
    # Filtrando só as linhas necessárias...
    filter(
       place_type == "city",
@@ -300,7 +300,7 @@ covid_brasilio %>%
 
 
 # Dados do Ministério da Saúde --------------------------------------------
-datacovidbr::brMinisterioSaude() %>%
+datacovidbr::brMinisterioSaude(silent = TRUE) %>%
    # Filtrando só as linhas necessárias...
    filter(
       regiao != "Brasil",

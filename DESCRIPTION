@@ -19,3 +19,5 @@ Imports:
     magrittr, dplyr, datacovidbr, stringi, stringr
 Depends: 
     R (>= 3.50)
+Suggests: 
+    testthat

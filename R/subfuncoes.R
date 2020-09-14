@@ -11,7 +11,7 @@ cls <- function() cat("\f")
 #'
 #' @export
 le_brasil_io <- function() {
-   covid_brasilio <<- datacovidbr::brasilio() %>%
+   covid_brasilio <<- datacovidbr::brasilio(silent = TRUE) %>%
       dplyr::filter(
          place_type == "city",
          !is.na(city),
@@ -100,7 +100,7 @@ le_brasil_io <- function() {
 #'
 #' @export
 le_ministerio <- function() {
-   covid_ministerio <<- datacovidbr::brMinisterioSaude() %>%
+   covid_ministerio <<- datacovidbr::brMinisterioSaude(silent = TRUE) %>%
       # Filtrando só as linhas necessárias...
       dplyr::filter(
          regiao != "Brasil",
@@ -332,8 +332,8 @@ processa_final <- function() {
          cod_ibge,
          cod_mun,
          dplyr::everything(),
-         -ends_with("_big"),
-         -ends_with("_key")
+         -dplyr::ends_with("_big"),
+         -dplyr::ends_with("_key")
       ) %>%
       # Agregando as Informações Geográficas do Município...
       dplyr::arrange(
@@ -541,7 +541,7 @@ base_cidades <- function() {
       ## Média Móvel (7 dias) - Cidades
       dplyr::group_by(cod_ibge) %>%
       dplyr::mutate(
-         contagios_novos_mma7 = as.double(
+         contagios_novos_mm7 = as.double(
             dplyr::coalesce(
                (
                   dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
@@ -555,7 +555,7 @@ base_cidades <- function() {
                0
             )
          ),
-         obitos_novos_mma7 = as.double(
+         obitos_novos_mm7 = as.double(
             dplyr::coalesce(
                (
                   dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
@@ -567,6 +567,24 @@ base_cidades <- function() {
                      obitos_novos
                ) / 7,
                0
+            )
+         ),
+         evolucao_contagios_mm7 = as.integer(
+            dplyr::case_when(
+               dplyr::lag(x = contagios_novos_mm7, n = 6L, na.rm = TRUE) /
+                  contagios_novos_mm7 > 1.15 ~ 1L,
+               dplyr::lag(x = contagios_novos_mm7, n = 6L, na.rm = TRUE) /
+                  contagios_novos_mm7 < 0.85 ~ -1L,
+               TRUE ~ 0L
+            )
+         ),
+         evolucao_obitos_mm7 = as.integer(
+            dplyr::case_when(
+               dplyr::lag(x = obitos_novos_mm7, n = 6L, na.rm = TRUE) /
+                  obitos_novos_mm7 > 1.15 ~ 1L,
+               dplyr::lag(x = obitos_novos_mm7, n = 6L, na.rm = TRUE) /
+                  obitos_novos_mm7 < 0.85 ~ -1L,
+               TRUE ~ 0L
             )
          )
       ) %>%
@@ -685,7 +703,7 @@ base_regioes_saude <- function() {
       ## Média Móvel (7 dias) - Regiões de Saúde
       dplyr::group_by(cod_regiao_saude) %>%
       dplyr::mutate(
-         contagios_novos_mma7 = as.double(
+         contagios_novos_mm7 = as.double(
             dplyr::coalesce(
                (
                   dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
@@ -699,7 +717,7 @@ base_regioes_saude <- function() {
                0
             )
          ),
-         obitos_novos_mma7 = as.double(
+         obitos_novos_mm7 = as.double(
             dplyr::coalesce(
                (
                   dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
@@ -711,6 +729,24 @@ base_regioes_saude <- function() {
                      obitos_novos
                ) / 7,
                0
+            )
+         ),
+         evolucao_contagios_mm7 = as.integer(
+            dplyr::case_when(
+               dplyr::lag(x = contagios_novos_mm7, n = 6L, na.rm = TRUE) /
+                  contagios_novos_mm7 > 1.15 ~ 1L,
+               dplyr::lag(x = contagios_novos_mm7, n = 6L, na.rm = TRUE) /
+                  contagios_novos_mm7 < 0.85 ~ -1L,
+               TRUE ~ 0L
+            )
+         ),
+         evolucao_obitos_mm7 = as.integer(
+            dplyr::case_when(
+               dplyr::lag(x = obitos_novos_mm7, n = 6L, na.rm = TRUE) /
+                  obitos_novos_mm7 > 1.15 ~ 1L,
+               dplyr::lag(x = obitos_novos_mm7, n = 6L, na.rm = TRUE) /
+                  obitos_novos_mm7 < 0.85 ~ -1L,
+               TRUE ~ 0L
             )
          )
       ) %>%
@@ -839,7 +875,7 @@ base_estados <- function() {
       ## Média Móvel (7 dias) - Estados
       dplyr::group_by(uf) %>%
       dplyr::mutate(
-         contagios_novos_mma7 = as.double(
+         contagios_novos_mm7 = as.double(
             dplyr::coalesce(
                (
                   dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
@@ -853,7 +889,7 @@ base_estados <- function() {
                0
             )
          ),
-         obitos_novos_mma7 = as.double(
+         obitos_novos_mm7 = as.double(
             dplyr::coalesce(
                (
                   dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
@@ -865,6 +901,24 @@ base_estados <- function() {
                      obitos_novos
                ) / 7,
                0
+            )
+         ),
+         evolucao_contagios_mm7 = as.integer(
+            dplyr::case_when(
+               dplyr::lag(x = contagios_novos_mm7, n = 6L, na.rm = TRUE) /
+                  contagios_novos_mm7 > 1.15 ~ 1L,
+               dplyr::lag(x = contagios_novos_mm7, n = 6L, na.rm = TRUE) /
+                  contagios_novos_mm7 < 0.85 ~ -1L,
+               TRUE ~ 0L
+            )
+         ),
+         evolucao_obitos_mm7 = as.integer(
+            dplyr::case_when(
+               dplyr::lag(x = obitos_novos_mm7, n = 6L, na.rm = TRUE) /
+                  obitos_novos_mm7 > 1.15 ~ 1L,
+               dplyr::lag(x = obitos_novos_mm7, n = 6L, na.rm = TRUE) /
+                  obitos_novos_mm7 < 0.85 ~ -1L,
+               TRUE ~ 0L
             )
          )
       ) %>%
@@ -991,7 +1045,7 @@ base_regioes_brasil <- function() {
       ## Média Móvel (7 dias) - Regiões do Brasil
       dplyr::group_by(regiao) %>%
       dplyr::mutate(
-         contagios_novos_mma7 = as.double(
+         contagios_novos_mm7 = as.double(
             dplyr::coalesce(
                (
                   dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
@@ -1005,7 +1059,7 @@ base_regioes_brasil <- function() {
                0
             )
          ),
-         obitos_novos_mma7 = as.double(
+         obitos_novos_mm7 = as.double(
             dplyr::coalesce(
                (
                   dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
@@ -1017,6 +1071,24 @@ base_regioes_brasil <- function() {
                      obitos_novos
                ) / 7,
                0
+            )
+         ),
+         evolucao_contagios_mm7 = as.integer(
+            dplyr::case_when(
+               dplyr::lag(x = contagios_novos_mm7, n = 6L, na.rm = TRUE) /
+                  contagios_novos_mm7 > 1.15 ~ 1L,
+               dplyr::lag(x = contagios_novos_mm7, n = 6L, na.rm = TRUE) /
+                  contagios_novos_mm7 < 0.85 ~ -1L,
+               TRUE ~ 0L
+            )
+         ),
+         evolucao_obitos_mm7 = as.integer(
+            dplyr::case_when(
+               dplyr::lag(x = obitos_novos_mm7, n = 6L, na.rm = TRUE) /
+                  obitos_novos_mm7 > 1.15 ~ 1L,
+               dplyr::lag(x = obitos_novos_mm7, n = 6L, na.rm = TRUE) /
+                  obitos_novos_mm7 < 0.85 ~ -1L,
+               TRUE ~ 0L
             )
          )
       ) %>%
@@ -1134,7 +1206,7 @@ base_brasil <- function() {
       ) %>%
       ## Média Móvel (7 dias) - Brasil
       dplyr::mutate(
-         contagios_novos_mma7 = as.double(
+         contagios_novos_mm7 = as.double(
             dplyr::coalesce(
                (
                   dplyr::lag(x = contagios_novos, n = 6L, na.rm = TRUE) +
@@ -1148,7 +1220,7 @@ base_brasil <- function() {
                0
             )
          ),
-         obitos_novos_mma7 = as.double(
+         obitos_novos_mm7 = as.double(
             dplyr::coalesce(
                (
                   dplyr::lag(x = obitos_novos, n = 6L, na.rm = TRUE) +
@@ -1160,6 +1232,24 @@ base_brasil <- function() {
                      obitos_novos
                ) / 7,
                0
+            )
+         ),
+         evolucao_contagios_mm7 = as.integer(
+            dplyr::case_when(
+               dplyr::lag(x = contagios_novos_mm7, n = 6L, na.rm = TRUE) /
+                  contagios_novos_mm7 > 1.15 ~ 1L,
+               dplyr::lag(x = contagios_novos_mm7, n = 6L, na.rm = TRUE) /
+                  contagios_novos_mm7 < 0.85 ~ -1L,
+               TRUE ~ 0L
+            )
+         ),
+         evolucao_obitos_mm7 = as.integer(
+            dplyr::case_when(
+               dplyr::lag(x = obitos_novos_mm7, n = 6L, na.rm = TRUE) /
+                  obitos_novos_mm7 > 1.15 ~ 1L,
+               dplyr::lag(x = obitos_novos_mm7, n = 6L, na.rm = TRUE) /
+                  obitos_novos_mm7 < 0.85 ~ -1L,
+               TRUE ~ 0L
             )
          )
       ) %>%

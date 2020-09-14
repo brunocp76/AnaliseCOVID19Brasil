@@ -1,7 +1,8 @@
 # Não entram no código principal... ---------------------------------------
-library(ggdark)
+library(dplyr)
+# library(ggdark)
 library(ggplot2)
-library(ggthemes)
+# library(ggthemes)
 library(patchwork)
 library(gganimate)
 
@@ -74,23 +75,6 @@ covid_cidades %>%
    scale_linetype_manual(values = c("white", "orange", "olive", "yellow"))
 
 
-library(ggplot2)
-
-ggplot(covid_estados) +
- aes(x = date, y = taxa_mortalidade) +
- geom_line(size = 1L, colour = "#0c4c8a") +
- theme_minimal() +
- facet_wrap(vars(uf))
-## Gráfico mesclando linhas e colunas
-covid_cidades %>%
-   filter(municipio == "Sao Paulo") %>%
-   ggplot() +
-   geom_col(aes(x = date, y = contagios_novos), color = "blue") +
-   geom_line(aes(x = date, y = contagios_novos_mma7), color = "red") +
-   scale_x_date(date_breaks = "2 weeks") +
-   dark_mode() +
-   labs(x = "Data")
-
 ## Boxplots
 covid_cidades %>%
    mutate(
@@ -107,11 +91,68 @@ covid_estados %>%
    geom_boxplot(aes(x = estado, y = contagios_novos), fill = "white", color = "black") +
    ylim(c(0, 20000))
 
+
+
+## Gráfico mesclando linhas e colunas
+covid_estados %>%
+   group_by(uf) %>%
+   summarise(
+      evolucao_contagios_mm7 = last(evolucao_contagios_mm7),
+      evolucao_obitos_mm7 = last(evolucao_obitos_mm7)
+   ) %>%
+   ungroup() %>%
+   arrange(uf) -> evolucao_estados_contagios
+
+
+
+covid_estados %>%
+   mutate(
+      uf = forcats::fct_reorder(.f = uf, .x = contagios_acumulados, .desc = TRUE)
+   ) %>%
+   ggplot() +
+   geom_col(aes_string(x = "date", y = "contagios_novos"), fill = "#34EEA4", show.legend = FALSE) +
+   geom_line(aes(x = date, y = contagios_novos_mm7), color = "red", size = 1L) +
+   # scale_x_date(date_breaks = "2 weeks") +
+   tema_bruno() +
+   labs(x = "Data") +
+   facet_wrap(vars(uf), scales = "free")
+
+
+define_sucesso <- function(arquivo, variavel) {
+   arquivo %>%
+      mutate(
+         resultado = case_when(
+            dplyr::lag(x = variavel, n = 6L) / variavel
+         )
+      )
+}
+
+define_sucesso(arquivo = covid_estados, variavel = "contagios_novos_mm7")
+
 ggplot(covid_estados) +
-   aes(x = date, y = taxa_mortalidade) +
-   geom_line(size = 1L, colour = "#0c4c8a") +
+   aes(x = date, y = contagios_novos_mm7) +
+   geom_line(size = 1L, colour = "cyan") +
+   labs(x = "Data") +
    tema_bruno() +
    facet_wrap(vars(uf))
 
 
-temporal_facetada <- function
+temporal_facetada <- function(arquivo, quebra, variavel) {
+   # rlang::parse_expr(arquivo)
+   # rlang::parse_expr(quebra)
+   # print(variavel)
+
+   arquivo %>%
+      # if (!is.na(filtro)) {filter(!! rlang::parse_expr()) %>%}
+      ggplot() +
+      geom_line(aes_string(x = "date", y = variavel), size = 1L, colour = "cyan") +
+      labs(x = "Data") +
+      tema_bruno() +
+      facet_wrap(vars(uf))
+}
+
+temporal_facetada(
+   arquivo = "covid_estados",
+   quebra = "uf",
+   variavel = "contagios_novos_mm7")
+#
