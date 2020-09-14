@@ -1313,3 +1313,36 @@ base_brasil <- function() {
          date
       )
 }
+
+#' Definicoes graficas para graficos do R
+#'
+#' Definicoes de elementos graficos para construcao de analises graficas.
+#'
+#' @return Um tema definido para construcao de graficos.
+#'
+#' @export
+tema_bruno <- function() {
+   ggplot2::theme(
+      # Bloco sobre a legenda...
+      legend.position = "bottom",
+      legend.background = ggplot2::element_rect(fill = "black", color = "black"),
+      legend.box.background = ggplot2::element_rect(fill = "black", color = "black"),
+      legend.key = ggplot2::element_rect(fill = "black"),
+      # Bloco sobre o fundo...
+      panel.background = ggplot2::element_rect(fill = "black"),
+      plot.background = ggplot2::element_rect(fill = "black", color = "cyan"),
+      # Bloco sobre as linhas de grade...
+      panel.grid.major.x = ggplot2::element_line(color = "#324C63", size = 0.5, linetype = "dotted"),
+      panel.grid.major.y = ggplot2::element_line(color = "#324C63", size = 0.5),
+      panel.grid.minor.x = ggplot2::element_blank(),
+      panel.grid.minor.y = ggplot2::element_line(color = "#324C63", size = 0.2, linetype = "dotted"),
+      # Bloco sobre os textos...
+      plot.title = ggplot2::element_text(hjust = 0.5),
+      text = ggplot2::element_text(colour = "#11a2c6"),
+      # Bloco sobre os eixos...
+      axis.text = ggplot2::element_text(color = "#3465A4"),
+      axis.ticks.x = ggplot2::element_line(color = "#324C63"),
+      axis.ticks.y = ggplot2::element_line(color = "#324C63"),
+      axis.line.x = ggplot2::element_blank()
+   )
+}

@@ -33,7 +33,7 @@ Você pode instalar o AnaliseCOVID19Brasil do
 devtools::install_github("brunocp76/AnaliseCOVID19Brasil")
 ```
 
-## Utilização
+## Utilização - Atualização de Dados
 
 Como disse, os primeiros propósitos deste pacotes são ser simples do
 usuário utilizar e poder atualizar os dados antes de proceder à
@@ -44,7 +44,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-14 17:59:57
+#> Atualizacao de dados iniciada em 2020-09-14 18:43:28
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -74,31 +74,31 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 60.04 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 59.06 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.4 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 1.38 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
-#> Por favor aguarde...
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.22 segundos.
+#> 
+#> Concluida a organizacao de todas as informacoes levantadas em 3.25 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 79.25 segundos.
+#> O processamento foi concluido em 78.28 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
-#> Rows: 952,713
+#> Rows: 958,276
 #> Columns: 18
 #> $ date                 <date> 2020-03-27, 2020-03-28, 2020-03-29, 2020-03-3...
 #> $ semana_epidem        <int> 13, 13, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15...
@@ -130,6 +130,8 @@ construída com dados atualizados disponíveis tanto no portal
 [Brasil.io](https://brasil.io/) quanto no [Ministério da
 Saúde](https://covid.saude.gov.br/)
 
+## Utilização - Agregações de Dados
+
 ``` r
 bases_derivadas()
 #> 
@@ -143,7 +145,7 @@ bases_derivadas()
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.4 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.45 segundos.
 #> 
 #> 
 #> 
@@ -157,27 +159,27 @@ bases_derivadas()
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.32 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.4 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.17 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.22 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.25 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.23 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 20.81 segundos.
+#> O processamento foi concluido em 20.97 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -210,6 +212,3 @@ Segue a relação de bases disponíveis:
       - Dados agregados ao nível de regiões políticas do Brasil.
 6.  `covid_brasil`
       - Dados agregados ao nível do Brasil.
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub\!

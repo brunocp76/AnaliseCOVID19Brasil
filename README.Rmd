@@ -35,7 +35,7 @@ Você pode instalar o AnaliseCOVID19Brasil do [GitHub](https://github.com/) com:
 # install.packages("devtools")
 devtools::install_github("brunocp76/AnaliseCOVID19Brasil")
 ```
-## Utilização
+## Utilização - Atualização de Dados
 
 Como disse, os primeiros propósitos deste pacotes são ser simples do usuário utilizar e poder atualizar os dados antes de proceder à qualquer análise. Então começamos assim:
 
@@ -48,6 +48,8 @@ atualiza_dados()
 A função `atualiza_dados()` é uma das funções principais, pois aciona uma série de funções menores, cada uma fazendo uma parte do processo de obter pela internet os dados mais atualizados de fontes diferentes e de combinar todos eles em uma única base.
 
 Desta forma, depois de executada esta função você terá a base `covid` construída com dados atualizados disponíveis tanto no portal [Brasil.io](https://brasil.io/) quanto no [Ministério da Saúde](https://covid.saude.gov.br/)
+
+## Utilização - Agregações de Dados
 
 ```{r Organizando a informação atualizada em diversos níveis para análise, warning=FALSE}
 bases_derivadas()
@@ -76,5 +78,3 @@ Segue a relação de bases disponíveis:
 
 6. `covid_brasil`
       + Dados agregados ao nível do Brasil.
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!

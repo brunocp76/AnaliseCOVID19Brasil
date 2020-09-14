@@ -18,23 +18,14 @@ tema_bruno <- function() {
       # Bloco sobre o fundo...
       panel.background = element_rect(fill = "black"),
       plot.background = element_rect(fill = "black", color = "cyan"),
-      # panel.grid.minor = element_line(color = "white"),
       # Bloco sobre as linhas de grade...
       panel.grid.major.x = element_line(color = "#324C63", size = 0.5, linetype = "dotted"),
       panel.grid.major.y = element_line(color = "#324C63", size = 0.5),
       panel.grid.minor.x = element_blank(),
       panel.grid.minor.y = element_line(color = "#324C63", size = 0.2, linetype = "dotted"),
       # Bloco sobre os textos...
-      plot.title = element_text(
-         # family = "Get Schwifty",
-         hjust = 0.5
-         # size = 30
-      ),
-      text = element_text(
-         colour = "#11a2c6"
-         # family = "Get Schwifty",
-         # size = 16
-      ),
+      plot.title = element_text(hjust = 0.5),
+      text = element_text(colour = "#11a2c6"),
       # Bloco sobre os eixos...
       axis.text = element_text(color = "#3465A4"),
       axis.ticks.x = element_line(color = "#324C63"),
