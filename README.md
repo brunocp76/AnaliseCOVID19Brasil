@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-14 21:34:40
+#> Atualizacao de dados iniciada em 2020-09-14 21:52:49
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.46 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 14.51 segundos.
 #> 
 #> 
 #> 
@@ -76,7 +76,7 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 60.77 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 59.59 segundos.
 #> 
 #> 
 #> 
@@ -96,7 +96,7 @@ atualiza_dados()
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 79.86 segundos.
+#> O processamento foi concluido em 78.73 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
@@ -170,7 +170,7 @@ bases_derivadas()
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.2 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.18 segundos.
 #> 
 #> 
 #> 
@@ -183,7 +183,7 @@ bases_derivadas()
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 21.06 segundos.
+#> O processamento foi concluido em 21.04 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "%>%"                  "covid"                "covid_brasil"        

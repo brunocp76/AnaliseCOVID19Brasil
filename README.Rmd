@@ -114,7 +114,7 @@ covid_estados %>%
       subtitle = "Nos estados com os 5 maiores volumes"
    ) +
    ggplot2::geom_line(show.legend = FALSE) +
-   ggplot2::scale_x_date(date_breaks = "1 month") +
+   ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
    ggplot2::geom_label(ggplot2::aes(label = uf), show.legend = FALSE) +
    tema_bruno() +
    gganimate::transition_reveal(date)
@@ -144,7 +144,7 @@ covid_estados %>%
       subtitle = "Nos estados com os 5 maiores volumes"
    ) +
    ggplot2::geom_line(show.legend = FALSE) +
-   ggplot2::scale_x_date(date_breaks = "1 month") +
+   ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
    ggplot2::geom_label(ggplot2::aes(label = uf), show.legend = FALSE) +
    tema_bruno() +
    gganimate::transition_reveal(date)

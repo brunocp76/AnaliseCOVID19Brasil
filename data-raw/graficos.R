@@ -37,7 +37,7 @@ covid_cidades %>%
    filter(municipio %in% c("Sao Paulo", "Campinas", "Indaiatuba", "Atibaia")) %>%
    ggplot() +
    geom_line(aes(x = date, y = contagios_novos, color = municipio)) +
-   scale_x_date(date_breaks = "1 month") +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
    labs(x = "Data") +
    tema_bruno()
 
@@ -46,7 +46,7 @@ covid_cidades %>%
    filter(municipio %in% c("Sao Paulo", "Campinas", "Indaiatuba", "Atibaia")) %>%
    ggplot() +
    geom_line(aes(x = date, y = contagios_novos_100k, color = municipio)) +
-   scale_x_date(date_breaks = "1 month") +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
    labs(x = "Data") +
    tema_bruno()
 
@@ -55,7 +55,7 @@ covid_cidades %>%
    filter(municipio %in% c("Sao Paulo", "Campinas", "Indaiatuba", "Atibaia")) %>%
    ggplot() +
    geom_line(aes(x = date, y = contagios_novos_ln, color = municipio)) +
-   scale_x_date(date_breaks = "1 month") +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
    labs(x = "Data") +
    tema_bruno() +
    scale_linetype_manual(values = c("white", "orange", "olive", "yellow"))
