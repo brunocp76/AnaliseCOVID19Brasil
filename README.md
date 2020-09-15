@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-14 22:36:37
+#> Atualizacao de dados iniciada em 2020-09-14 23:06:49
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.72 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 14.5 segundos.
 #> 
 #> 
 #> 
@@ -76,27 +76,27 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 59.03 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 59.17 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 2.22 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 1.45 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.24 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.23 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 79.21 segundos.
+#> O processamento foi concluido em 78.35 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
@@ -149,21 +149,21 @@ bases_derivadas()
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.62 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.59 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.57 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.56 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.43 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.41 segundos.
 #> 
 #> 
 #> 
@@ -183,7 +183,7 @@ bases_derivadas()
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 21.13 segundos.
+#> O processamento foi concluido em 21.07 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "%>%"                  "covid"                "covid_brasil"        
@@ -265,6 +265,8 @@ Mas antes disso, pensemos na pergunta sobre se a pandemia está
 arrefecendo ou não… Vejamos os volumes de contágios e óbitos novos
 diários, com o já conhecido ajuste de média móvel.
 
+Primeiro os volumes diários de contágios…
+
 <div class="figure" style="text-align: center">
 
 <img src="man/figures/README-Volumes Diários de Contágios-1.png" alt="Gráfico 03 - Volumes Diários de Novos Contágios no Brasil" width="100%" />
@@ -277,6 +279,8 @@ Gráfico 03 - Volumes Diários de Novos Contágios no Brasil
 
 </div>
 
+…e em seguida dos volumes diários de óbitos.
+
 <div class="figure" style="text-align: center">
 
 <img src="man/figures/README-Volumes Diários de Óbitos-1.png" alt="Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil" width="100%" />
@@ -288,3 +292,47 @@ Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil
 </p>
 
 </div>
+
+A pandemia parece ter diminuído de patamar, mas com uma tendência de
+alta…
+
+Da forma como este pacote foi construído para ser simples de atualizar
+os dados, nos próximos dias podemos ver a provável consequência das
+frequentes aglomerações vistas recentemente…
+
+Vamos olhar mais de perto este indicador nos estados:
+
+Primeiro os volumes diários de contágios…
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-Volumes Estaduais de Contágios-1.png" alt="Gráfico 05 - Volumes Diários de Novos Contágios por Estado" width="100%" />
+
+<p class="caption">
+
+Gráfico 05 - Volumes Diários de Novos Contágios por Estado
+
+</p>
+
+</div>
+
+…e em seguida dos volumes diários de óbitos.
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-Volumes Estaduais de Óbitos-1.png" alt="Gráfico 06 - Volumes Diários de Novos Óbitos por Estado" width="100%" />
+
+<p class="caption">
+
+Gráfico 06 - Volumes Diários de Novos Óbitos por Estado
+
+</p>
+
+</div>
+
+Algumas coisas aqui já chamam a atenção: O pico de contágios no estado
+de Santa Catarina, o volume negativo expressivo de contágios no Ceará e
+o volume expressivo de óbitos em Minas Gerais.
+
+Possivelmente por conta da contabilização de casos antigos não
+processados.

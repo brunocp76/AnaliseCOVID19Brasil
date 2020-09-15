@@ -143,8 +143,8 @@ covid_estados %>%
 
 covid_brasil %>%
    mutate(
-      contagios_novos_mm7
-   )
+      contag_novos_mm7 = last(contagios_novos_mm7)
+   ) %>%
    ggplot() +
    geom_col(aes(x = date, y = contagios_novos, fill = contagios_novos), color = "cyan", show.legend = FALSE) +
    geom_line(aes(x = date, y = contagios_novos_mm7), color = "yellow", size = 1L) +
@@ -152,11 +152,10 @@ covid_brasil %>%
    tema_bruno() +
    labs(
       x = "Data",
-      y = "Contágios Novos",
+      y = "Novos Contágios",
       title = "Volumes Diários de Novos Contágios",
       subtitle = "Em todo o Brasil"
-   ) +
-   geom_label(aes(label = uf), show.legend = FALSE)
+   )
 
 
 covid_estados %>%
@@ -164,11 +163,16 @@ covid_estados %>%
       uf = forcats::fct_reorder(.f = uf, .x = contagios_acumulados, .desc = TRUE)
    ) %>%
    ggplot() +
-   geom_col(aes_string(x = "date", y = "contagios_novos"), fill = "#34EEA4", show.legend = FALSE) +
-   geom_line(aes(x = date, y = contagios_novos_mm7), color = "red", size = 1L) +
-   # scale_x_date(date_breaks = "2 weeks") +
+   geom_col(aes_string(x = "date", y = "contagios_novos"), fill = "#34A4A4", show.legend = FALSE) +
+   geom_line(aes(x = date, y = contagios_novos_mm7), color = "yellow", size = 1L) +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m") +
    tema_bruno() +
-   labs(x = "Data") +
+   labs(
+      x = "Mês",
+      y = "Novos Contágios",
+      title = "Volumes Diários de Novos Contágios",
+      subtitle = "Estados Ordenados por volume de Contágios Acumulados"
+   ) +
    facet_wrap(vars(uf), scales = "free")
 
 
@@ -209,3 +213,24 @@ temporal_facetada(
    quebra = "uf",
    variavel = "contagios_novos_mm7")
 #
+
+
+covid %>%
+   filter(uf == 'SP') %>%
+   select(date, uf, contagios_novos, obitos_novos) %>%
+   group_by(date, country, type) %>%
+   pivot_wider(names_from =type, values_from=cases) %>%ungroup()
+
+correlations<-c()
+lags<-c(0:20)
+
+for (k in lags) {
+
+   tmp<-df%>%mutate(lagk=lag(confirmed,k))%>%select(death,lagk)%>%na.omit()
+
+   correlations<-c(correlations,cor(tmp$death, tmp$lagk))
+}
+
+data.frame(lags, correlations)
+
+data.frame(lags, correlations)%>%ggplot(aes(x=lags, y=correlations))+geom_point()

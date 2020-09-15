@@ -156,6 +156,8 @@ Para isso eu construí uma série de indicadores ditos normalizados, tais como v
 
 Mas antes disso, pensemos na pergunta sobre se a pandemia está arrefecendo ou não... Vejamos os volumes de contágios e óbitos novos diários, com o já conhecido ajuste de média móvel.
 
+Primeiro os volumes diários de contágios...
+
 ```{r Volumes Diários de Contágios, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 03 - Volumes Diários de Novos Contágios no Brasil"}
 covid_brasil %>%
    ggplot2::ggplot() +
@@ -170,6 +172,8 @@ covid_brasil %>%
       subtitle = "Em todo o Brasil"
    )
 ```
+
+...e em seguida dos volumes diários de óbitos.
 
 ```{r Volumes Diários de Óbitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil"}
 covid_brasil %>%
@@ -186,3 +190,54 @@ covid_brasil %>%
    )
 ```
 
+A pandemia parece ter diminuído de patamar, mas com uma tendência de alta...
+
+Da forma como este pacote foi construído para ser simples de atualizar os dados, nos próximos dias podemos ver a provável consequência das frequentes aglomerações vistas recentemente...
+
+Vamos olhar mais de perto este indicador nos estados:
+
+Primeiro os volumes diários de contágios...
+
+```{r Volumes Estaduais de Contágios, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 05 - Volumes Diários de Novos Contágios por Estado"}
+covid_estados %>%
+   dplyr::mutate(
+      uf = forcats::fct_reorder(.f = uf, .x = contagios_acumulados, .desc = TRUE)
+   ) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_col(ggplot2::aes_string(x = "date", y = "contagios_novos"), fill = "#34A4A4", show.legend = FALSE) +
+   ggplot2::geom_line(ggplot2::aes(x = date, y = contagios_novos_mm7), color = "yellow", size = 1L) +
+   ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   tema_bruno() +
+   ggplot2::labs(
+      x = "Mês",
+      y = "Novos Contágios",
+      title = "Volumes Diários de Novos Contágios",
+      subtitle = "Estados Ordenados por volume de Contágios Acumulados"
+   ) +
+   ggplot2::facet_wrap(vars(uf), scales = "free")
+```
+
+...e em seguida dos volumes diários de óbitos.
+
+```{r Volumes Estaduais de Óbitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 06 - Volumes Diários de Novos Óbitos por Estado"}
+covid_estados %>%
+   dplyr::mutate(
+      uf = forcats::fct_reorder(.f = uf, .x = obitos_acumulados, .desc = TRUE)
+   ) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_col(ggplot2::aes_string(x = "date", y = "obitos_novos"), fill = "#34A4A4", show.legend = FALSE) +
+   ggplot2::geom_line(ggplot2::aes(x = date, y = obitos_novos_mm7), color = "yellow", size = 1L) +
+   ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   tema_bruno() +
+   ggplot2::labs(
+      x = "Mês",
+      y = "Novos Óbitos",
+      title = "Volumes Diários de Novos Óbitos",
+      subtitle = "Estados Ordenados por volume de Óbitos Acumulados"
+   ) +
+   ggplot2::facet_wrap(vars(uf), scales = "free")
+```
+
+Algumas coisas aqui já chamam a atenção: O pico de contágios no estado de Santa Catarina, o volume negativo expressivo de contágios no Ceará e o volume expressivo de óbitos em Minas Gerais.
+
+Possivelmente por conta da contabilização de casos antigos não processados.
