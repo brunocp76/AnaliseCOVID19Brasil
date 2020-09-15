@@ -1,4 +1,6 @@
 # Não entram no código principal... ---------------------------------------
+library(sf)
+library(geobr)
 library(dplyr)
 library(ggplot2)
 library(patchwork)
@@ -97,7 +99,6 @@ covid_estados %>%
    tema_bruno()
 
 
-
 # Para a animação dos dados... --------------------------------------------
 animacao_obitos_ufs <- covid_estados %>%
    group_by(uf, date) %>%
@@ -109,8 +110,8 @@ animacao_obitos_ufs <- covid_estados %>%
          unique() %>%
          sort(decreasing = TRUE) %>%
          nth(10)
-   ) %>%
-   filter(num_obitos >= limite) %>%
+   ) %>% glimpse()
+filter(num_obitos >= limite) %>%
    ggplot(aes(y = obitos_acumulados, x = date, color = uf)) +
    labs(
       x = "Data",
@@ -118,6 +119,7 @@ animacao_obitos_ufs <- covid_estados %>%
       title = "Óbitos Acumulados",
       subtitle = "Nos 10 maiores estados"
    ) +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
    geom_line(show.legend = FALSE) +
    geom_label(aes(label = uf), show.legend = FALSE) +
    tema_bruno() +
@@ -142,25 +144,14 @@ animacao_contagios_ufs <- covid_estados %>%
       title = "Contágios Acumulados",
       subtitle = "Nos 10 maiores estados"
    ) +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
    geom_line(show.legend = FALSE) +
    geom_label(aes(label = uf), show.legend = FALSE) +
    tema_bruno() +
    gganimate::transition_reveal(date)
 
-animacao_contagios_ufs + animacao_obitos_ufs
 
 # Gráfico mesclando linhas e colunas - Como os do jornal... ---------------
-covid_estados %>%
-   group_by(uf) %>%
-   summarise(
-      evolucao_contagios_mm7 = last(evolucao_contagios_mm7),
-      evolucao_obitos_mm7 = last(evolucao_obitos_mm7)
-   ) %>%
-   ungroup() %>%
-   arrange(uf) -> evolucao_estados_contagios
-
-
-
 covid_brasil %>%
    mutate(
       contag_novos_mm7 = last(contagios_novos_mm7)
@@ -195,30 +186,20 @@ covid_estados %>%
    facet_wrap(vars(uf), scales = "free")
 
 
-define_sucesso <- function(arquivo, variavel) {
-   arquivo %>%
-      mutate(
-         resultado = case_when(
-            dplyr::lag(x = variavel, n = 6L) / variavel
-         )
-      )
-}
-
-define_sucesso(arquivo = covid_estados, variavel = "contagios_novos_mm7")
-
 ggplot(covid_estados) +
    aes(x = date, y = contagios_novos_mm7) +
-   geom_line(size = 1L, colour = "cyan") +
-   labs(x = "Data") +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   geom_line(colour = "cyan") +
+   labs(
+      x = "Mês",
+      y = "Média Móvel de Novos Contágios",
+      title = "Média Móvel de Novos Contágios"
+   ) +
    tema_bruno() +
-   facet_wrap(vars(uf))
+   facet_wrap(vars(uf), scales = "free")
 
 
 temporal_facetada <- function(arquivo, quebra, variavel) {
-   # rlang::parse_expr(arquivo)
-   # rlang::parse_expr(quebra)
-   # print(variavel)
-
    arquivo %>%
       ggplot() +
       geom_line(aes_string(x = "date", y = variavel), size = 1L, colour = "cyan") +
@@ -231,9 +212,9 @@ temporal_facetada(
    arquivo = "covid_estados",
    quebra = "uf",
    variavel = "contagios_novos_mm7")
-#
 
 
+# Função de Correlação Cruzada --------------------------------------------
 teste <- covid %>%
    select(
       date,
@@ -264,3 +245,90 @@ tibble(lags, correlacoes) %>%
       title = "Correlações Cruzadas entre Contágios e Óbitos"
    ) +
    tema_bruno()
+
+
+# Mapas -------------------------------------------------------------------
+tabela_ufs <- geobr::read_state(
+   code_state = "all",
+   year = 2019,
+   showProgress = TRUE
+)
+
+sum(sf::st_area(x = tabela_ufs))
+
+covid_estados %>%
+   arrange(uf, date) %>%
+   group_by(uf) %>%
+   filter(date == max(date, na.rm = TRUE)) %>%
+   ungroup() %>%
+   select(-c(contagios_novos_100k:obitos_acumulados_ln)) %>%
+   arrange(uf, date) %>%
+   left_join(
+      y = tabela_ufs,
+      by = c("uf" = "abbrev_state")
+   ) %>%
+   ggplot() +
+   geom_sf(aes(geometry = geom, fill = taxa_mortalidade), color = "darkcyan") +
+   geom_sf_text(aes(geometry = geom, label = uf), size = 3.5) +
+   scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red"
+   ) +
+   scale_x_continuous(breaks = seq(-75, -30, 5)) +
+   scale_y_continuous(breaks = seq(-35, 5, 5)) +
+   labs(
+      x = "Longitude",
+      y = "Latitude",
+      title = "Taxa de Mortalidade da COVID-19",
+      subtitle = "Óbitos / Contágios"
+   ) +
+   tema_bruno() +
+   theme(
+      legend.key.size = unit(1, "cm"),
+      legend.title = element_blank()
+   )
+
+
+tabela_mun <- geobr::read_municipality(
+   code_muni = "all",
+   year = 2019,
+   showProgress = TRUE
+)
+
+sum(sf::st_area(x = tabela_mun))
+
+
+covid_cidades %>%
+   filter(regiao == "Sudeste") %>% glimpse()
+   arrange(uf, date) %>%
+   group_by(uf) %>%
+   filter(date == max(date, na.rm = TRUE)) %>%
+   ungroup() %>%
+   select(-c(contagios_novos_100k:obitos_acumulados_ln)) %>%
+   arrange(uf, date) %>%
+   left_join(
+      y = tabela_ufs,
+      by = c("uf" = "abbrev_state")
+   ) %>%
+   ggplot() +
+   geom_sf(aes(geometry = geom, fill = taxa_mortalidade), color = "darkcyan") +
+   geom_sf_text(aes(geometry = geom, label = uf), size = 3.5) +
+   scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red"
+   ) +
+   scale_x_continuous(breaks = seq(-75, -30, 5)) +
+   scale_y_continuous(breaks = seq(-35, 5, 5)) +
+   labs(
+      x = "Longitude",
+      y = "Latitude",
+      title = "Taxa de Mortalidade da COVID-19",
+      subtitle = "Óbitos / Contágios"
+   ) +
+   tema_bruno() +
+   theme(
+      legend.key.size = unit(1, "cm"),
+      legend.title = element_blank()
+   )

@@ -16,7 +16,7 @@ RoxygenNote: 7.1.1
 URL: https://github.com/brunocp76/AnaliseCOVID19Brasil
 BugReports: https://github.com/brunocp76/AnaliseCOVID19Brasil/issues
 Imports: 
-    magrittr, dplyr, datacovidbr, stringi, stringr, ggplot2, gganimate
+    magrittr, dplyr, datacovidbr, stringi, stringr, ggplot2, gganimate, geobr, sf
 Depends: 
     R (>= 3.50)
 Suggests: 

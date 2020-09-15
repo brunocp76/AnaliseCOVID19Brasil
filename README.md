@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-15 00:00:44
+#> Atualizacao de dados iniciada em 2020-09-15 04:00:29
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.6 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 14.22 segundos.
 #> 
 #> 
 #> 
@@ -76,27 +76,27 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 59.77 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 59.59 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.47 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 1.44 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.26 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.27 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 79.1 segundos.
+#> O processamento foi concluido em 78.52 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
@@ -142,28 +142,28 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 1.08 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 1.11 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.57 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.45 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.59 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.56 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.44 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.41 segundos.
 #> 
 #> 
 #> 
@@ -177,18 +177,17 @@ bases_derivadas()
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.23 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.25 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 21.11 segundos.
+#> O processamento foi concluido em 20.98 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
-#> [1] "%>%"                  "covid"                "covid_brasil"        
-#> [4] "covid_cidades"        "covid_estados"        "covid_regioes_brasil"
-#> [7] "covid_regioes_saude"
+#> [1] "covid"                "covid_brasil"         "covid_cidades"       
+#> [4] "covid_estados"        "covid_regioes_brasil" "covid_regioes_saude"
 ```
 
 A função `bases_derivadas()` é outra das funções principais, pois parte
@@ -229,7 +228,7 @@ observações:
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Maiores Contágios nos Estados-1.gif" alt="Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia" width="100%" />
+<img src="man/figures/README-Maiores Contagios nos Estados-1.gif" alt="Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia" width="100%" />
 
 <p class="caption">
 
@@ -244,7 +243,7 @@ Pandemia
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Maiores Óbitos nos Estados-1.gif" alt="Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia" width="100%" />
+<img src="man/figures/README-Maiores Obitos nos Estados-1.gif" alt="Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia" width="100%" />
 
 <p class="caption">
 
@@ -269,7 +268,7 @@ Primeiro os volumes diários de contágios…
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes Diários de Contágios-1.png" alt="Gráfico 03 - Volumes Diários de Novos Contágios no Brasil" width="100%" />
+<img src="man/figures/README-Volumes Diarios de Contagios-1.png" alt="Gráfico 03 - Volumes Diários de Novos Contágios no Brasil" width="100%" />
 
 <p class="caption">
 
@@ -283,7 +282,7 @@ Gráfico 03 - Volumes Diários de Novos Contágios no Brasil
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes Diários de Óbitos-1.png" alt="Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil" width="100%" />
+<img src="man/figures/README-Volumes Diarios de Obitos-1.png" alt="Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil" width="100%" />
 
 <p class="caption">
 
@@ -306,7 +305,7 @@ Primeiro os volumes diários de contágios…
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes Estaduais de Contágios-1.png" alt="Gráfico 05 - Volumes Diários de Novos Contágios por Estado" width="100%" />
+<img src="man/figures/README-Volumes Estaduais de Contagios-1.png" alt="Gráfico 05 - Volumes Diários de Novos Contágios por Estado" width="100%" />
 
 <p class="caption">
 
@@ -320,7 +319,7 @@ Gráfico 05 - Volumes Diários de Novos Contágios por Estado
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes Estaduais de Óbitos-1.png" alt="Gráfico 06 - Volumes Diários de Novos Óbitos por Estado" width="100%" />
+<img src="man/figures/README-Volumes Estaduais de Obitos-1.png" alt="Gráfico 06 - Volumes Diários de Novos Óbitos por Estado" width="100%" />
 
 <p class="caption">
 
@@ -345,7 +344,7 @@ Vamos ver isso…
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Correlações Cruzadas entre Contágios e Óbitos-1.png" alt="Gráfico 07 - Correlações Cruzadas entre Contágios e Óbitos" width="100%" />
+<img src="man/figures/README-Correlacoes Cruzadas entre Contagios e Obitos-1.png" alt="Gráfico 07 - Correlações Cruzadas entre Contágios e Óbitos" width="100%" />
 
 <p class="caption">
 
@@ -362,7 +361,7 @@ Voltemos a comparar os volumes de contágios e óbitos por estados:
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes de Novos Contágios por Estado-1.png" alt="Gráfico 08 - Volumes de Novos Contágios por Estado" width="100%" />
+<img src="man/figures/README-Volumes de Novos Contagios por Estado-1.png" alt="Gráfico 08 - Volumes de Novos Contágios por Estado" width="100%" />
 
 <p class="caption">
 
@@ -374,7 +373,7 @@ Gráfico 08 - Volumes de Novos Contágios por Estado
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes de Novos Óbitos por Estado-1.png" alt="Gráfico 09 - Volumes de Novos Óbitos por Estado" width="100%" />
+<img src="man/figures/README-Volumes de Novos Obitos por Estado-1.png" alt="Gráfico 09 - Volumes de Novos Óbitos por Estado" width="100%" />
 
 <p class="caption">
 
@@ -395,11 +394,23 @@ Vamos ver como fica no Brasil.
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Taxas de Mortalidade por Estado-1.png" alt="Gráfico 10 - Taxas de Mortalidade por Estado" width="100%" />
+<img src="man/figures/README-Taxas de Mortalidade no Brasil-1.png" alt="Gráfico 10 - Taxas de Mortalidade por Estado" width="100%" />
 
 <p class="caption">
 
 Gráfico 10 - Taxas de Mortalidade por Estado
+
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-Taxas de Mortalidade por Estado-1.png" alt="Gráfico 11 - Evolução das Taxas de Mortalidade por Estado" width="100%" />
+
+<p class="caption">
+
+Gráfico 11 - Evolução das Taxas de Mortalidade por Estado
 
 </p>
 

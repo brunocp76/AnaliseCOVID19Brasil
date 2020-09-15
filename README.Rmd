@@ -5,7 +5,7 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
-`%>%` <- magrittr::`%>%`
+# `%>%` <- magrittr::`%>%`
 library(ggplot2)
 
 knitr::opts_chunk$set(
@@ -93,7 +93,7 @@ Com os dados atualizados e organizados, podemos fazer as primeiras observações
 
 ### Contágio
 
-```{r Maiores Contágios nos Estados, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia"}
+```{r Maiores Contagios nos Estados, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia"}
 covid_estados %>%
    dplyr::group_by(uf, date) %>%
    dplyr::summarise(contagios_acumulados = sum(contagios_acumulados)) %>%
@@ -123,7 +123,7 @@ covid_estados %>%
 
 ### Óbitos
 
-```{r Maiores Óbitos nos Estados, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia"}
+```{r Maiores Obitos nos Estados, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia"}
 covid_estados %>%
    dplyr::group_by(uf, date) %>%
    dplyr::summarise(obitos_acumulados = sum(obitos_acumulados)) %>%
@@ -158,7 +158,7 @@ Mas antes disso, pensemos na pergunta sobre se a pandemia está arrefecendo ou n
 
 Primeiro os volumes diários de contágios...
 
-```{r Volumes Diários de Contágios, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 03 - Volumes Diários de Novos Contágios no Brasil"}
+```{r Volumes Diarios de Contagios, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 03 - Volumes Diários de Novos Contágios no Brasil"}
 covid_brasil %>%
    ggplot2::ggplot() +
    ggplot2::geom_col(ggplot2::aes(x = date, y = contagios_novos, fill = contagios_novos), color = "cyan", show.legend = FALSE) +
@@ -175,7 +175,7 @@ covid_brasil %>%
 
 ...e em seguida dos volumes diários de óbitos.
 
-```{r Volumes Diários de Óbitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil"}
+```{r Volumes Diarios de Obitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil"}
 covid_brasil %>%
    ggplot2::ggplot() +
    ggplot2::geom_col(ggplot2::aes(x = date, y = obitos_novos, fill = obitos_novos), color = "cyan", show.legend = FALSE) +
@@ -198,7 +198,7 @@ Vamos olhar mais de perto este indicador nos estados:
 
 Primeiro os volumes diários de contágios...
 
-```{r Volumes Estaduais de Contágios, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 05 - Volumes Diários de Novos Contágios por Estado"}
+```{r Volumes Estaduais de Contagios, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 05 - Volumes Diários de Novos Contágios por Estado"}
 covid_estados %>%
    dplyr::mutate(
       uf = forcats::fct_reorder(.f = uf, .x = contagios_acumulados, .desc = TRUE)
@@ -214,12 +214,12 @@ covid_estados %>%
       title = "Volumes Diários de Novos Contágios",
       subtitle = "Estados Ordenados por volume de Contágios Acumulados"
    ) +
-   ggplot2::facet_wrap(vars(uf), scales = "free")
+   ggplot2::facet_wrap(ggplot2::vars(uf), scales = "free")
 ```
 
 ...e em seguida dos volumes diários de óbitos.
 
-```{r Volumes Estaduais de Óbitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 06 - Volumes Diários de Novos Óbitos por Estado"}
+```{r Volumes Estaduais de Obitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 06 - Volumes Diários de Novos Óbitos por Estado"}
 covid_estados %>%
    dplyr::mutate(
       uf = forcats::fct_reorder(.f = uf, .x = obitos_acumulados, .desc = TRUE)
@@ -235,7 +235,7 @@ covid_estados %>%
       title = "Volumes Diários de Novos Óbitos",
       subtitle = "Estados Ordenados por volume de Óbitos Acumulados"
    ) +
-   ggplot2::facet_wrap(vars(uf), scales = "free")
+   ggplot2::facet_wrap(ggplot2::vars(uf), scales = "free")
 ```
 
 Algumas coisas aqui já chamam a atenção: O pico de contágios no estado de Santa Catarina, o volume negativo expressivo de contágios no Ceará e o volume expressivo de óbitos em Minas Gerais.
@@ -246,7 +246,7 @@ Esses casos antigos também nos levam a outra questão por conta da possibilidad
 
 Vamos ver isso...
 
-```{r Correlações Cruzadas entre Contágios e Óbitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 07 - Correlações Cruzadas entre Contágios e Óbitos"}
+```{r Correlacoes Cruzadas entre Contagios e Obitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 07 - Correlações Cruzadas entre Contágios e Óbitos"}
 teste <- covid %>%
    dplyr::select(
       date,
@@ -283,7 +283,7 @@ rm(teste, correlacoes, lags, k)
 Podemos ver, até da maneira como (não) são feitas as notificações no Brasil, que as maiores correlações são múltiplos de semanas inteiras...
 
 Voltemos a comparar os volumes de contágios e óbitos por estados:
-```{r Volumes de Novos Contágios por Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 08 - Volumes de Novos Contágios por Estado"}
+```{r Volumes de Novos Contagios por Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 08 - Volumes de Novos Contágios por Estado"}
 covid_estados %>%
    dplyr::mutate(
       estado = forcats::fct_reorder(.f = uf, .x = contagios_novos, .desc = TRUE)
@@ -298,7 +298,7 @@ covid_estados %>%
    tema_bruno()
 ```
 
-```{r Volumes de Novos Óbitos por Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 09 - Volumes de Novos Óbitos por Estado"}
+```{r Volumes de Novos Obitos por Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 09 - Volumes de Novos Óbitos por Estado"}
 covid_estados %>%
    dplyr::mutate(
       estado = forcats::fct_reorder(.f = uf, .x = obitos_novos, .desc = TRUE)
@@ -319,7 +319,49 @@ Também gostaria de tratar do problema de subnotificações. Para isso, vamos ol
 
 Vamos ver como fica no Brasil.
 
-```{r Taxas de Mortalidade por Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 10 - Taxas de Mortalidade por Estado"}
+```{r Taxas de Mortalidade no Brasil, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 11, fig.cap = "Gráfico 10 - Taxas de Mortalidade por Estado"}
+tabela_ufs <- geobr::read_state(
+   code_state = "all",
+   year = 2019,
+   showProgress = FALSE
+)
+
+covid_estados %>%
+   dplyr::arrange(uf, date) %>%
+   dplyr::group_by(uf) %>%
+   dplyr::filter(date == max(date, na.rm = TRUE)) %>%
+   dplyr::ungroup() %>%
+   dplyr::select(-c(contagios_novos_100k:obitos_acumulados_ln)) %>%
+   dplyr::arrange(uf, date) %>%
+   dplyr::left_join(
+      y = tabela_ufs,
+      by = c("uf" = "abbrev_state")
+   ) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom, fill = taxa_mortalidade), color = "darkcyan") +
+   ggplot2::geom_sf_text(ggplot2::aes(geometry = geom, label = uf), size = 3.5) +
+   ggplot2::scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red"
+   ) +
+   ggplot2::scale_x_continuous(breaks = seq(-75, -30, 5)) +
+   ggplot2::scale_y_continuous(breaks = seq(-35, 5, 5)) +
+   ggplot2::labs(
+      x = "Longitude",
+      y = "Latitude",
+      title = "Taxa de Mortalidade da COVID-19",
+      subtitle = "Óbitos / Contágios"
+   ) +
+   tema_bruno() +
+   ggplot2::theme(
+      legend.key.size = ggplot2::unit(1, "cm"),
+      legend.title = ggplot2::element_blank()
+   )
+```
+
+
+```{r Taxas de Mortalidade por Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 11 - Evolução das Taxas de Mortalidade por Estado"}
 covid_estados %>%
    dplyr::mutate(
       uf = forcats::fct_reorder(.f = uf, .x = taxa_mortalidade, .desc = TRUE)
@@ -334,7 +376,7 @@ covid_estados %>%
       title = "Taxas de Mortalidade",
       subtitle = "Estados Ordenados por Taxa de Mortalidade"
    ) +
-   ggplot2::facet_wrap(vars(uf), scales = "free")
+   ggplot2::facet_wrap(ggplot2::vars(uf), scales = "free")
 ```
 
 
