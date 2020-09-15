@@ -78,6 +78,57 @@ covid_estados %>%
    ylim(c(0, 20000))
 
 
+# Para a animação dos dados... --------------------------------------------
+animacao_obitos_ufs <- covid_estados %>%
+   group_by(uf, date) %>%
+   summarise(obitos_acumulados = sum(obitos_acumulados)) %>%
+   mutate(num_obitos = max(obitos_acumulados)) %>%
+   ungroup() %>%
+   mutate(
+      limite = num_obitos %>%
+         unique() %>%
+         sort(decreasing = TRUE) %>%
+         nth(10)
+   ) %>%
+   filter(num_obitos >= limite) %>%
+   ggplot(aes(y = obitos_acumulados, x = date, color = uf)) +
+   labs(
+      x = "Data",
+      y = "Óbitos Acumulados",
+      title = "Óbitos Acumulados",
+      subtitle = "Nos 10 maiores estados"
+   ) +
+   geom_line(show.legend = FALSE) +
+   geom_label(aes(label = uf), show.legend = FALSE) +
+   tema_bruno() +
+   gganimate::transition_reveal(date)
+
+animacao_contagios_ufs <- covid_estados %>%
+   group_by(uf, date) %>%
+   summarise(contagios_acumulados = sum(contagios_acumulados)) %>%
+   mutate(num_contagios = max(contagios_acumulados)) %>%
+   ungroup() %>%
+   mutate(
+      limite = num_contagios %>%
+         unique() %>%
+         sort(decreasing = TRUE) %>%
+         nth(10)
+   ) %>%
+   filter(num_contagios >= limite) %>%
+   ggplot(aes(y = contagios_acumulados, x = date, color = uf)) +
+   labs(
+      x = "Data",
+      y = "Óbitos Acumulados",
+      title = "Óbitos Acumulados",
+      subtitle = "Nos 10 maiores estados"
+   ) +
+   geom_line(show.legend = FALSE) +
+   geom_label(aes(label = uf), show.legend = FALSE) +
+   tema_bruno() +
+   gganimate::transition_reveal(date)
+
+animacao_contagios_ufs + animacao_obitos_ufs
+
 # Gráfico mesclando linhas e colunas - Como os do jornal... ---------------
 covid_estados %>%
    group_by(uf) %>%

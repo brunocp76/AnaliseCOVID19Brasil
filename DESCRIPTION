@@ -1,6 +1,6 @@
 Package: AnaliseCOVID19Brasil
 Title: Analisa informacoes da Pandemia de COVID-19 no Brasil (One Line, Title Case)
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: 
     person(given = "Bruno Cesar",
            family = "Pasquini",
@@ -16,7 +16,7 @@ RoxygenNote: 7.1.1
 URL: https://github.com/brunocp76/AnaliseCOVID19Brasil
 BugReports: https://github.com/brunocp76/AnaliseCOVID19Brasil/issues
 Imports: 
-    magrittr, dplyr, datacovidbr, stringi, stringr, ggplot2
+    magrittr, dplyr, datacovidbr, stringi, stringr, ggplot2, gganimate
 Depends: 
     R (>= 3.50)
 Suggests: 

@@ -5,6 +5,9 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
+`%>%` <- magrittr::`%>%`
+library(ggplot2)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -83,3 +86,66 @@ Segue a relação de bases disponíveis:
     - Dados agregados ao nível do Brasil.
 
 ***
+
+## Análises Gráficas
+
+Com os dados atualizados e organizados, podemos fazer as primeiras observações:
+
+### Contágio
+
+```{r Maiores Contágios nos Estados, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia"}
+covid_estados %>%
+   dplyr::group_by(uf, date) %>%
+   dplyr::summarise(contagios_acumulados = sum(contagios_acumulados)) %>%
+   dplyr::mutate(num_contagios = max(contagios_acumulados)) %>%
+   dplyr::ungroup() %>%
+   dplyr::mutate(
+      limite = num_contagios %>%
+         unique() %>%
+         sort(decreasing = TRUE) %>%
+         dplyr::nth(5)
+   ) %>%
+   dplyr::filter(num_contagios >= limite) %>%
+   ggplot2::ggplot(ggplot2::aes(y = contagios_acumulados, x = date, color = uf)) +
+   ggplot2::labs(
+      x = "Data",
+      y = "Contágios Acumulados",
+      title = "Contágios Acumulados",
+      subtitle = "Nos estados com os 5 maiores volumes"
+   ) +
+   ggplot2::geom_line(show.legend = FALSE) +
+   ggplot2::scale_x_date(date_breaks = "1 month") +
+   ggplot2::geom_label(ggplot2::aes(label = uf), show.legend = FALSE) +
+   tema_bruno() +
+   gganimate::transition_reveal(date)
+```
+
+
+### Óbitos
+
+```{r Maiores Óbitos nos Estados, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia"}
+covid_estados %>%
+   dplyr::group_by(uf, date) %>%
+   dplyr::summarise(obitos_acumulados = sum(obitos_acumulados)) %>%
+   dplyr::mutate(num_obitos = max(obitos_acumulados)) %>%
+   dplyr::ungroup() %>%
+   dplyr::mutate(
+      limite = num_obitos %>%
+         unique() %>%
+         sort(decreasing = TRUE) %>%
+         dplyr::nth(5)
+   ) %>%
+   dplyr::filter(num_obitos >= limite) %>%
+   ggplot2::ggplot(ggplot2::aes(y = obitos_acumulados, x = date, color = uf)) +
+   ggplot2::labs(
+      x = "Data",
+      y = "Óbitos Acumulados",
+      title = "Óbitos Acumulados",
+      subtitle = "Nos estados com os 5 maiores volumes"
+   ) +
+   ggplot2::geom_line(show.legend = FALSE) +
+   ggplot2::scale_x_date(date_breaks = "1 month") +
+   ggplot2::geom_label(ggplot2::aes(label = uf), show.legend = FALSE) +
+   tema_bruno() +
+   gganimate::transition_reveal(date)
+```
