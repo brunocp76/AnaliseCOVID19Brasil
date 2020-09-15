@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-14 21:52:49
+#> Atualizacao de dados iniciada em 2020-09-14 22:36:37
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.51 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 14.72 segundos.
 #> 
 #> 
 #> 
@@ -76,27 +76,27 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 59.59 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 59.03 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.4 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 2.22 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.23 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.24 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 78.73 segundos.
+#> O processamento foi concluido em 79.21 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
@@ -149,41 +149,41 @@ bases_derivadas()
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.55 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.62 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.56 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.57 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.42 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.43 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.18 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.2 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.25 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.23 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 21.04 segundos.
+#> O processamento foi concluido em 21.13 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "%>%"                  "covid"                "covid_brasil"        
@@ -250,6 +250,40 @@ Pandemia
 
 Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela
 Pandemia
+
+</p>
+
+</div>
+
+De certa forma, era esperado que os estados com maior população tivessem
+os maiores volumes tanto de contágios quanto de óbitos.
+
+Para isso eu construí uma série de indicadores ditos normalizados, tais
+como volumes de contágios e óbitos por grupo de 100 mil habitantes.
+
+Mas antes disso, pensemos na pergunta sobre se a pandemia está
+arrefecendo ou não… Vejamos os volumes de contágios e óbitos novos
+diários, com o já conhecido ajuste de média móvel.
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-Volumes Diários de Contágios-1.png" alt="Gráfico 03 - Volumes Diários de Novos Contágios no Brasil" width="100%" />
+
+<p class="caption">
+
+Gráfico 03 - Volumes Diários de Novos Contágios no Brasil
+
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-Volumes Diários de Óbitos-1.png" alt="Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil" width="100%" />
+
+<p class="caption">
+
+Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil
 
 </p>
 

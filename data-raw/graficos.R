@@ -141,6 +141,24 @@ covid_estados %>%
 
 
 
+covid_brasil %>%
+   mutate(
+      contagios_novos_mm7
+   )
+   ggplot() +
+   geom_col(aes(x = date, y = contagios_novos, fill = contagios_novos), color = "cyan", show.legend = FALSE) +
+   geom_line(aes(x = date, y = contagios_novos_mm7), color = "yellow", size = 1L) +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   tema_bruno() +
+   labs(
+      x = "Data",
+      y = "Contágios Novos",
+      title = "Volumes Diários de Novos Contágios",
+      subtitle = "Em todo o Brasil"
+   ) +
+   geom_label(aes(label = uf), show.legend = FALSE)
+
+
 covid_estados %>%
    mutate(
       uf = forcats::fct_reorder(.f = uf, .x = contagios_acumulados, .desc = TRUE)

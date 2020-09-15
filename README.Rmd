@@ -149,3 +149,40 @@ covid_estados %>%
    tema_bruno() +
    gganimate::transition_reveal(date)
 ```
+
+De certa forma, era esperado que os estados com maior população tivessem os maiores volumes tanto de contágios quanto de óbitos.
+
+Para isso eu construí uma série de indicadores ditos normalizados, tais como volumes de contágios e óbitos por grupo de 100 mil habitantes.
+
+Mas antes disso, pensemos na pergunta sobre se a pandemia está arrefecendo ou não... Vejamos os volumes de contágios e óbitos novos diários, com o já conhecido ajuste de média móvel.
+
+```{r Volumes Diários de Contágios, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 03 - Volumes Diários de Novos Contágios no Brasil"}
+covid_brasil %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_col(ggplot2::aes(x = date, y = contagios_novos, fill = contagios_novos), color = "cyan", show.legend = FALSE) +
+   ggplot2::geom_line(ggplot2::aes(x = date, y = contagios_novos_mm7), color = "yellow", size = 1L) +
+   ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   tema_bruno() +
+   ggplot2::labs(
+      x = "Data",
+      y = "Novos Contágios",
+      title = "Volumes Diários de Novos Contágios",
+      subtitle = "Em todo o Brasil"
+   )
+```
+
+```{r Volumes Diários de Óbitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil"}
+covid_brasil %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_col(ggplot2::aes(x = date, y = obitos_novos, fill = obitos_novos), color = "cyan", show.legend = FALSE) +
+   ggplot2::geom_line(ggplot2::aes(x = date, y = obitos_novos_mm7), color = "yellow", size = 1L) +
+   ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   tema_bruno() +
+   ggplot2::labs(
+      x = "Data",
+      y = "Novos Óbitos",
+      title = "Volumes Diários de Novos Óbitos",
+      subtitle = "Em todo o Brasil"
+   )
+```
+
