@@ -5,7 +5,6 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
-# `%>%` <- magrittr::`%>%`
 library(ggplot2)
 
 knitr::opts_chunk$set(
@@ -378,12 +377,63 @@ covid_estados %>%
    ) +
    ggplot2::facet_wrap(ggplot2::vars(uf), scales = "free")
 ```
+E para não me esquecer demostrar uma das métricas normalizadas, um gráfico de mapa com 2 camadas, municípios e estados. Avaliando, na Região Sudeste, o contágio acumulado por grupo de 100 mil habitantes.
+
+```{r Contagios Acumulados por 100 mil habitantes, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 12 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sudeste"}
+tabela_mun <- geobr::read_municipality(
+   code_muni = "all",
+   year = 2019,
+   showProgress = FALSE
+)
+
+covid_cidades %>%
+   dplyr::filter(regiao == "Sudeste") %>%
+   dplyr::arrange(cod_ibge, date) %>%
+   dplyr::group_by(cod_ibge) %>%
+   dplyr::filter(date == max(date, na.rm = TRUE)) %>%
+   dplyr::ungroup() %>%
+   dplyr::arrange(uf, date) %>%
+   dplyr::left_join(
+      y = tabela_ufs,
+      by = c("uf" = "abbrev_state")
+   ) %>%
+   dplyr::select(geom_uf = geom, dplyr::everything()) %>%
+   dplyr::arrange(cod_ibge, date) %>%
+   dplyr::left_join(
+      y = tabela_mun,
+      by = c("cod_ibge" = "code_muni")
+   ) %>%
+   dplyr::select(geom_mun = geom, dplyr::everything()) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom_mun, fill = contagios_acumulados_100k), color = "darkcyan") +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom_uf), alpha = 0, color = "blue", size = 1L) +
+   ggplot2::scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red"
+   ) +
+   ggplot2::scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
+   ggplot2::scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
+   ggplot2::labs(
+      x = "Longitude",
+      y = "Latitude",
+      title = "Contágios Acumulados na Região Sudeste",
+      subtitle = "Por grupo de 100 mil habitantes"
+   ) +
+   tema_bruno() +
+   ggplot2::theme(
+      legend.key.size = ggplot2::unit(1, "cm"),
+      legend.title = ggplot2::element_blank()
+   )
+```
 
 
 ***
 
 ## O que falta fazer...
 
-Com o processo construído para ser de fácil atualização e com os dados estruturados, as possibilidades de análise são muitas.
+Com o processo construído para ser de fácil atualização e com os dados estruturados, as possibilidades de análise são muitas...
 
-Ainda gostaria de poder explorar algumas questões de séries temporais... Com a sazonalidade visível entre novos contágios e novos óbitos, talvez fosse possível *estimar* uma projeção de óbitos com base nos contágios.
+Ainda gostaria de poder explorar algumas questões de séries temporais... Com a sazonalidade visível entre novos contágios e novos óbitos, talvez fosse possível *estimar* uma projeção de óbitos com base nos contágios. Ainda que este processo seja muito pouco estocástico e dependa muito do (praticamente imprevisível) comportamento humano...
+
+Meu desejo é o de continuar incluindo novas análises e funcionalidades neste pacote. Espero que tenha o tempo necessário para isso.

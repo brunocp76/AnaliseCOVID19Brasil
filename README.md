@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-15 04:00:29
+#> Atualizacao de dados iniciada em 2020-09-15 05:20:31
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.22 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 14.37 segundos.
 #> 
 #> 
 #> 
@@ -76,27 +76,27 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 59.59 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 60.39 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.44 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 1.39 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.27 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.23 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 78.52 segundos.
+#> O processamento foi concluido em 79.38 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
@@ -142,28 +142,28 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 1.11 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 1.08 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.45 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.36 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.56 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.54 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.41 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.4 segundos.
 #> 
 #> 
 #> 
@@ -183,7 +183,7 @@ bases_derivadas()
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 20.98 segundos.
+#> O processamento foi concluido em 20.83 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -416,13 +416,35 @@ Gráfico 11 - Evolução das Taxas de Mortalidade por Estado
 
 </div>
 
+E para não me esquecer demostrar uma das métricas normalizadas, um
+gráfico de mapa com 2 camadas, municípios e estados. Avaliando, na
+Região Sudeste, o contágio acumulado por grupo de 100 mil habitantes.
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-Contagios Acumulados por 100 mil habitantes-1.png" alt="Gráfico 12 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sudeste" width="100%" />
+
+<p class="caption">
+
+Gráfico 12 - Contágios Acumulados por 100 mil habitantes nos Municípios
+da Região Sudeste
+
+</p>
+
+</div>
+
 -----
 
 ## O que falta fazer…
 
 Com o processo construído para ser de fácil atualização e com os dados
-estruturados, as possibilidades de análise são muitas.
+estruturados, as possibilidades de análise são muitas…
 
 Ainda gostaria de poder explorar algumas questões de séries temporais…
 Com a sazonalidade visível entre novos contágios e novos óbitos, talvez
 fosse possível *estimar* uma projeção de óbitos com base nos contágios.
+Ainda que este processo seja muito pouco estocástico e dependa muito do
+(praticamente imprevisível) comportamento humano…
+
+Meu desejo é o de continuar incluindo novas análises e funcionalidades
+neste pacote. Espero que tenha o tempo necessário para isso.

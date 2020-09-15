@@ -300,32 +300,38 @@ sum(sf::st_area(x = tabela_mun))
 
 
 covid_cidades %>%
-   filter(regiao == "Sudeste") %>% glimpse()
-   arrange(uf, date) %>%
-   group_by(uf) %>%
+   filter(regiao == "Sudeste") %>%
+   arrange(cod_ibge, date) %>%
+   group_by(cod_ibge) %>%
    filter(date == max(date, na.rm = TRUE)) %>%
    ungroup() %>%
-   select(-c(contagios_novos_100k:obitos_acumulados_ln)) %>%
    arrange(uf, date) %>%
    left_join(
       y = tabela_ufs,
       by = c("uf" = "abbrev_state")
    ) %>%
+   select(geom_uf = geom, everything()) %>%
+   arrange(cod_ibge, date) %>%
+   left_join(
+      y = tabela_mun,
+      by = c("cod_ibge" = "code_muni")
+   ) %>%
+   select(geom_mun = geom, everything()) %>%
    ggplot() +
-   geom_sf(aes(geometry = geom, fill = taxa_mortalidade), color = "darkcyan") +
-   geom_sf_text(aes(geometry = geom, label = uf), size = 3.5) +
+   geom_sf(aes(geometry = geom_mun, fill = contagios_acumulados_100k), color = "darkcyan") +
+   geom_sf(aes(geometry = geom_uf), alpha = 0, color = "blue", size = 1L) +
    scale_fill_gradient2(
       low = "blue",
       mid = "white",
       high = "red"
    ) +
-   scale_x_continuous(breaks = seq(-75, -30, 5)) +
-   scale_y_continuous(breaks = seq(-35, 5, 5)) +
+   scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
+   scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
    labs(
       x = "Longitude",
       y = "Latitude",
-      title = "Taxa de Mortalidade da COVID-19",
-      subtitle = "Óbitos / Contágios"
+      title = "Contágios Acumulados na Região Sudeste",
+      subtitle = "Por grupo de 100 mil habitantes"
    ) +
    tema_bruno() +
    theme(
