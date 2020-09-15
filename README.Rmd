@@ -241,3 +241,107 @@ covid_estados %>%
 Algumas coisas aqui já chamam a atenção: O pico de contágios no estado de Santa Catarina, o volume negativo expressivo de contágios no Ceará e o volume expressivo de óbitos em Minas Gerais.
 
 Possivelmente por conta da contabilização de casos antigos não processados.
+
+Esses casos antigos também nos levam a outra questão por conta da possibilidade de transmissão assintomática, o tempo entre a detecção do contágio e a ocorrência do óbito.
+
+Vamos ver isso...
+
+```{r Correlações Cruzadas entre Contágios e Óbitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 07 - Correlações Cruzadas entre Contágios e Óbitos"}
+teste <- covid %>%
+   dplyr::select(
+      date,
+      contagios_novos,
+      obitos_novos
+      )
+
+correlacoes <- c()
+lags <- c(0:50)
+
+for (k in lags) {
+   tmp <- teste %>%
+      dplyr::mutate(lagk = dplyr::lag(contagios_novos, k)) %>%
+      dplyr::select(obitos_novos, lagk) %>%
+      na.omit()
+
+   correlacoes <- c(correlacoes, cor(tmp$obitos_novos, tmp$lagk))
+}
+
+dplyr::tibble(lags, correlacoes) %>%
+   ggplot2::ggplot(ggplot2::aes(x = lags, y = correlacoes)) +
+   ggplot2::geom_point(color = "yellow") +
+   ggplot2::geom_line(color = "green") +
+   ggplot2::labs(
+      x = "Número de Lags",
+      y = "Correlações",
+      title = "Correlações Cruzadas entre Contágios e Óbitos"
+   ) +
+   tema_bruno()
+
+rm(teste, correlacoes, lags, k)
+```
+
+Podemos ver, até da maneira como (não) são feitas as notificações no Brasil, que as maiores correlações são múltiplos de semanas inteiras...
+
+Voltemos a comparar os volumes de contágios e óbitos por estados:
+```{r Volumes de Novos Contágios por Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 08 - Volumes de Novos Contágios por Estado"}
+covid_estados %>%
+   dplyr::mutate(
+      estado = forcats::fct_reorder(.f = uf, .x = contagios_novos, .desc = TRUE)
+   ) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_boxplot(ggplot2::aes(x = estado, y = contagios_novos, fill = estado), color = "white", show.legend = FALSE) +
+   ggplot2::labs(
+      x = "Estados",
+      y = "Novos Contágios",
+      title = "Novos Contágios"
+   ) +
+   tema_bruno()
+```
+
+```{r Volumes de Novos Óbitos por Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 09 - Volumes de Novos Óbitos por Estado"}
+covid_estados %>%
+   dplyr::mutate(
+      estado = forcats::fct_reorder(.f = uf, .x = obitos_novos, .desc = TRUE)
+   ) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_boxplot(ggplot2::aes(x = estado, y = obitos_novos, fill = estado), color = "white", show.legend = FALSE) +
+   ggplot2::labs(
+      x = "Estados",
+      y = "Novos Óbitos",
+      title = "Novos Óbitos"
+   ) +
+   tema_bruno()
+```
+
+Também gostaria de tratar do problema de subnotificações. Para isso, vamos olhar as taxas de mortalidade dentre os casos detectados com a COVID-19.
+
+É sabido que em países que conseguem adotar a testagem em massa, a taxa de mortalidade, numa média de toda a população, fica em torno de 1%.
+
+Vamos ver como fica no Brasil.
+
+```{r Taxas de Mortalidade por Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 10 - Taxas de Mortalidade por Estado"}
+covid_estados %>%
+   dplyr::mutate(
+      uf = forcats::fct_reorder(.f = uf, .x = taxa_mortalidade, .desc = TRUE)
+   ) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_line(ggplot2::aes(x = date, y = taxa_mortalidade), color = "red") +
+   ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   tema_bruno() +
+   ggplot2::labs(
+      x = "Mês",
+      y = "Taxa de Mortalidade",
+      title = "Taxas de Mortalidade",
+      subtitle = "Estados Ordenados por Taxa de Mortalidade"
+   ) +
+   ggplot2::facet_wrap(vars(uf), scales = "free")
+```
+
+
+***
+
+## O que falta fazer...
+
+Com o processo construído para ser de fácil atualização e com os dados estruturados, as possibilidades de análise são muitas.
+
+Ainda gostaria de poder explorar algumas questões de séries temporais... Com a sazonalidade visível entre novos contágios e novos óbitos, talvez fosse possível *estimar* uma projeção de óbitos com base nos contágios.

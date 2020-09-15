@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-14 23:06:49
+#> Atualizacao de dados iniciada em 2020-09-15 00:00:44
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.5 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 14.6 segundos.
 #> 
 #> 
 #> 
@@ -76,27 +76,27 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 59.17 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 59.77 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.45 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 1.47 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.23 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.26 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 78.35 segundos.
+#> O processamento foi concluido em 79.1 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
@@ -149,21 +149,21 @@ bases_derivadas()
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.59 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.57 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.56 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.59 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.41 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.44 segundos.
 #> 
 #> 
 #> 
@@ -183,7 +183,7 @@ bases_derivadas()
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 21.07 segundos.
+#> O processamento foi concluido em 21.11 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "%>%"                  "covid"                "covid_brasil"        
@@ -336,3 +336,82 @@ o volume expressivo de óbitos em Minas Gerais.
 
 Possivelmente por conta da contabilização de casos antigos não
 processados.
+
+Esses casos antigos também nos levam a outra questão por conta da
+possibilidade de transmissão assintomática, o tempo entre a detecção do
+contágio e a ocorrência do óbito.
+
+Vamos ver isso…
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-Correlações Cruzadas entre Contágios e Óbitos-1.png" alt="Gráfico 07 - Correlações Cruzadas entre Contágios e Óbitos" width="100%" />
+
+<p class="caption">
+
+Gráfico 07 - Correlações Cruzadas entre Contágios e Óbitos
+
+</p>
+
+</div>
+
+Podemos ver, até da maneira como (não) são feitas as notificações no
+Brasil, que as maiores correlações são múltiplos de semanas inteiras…
+
+Voltemos a comparar os volumes de contágios e óbitos por estados:
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-Volumes de Novos Contágios por Estado-1.png" alt="Gráfico 08 - Volumes de Novos Contágios por Estado" width="100%" />
+
+<p class="caption">
+
+Gráfico 08 - Volumes de Novos Contágios por Estado
+
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-Volumes de Novos Óbitos por Estado-1.png" alt="Gráfico 09 - Volumes de Novos Óbitos por Estado" width="100%" />
+
+<p class="caption">
+
+Gráfico 09 - Volumes de Novos Óbitos por Estado
+
+</p>
+
+</div>
+
+Também gostaria de tratar do problema de subnotificações. Para isso,
+vamos olhar as taxas de mortalidade dentre os casos detectados com a
+COVID-19.
+
+É sabido que em países que conseguem adotar a testagem em massa, a taxa
+de mortalidade, numa média de toda a população, fica em torno de 1%.
+
+Vamos ver como fica no Brasil.
+
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-Taxas de Mortalidade por Estado-1.png" alt="Gráfico 10 - Taxas de Mortalidade por Estado" width="100%" />
+
+<p class="caption">
+
+Gráfico 10 - Taxas de Mortalidade por Estado
+
+</p>
+
+</div>
+
+-----
+
+## O que falta fazer…
+
+Com o processo construído para ser de fácil atualização e com os dados
+estruturados, as possibilidades de análise são muitas.
+
+Ainda gostaria de poder explorar algumas questões de séries temporais…
+Com a sazonalidade visível entre novos contágios e novos óbitos, talvez
+fosse possível *estimar* uma projeção de óbitos com base nos contágios.

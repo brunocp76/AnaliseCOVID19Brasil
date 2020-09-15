@@ -67,15 +67,35 @@ covid_cidades %>%
       semana_epidemiologica = as.factor(semana_epidem)
    ) %>%
    ggplot() +
-   geom_boxplot(aes(x = semana_epidemiologica, y = obitos_novos), fill = "white", color = "black")
+   geom_boxplot(aes(x = semana_epidemiologica, y = obitos_novos), fill = "white", color = "black") +
+   ylim(c(0, 300))
 
 covid_estados %>%
    mutate(
-      estado = as.factor(uf)
+      estado = forcats::fct_reorder(.f = uf, .x = contagios_novos, .desc = TRUE)
    ) %>%
    ggplot() +
-   geom_boxplot(aes(x = estado, y = contagios_novos), fill = "white", color = "black") +
-   ylim(c(0, 20000))
+   geom_boxplot(aes(x = estado, y = contagios_novos, fill = estado), color = "white", show.legend = FALSE) +
+   labs(
+      x = "Estados",
+      y = "Novos Contágios",
+      title = "Novos Contágios"
+   ) +
+   tema_bruno()
+
+covid_estados %>%
+   mutate(
+      estado = forcats::fct_reorder(.f = uf, .x = obitos_novos, .desc = TRUE)
+   ) %>%
+   ggplot() +
+   geom_boxplot(aes(x = estado, y = obitos_novos, fill = estado), color = "white", show.legend = FALSE) +
+   labs(
+      x = "Estados",
+      y = "Novos Óbitos",
+      title = "Novos Óbitos"
+   ) +
+   tema_bruno()
+
 
 
 # Para a animação dos dados... --------------------------------------------
@@ -118,8 +138,8 @@ animacao_contagios_ufs <- covid_estados %>%
    ggplot(aes(y = contagios_acumulados, x = date, color = uf)) +
    labs(
       x = "Data",
-      y = "Óbitos Acumulados",
-      title = "Óbitos Acumulados",
+      y = "Contágios Acumulados",
+      title = "Contágios Acumulados",
       subtitle = "Nos 10 maiores estados"
    ) +
    geom_line(show.legend = FALSE) +
@@ -160,18 +180,17 @@ covid_brasil %>%
 
 covid_estados %>%
    mutate(
-      uf = forcats::fct_reorder(.f = uf, .x = contagios_acumulados, .desc = TRUE)
+      uf = forcats::fct_reorder(.f = uf, .x = taxa_mortalidade, .desc = TRUE)
    ) %>%
    ggplot() +
-   geom_col(aes_string(x = "date", y = "contagios_novos"), fill = "#34A4A4", show.legend = FALSE) +
-   geom_line(aes(x = date, y = contagios_novos_mm7), color = "yellow", size = 1L) +
+   geom_line(aes(x = date, y = taxa_mortalidade), color = "red") +
    scale_x_date(date_breaks = "1 month", date_labels = "%m") +
    tema_bruno() +
    labs(
       x = "Mês",
-      y = "Novos Contágios",
-      title = "Volumes Diários de Novos Contágios",
-      subtitle = "Estados Ordenados por volume de Contágios Acumulados"
+      y = "Taxa de Mortalidade",
+      title = "Taxas de Mortalidade",
+      subtitle = "Estados Ordenados por Taxa de Mortalidade"
    ) +
    facet_wrap(vars(uf), scales = "free")
 
@@ -215,22 +234,33 @@ temporal_facetada(
 #
 
 
-covid %>%
-   filter(uf == 'SP') %>%
-   select(date, uf, contagios_novos, obitos_novos) %>%
-   group_by(date, country, type) %>%
-   pivot_wider(names_from =type, values_from=cases) %>%ungroup()
+teste <- covid %>%
+   select(
+      date,
+      contagios_novos,
+      obitos_novos
+      )
 
-correlations<-c()
-lags<-c(0:20)
+correlacoes <- c()
+lags <- c(0:50)
 
 for (k in lags) {
 
-   tmp<-df%>%mutate(lagk=lag(confirmed,k))%>%select(death,lagk)%>%na.omit()
+   tmp <- teste %>%
+      mutate(lagk = lag(contagios_novos, k)) %>%
+      select(obitos_novos, lagk) %>%
+      na.omit()
 
-   correlations<-c(correlations,cor(tmp$death, tmp$lagk))
+   correlacoes <- c(correlacoes, cor(tmp$obitos_novos, tmp$lagk))
 }
 
-data.frame(lags, correlations)
-
-data.frame(lags, correlations)%>%ggplot(aes(x=lags, y=correlations))+geom_point()
+tibble(lags, correlacoes) %>%
+   ggplot(aes(x = lags, y = correlacoes)) +
+   geom_point(color = "yellow") +
+   geom_line(color = "green") +
+   labs(
+      x = "Número de Lags",
+      y = "Correlações",
+      title = "Correlações Cruzadas entre Contágios e Óbitos"
+   ) +
+   tema_bruno()
