@@ -92,7 +92,7 @@ Com os dados atualizados e organizados, podemos fazer as primeiras observações
 
 ### Contágio
 
-```{r Maiores_Contagios_nos_Estados, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia"}
+```{r Maiores_Contagios_nos_Estados, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia"}
 covid_estados %>%
    dplyr::group_by(uf, date) %>%
    dplyr::summarise(contagios_acumulados = sum(contagios_acumulados)) %>%
