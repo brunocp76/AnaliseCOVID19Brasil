@@ -90,7 +90,7 @@ Segue a relação de bases disponíveis:
 
 Com os dados atualizados e organizados, podemos fazer as primeiras observações:
 
-### Contágio
+### Contágios
 
 ```{r Maiores_Contagios_nos_Estados, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia"}
 covid_estados %>%
@@ -105,10 +105,11 @@ covid_estados %>%
          dplyr::nth(5)
    ) %>%
    dplyr::filter(num_contagios >= limite) %>%
-   ggplot2::ggplot(ggplot2::aes(y = contagios_acumulados, x = date, color = uf)) +
+   dplyr::mutate(contagios_acumulados_por_mil = contagios_acumulados / 1000) %>% 
+   ggplot2::ggplot(ggplot2::aes(y = contagios_acumulados_por_mil, x = date, color = uf)) +
    ggplot2::labs(
       x = "Data",
-      y = "Contágios Acumulados",
+      y = "Contágios Acumulados (x 1.000)",
       title = "Contágios Acumulados",
       subtitle = "Nos estados com os 5 maiores volumes"
    ) +
@@ -122,7 +123,7 @@ covid_estados %>%
 
 ### Óbitos
 
-```{r Maiores_Obitos_nos_Estados, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 6, fig.cap = "Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia"}
+```{r Maiores_Obitos_nos_Estados, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia"}
 covid_estados %>%
    dplyr::group_by(uf, date) %>%
    dplyr::summarise(obitos_acumulados = sum(obitos_acumulados)) %>%
@@ -135,10 +136,11 @@ covid_estados %>%
          dplyr::nth(5)
    ) %>%
    dplyr::filter(num_obitos >= limite) %>%
-   ggplot2::ggplot(ggplot2::aes(y = obitos_acumulados, x = date, color = uf)) +
+   dplyr::mutate(obitos_acumulados_por_mil = obitos_acumulados / 1000) %>% 
+   ggplot2::ggplot(ggplot2::aes(y = obitos_acumulados_por_mil, x = date, color = uf)) +
    ggplot2::labs(
       x = "Data",
-      y = "Óbitos Acumulados",
+      y = "Óbitos Acumulados (x 1.000)",
       title = "Óbitos Acumulados",
       subtitle = "Nos estados com os 5 maiores volumes"
    ) +

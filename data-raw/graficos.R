@@ -21,14 +21,14 @@ tema_bruno <- function() {
       panel.grid.major.x = ggplot2::element_line(color = "#324C63", size = 0.5, linetype = "dotted"),
       panel.grid.major.y = ggplot2::element_line(color = "#324C63", size = 0.5),
       panel.grid.minor.x = ggplot2::element_blank(),
-      panel.grid.minor.y = ggplot2::element_line(color = "#324C63", size = 0.2, linetype = "dotted"),
+      panel.grid.minor.y = ggplot2::element_line(color = "#324C63", size = 0.2),
       # Bloco sobre os textos...
-      plot.title = ggplot2::element_text(hjust = 0.5, face = "bold", size = 16),
-      plot.subtitle = ggplot2::element_text(hjust = 1, face = "italic", size = 14),
+      plot.title = ggplot2::element_text(hjust = 0.5, face = "bold", size = 14),
+      plot.subtitle = ggplot2::element_text(hjust = 1, face = "italic", size = 12),
       text = ggplot2::element_text(colour = "#11a2c6"),
       # Bloco sobre os eixos...
-      axis.text = ggplot2::element_text(color = "#5889c8", size = 14),
-      axis.title = ggplot2::element_text(color = "#11a2c6", size = 14),
+      axis.text = ggplot2::element_text(color = "#5889c8", size = 12),
+      axis.title = ggplot2::element_text(color = "#11a2c6", size = 12),
       axis.ticks.x = ggplot2::element_line(color = "#324C63"),
       axis.ticks.y = ggplot2::element_line(color = "#324C63"),
       axis.line.x = ggplot2::element_blank()
