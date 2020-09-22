@@ -619,7 +619,7 @@ rm(coords_munic, area_munic)
 cls()
 
 vroom::vroom(
-   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD-07-09-2020.csv"
+   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD-14-09-2020.csv"
    , delim = ";"
    , col_names = TRUE
    , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")

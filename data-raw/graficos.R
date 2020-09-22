@@ -11,25 +11,27 @@ tema_bruno <- function() {
    ggplot2::theme(
       # Bloco sobre a legenda...
       legend.position = "bottom",
-      legend.background = element_rect(fill = "black", color = "black"),
-      legend.box.background = element_rect(fill = "black", color = "black"),
-      legend.key = element_rect(fill = "black"),
+      legend.background = ggplot2::element_rect(fill = "black", color = "black"),
+      legend.box.background = ggplot2::element_rect(fill = "black", color = "black"),
+      legend.key = ggplot2::element_rect(fill = "black"),
       # Bloco sobre o fundo...
-      panel.background = element_rect(fill = "black"),
-      plot.background = element_rect(fill = "black", color = "cyan"),
+      panel.background = ggplot2::element_rect(fill = "black"),
+      plot.background = ggplot2::element_rect(fill = "black", color = "cyan"),
       # Bloco sobre as linhas de grade...
-      panel.grid.major.x = element_line(color = "#324C63", size = 0.5, linetype = "dotted"),
-      panel.grid.major.y = element_line(color = "#324C63", size = 0.5),
-      panel.grid.minor.x = element_blank(),
-      panel.grid.minor.y = element_line(color = "#324C63", size = 0.2, linetype = "dotted"),
+      panel.grid.major.x = ggplot2::element_line(color = "#324C63", size = 0.5, linetype = "dotted"),
+      panel.grid.major.y = ggplot2::element_line(color = "#324C63", size = 0.5),
+      panel.grid.minor.x = ggplot2::element_blank(),
+      panel.grid.minor.y = ggplot2::element_line(color = "#324C63", size = 0.2, linetype = "dotted"),
       # Bloco sobre os textos...
-      plot.title = element_text(hjust = 0.5),
-      text = element_text(colour = "#11a2c6"),
+      plot.title = ggplot2::element_text(hjust = 0.5, face = "bold", size = 16),
+      plot.subtitle = ggplot2::element_text(hjust = 1, face = "italic", size = 14),
+      text = ggplot2::element_text(colour = "#11a2c6"),
       # Bloco sobre os eixos...
-      axis.text = element_text(color = "#3465A4"),
-      axis.ticks.x = element_line(color = "#324C63"),
-      axis.ticks.y = element_line(color = "#324C63"),
-      axis.line.x = element_blank()
+      axis.text = ggplot2::element_text(color = "#5889c8", size = 14),
+      axis.title = ggplot2::element_text(color = "#11a2c6", size = 14),
+      axis.ticks.x = ggplot2::element_line(color = "#324C63"),
+      axis.ticks.y = ggplot2::element_line(color = "#324C63"),
+      axis.line.x = ggplot2::element_blank()
    )
 }
 

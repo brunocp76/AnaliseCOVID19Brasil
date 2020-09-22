@@ -45,7 +45,7 @@ atualiza_dados <- function() {
        "\n\n", "O processamento foi concluido em ",
        sum(tempo_covid_brasilio, tempo_covid_minister, tempo_infos_geo,
            tempo_semana_epid, tempo_infos_municip, tempo_base_covid),
-       " segundos.", "\n\n", "Segue um resumo da base:", "\n\n", sep = "")
+       " segundos.", "\n\n", "Segue um meta-resumo da base:", "\n\n", sep = "")
 
    rm(semana_epid, envir = globalenv())
    rm(infos_chaves, envir = globalenv())

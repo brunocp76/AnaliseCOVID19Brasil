@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-15 05:20:31
+#> Atualizacao de dados iniciada em 2020-09-22 11:36:58
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.37 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 14.84 segundos.
 #> 
 #> 
 #> 
@@ -76,31 +76,31 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 60.39 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 62.79 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.39 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 1.44 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.23 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.32 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 79.38 segundos.
+#> O processamento foi concluido em 82.39 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
-#> Rows: 958,276
+#> Rows: 997,754
 #> Columns: 18
 #> $ date                 <date> 2020-03-27, 2020-03-28, 2020-03-29, 2020-03-3...
 #> $ semana_epidem        <int> 13, 13, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15...
@@ -142,48 +142,48 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 1.08 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 1.09 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.36 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.6 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.54 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.65 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.4 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.7 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.2 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.64 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.25 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.28 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 20.83 segundos.
+#> O processamento foi concluido em 21.96 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -228,7 +228,7 @@ observações:
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Maiores Contagios nos Estados-1.gif" alt="Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia" width="100%" />
+<img src="docs/README-Maiores_Contagios_nos_Estados-1.gif" alt="Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia" width="100%" />
 
 <p class="caption">
 
@@ -243,7 +243,7 @@ Pandemia
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Maiores Obitos nos Estados-1.gif" alt="Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia" width="100%" />
+<img src="docs/README-Maiores_Obitos_nos_Estados-1.gif" alt="Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia" width="100%" />
 
 <p class="caption">
 
@@ -268,7 +268,7 @@ Primeiro os volumes diários de contágios…
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes Diarios de Contagios-1.png" alt="Gráfico 03 - Volumes Diários de Novos Contágios no Brasil" width="100%" />
+<img src="docs/README-Volumes_Diarios_de_Contagios-1.png" alt="Gráfico 03 - Volumes Diários de Novos Contágios no Brasil" width="100%" />
 
 <p class="caption">
 
@@ -282,7 +282,7 @@ Gráfico 03 - Volumes Diários de Novos Contágios no Brasil
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes Diarios de Obitos-1.png" alt="Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil" width="100%" />
+<img src="docs/README-Volumes_Diarios_de_Obitos-1.png" alt="Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil" width="100%" />
 
 <p class="caption">
 
@@ -305,7 +305,7 @@ Primeiro os volumes diários de contágios…
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes Estaduais de Contagios-1.png" alt="Gráfico 05 - Volumes Diários de Novos Contágios por Estado" width="100%" />
+<img src="docs/README-Volumes_Estaduais_de_Contagios-1.png" alt="Gráfico 05 - Volumes Diários de Novos Contágios por Estado" width="100%" />
 
 <p class="caption">
 
@@ -319,7 +319,7 @@ Gráfico 05 - Volumes Diários de Novos Contágios por Estado
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes Estaduais de Obitos-1.png" alt="Gráfico 06 - Volumes Diários de Novos Óbitos por Estado" width="100%" />
+<img src="docs/README-Volumes_Estaduais_de_Obitos-1.png" alt="Gráfico 06 - Volumes Diários de Novos Óbitos por Estado" width="100%" />
 
 <p class="caption">
 
@@ -344,11 +344,11 @@ Vamos ver isso…
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Correlacoes Cruzadas entre Contagios e Obitos-1.png" alt="Gráfico 07 - Correlações Cruzadas entre Contágios e Óbitos" width="100%" />
+<img src="docs/README-Correlacao_Cruzada_entre_Contagios_e_Obitos-1.png" alt="Gráfico 07 - Correlação Cruzada entre Contágios e Óbitos" width="100%" />
 
 <p class="caption">
 
-Gráfico 07 - Correlações Cruzadas entre Contágios e Óbitos
+Gráfico 07 - Correlação Cruzada entre Contágios e Óbitos
 
 </p>
 
@@ -359,9 +359,11 @@ Brasil, que as maiores correlações são múltiplos de semanas inteiras…
 
 Voltemos a comparar os volumes de contágios e óbitos por estados:
 
+Ordenarei as regiões pelo tamanho da população.
+
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes de Novos Contagios por Estado-1.png" alt="Gráfico 08 - Volumes de Novos Contágios por Estado" width="100%" />
+<img src="docs/README-Volumes_de_Novos_Contagios_por_Estado-1.png" alt="Gráfico 08 - Volumes de Novos Contágios por Estado" width="100%" />
 
 <p class="caption">
 
@@ -373,7 +375,7 @@ Gráfico 08 - Volumes de Novos Contágios por Estado
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Volumes de Novos Obitos por Estado-1.png" alt="Gráfico 09 - Volumes de Novos Óbitos por Estado" width="100%" />
+<img src="docs/README-Volumes_de_Novos_Obitos_por_Estado-1.png" alt="Gráfico 09 - Volumes de Novos Óbitos por Estado" width="100%" />
 
 <p class="caption">
 
@@ -394,7 +396,7 @@ Vamos ver como fica no Brasil.
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Taxas de Mortalidade no Brasil-1.png" alt="Gráfico 10 - Taxas de Mortalidade por Estado" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_no_Brasil-1.png" alt="Gráfico 10 - Taxas de Mortalidade por Estado" width="100%" />
 
 <p class="caption">
 
@@ -404,13 +406,84 @@ Gráfico 10 - Taxas de Mortalidade por Estado
 
 </div>
 
+Vamos ver o histórico desta taxa de mortalidade (a razão entre a
+quantidade de óbitos e a quantidade de contágios).
+
+Ordenarei as regiões pelo tamanho da população.
+
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Taxas de Mortalidade por Estado-1.png" alt="Gráfico 11 - Evolução das Taxas de Mortalidade por Estado" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estados_do_Sudeste-1.png" alt="Gráfico 11 - Evolução das Taxas de Mortalidade por Estado na Região Sudeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 11 - Evolução das Taxas de Mortalidade por Estado
+Gráfico 11 - Evolução das Taxas de Mortalidade por Estado na Região
+Sudeste
+
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Nordeste-1.png" alt="Gráfico 12 - Evolução das Taxas de Mortalidade por Estado na Região Nordeste" width="100%" />
+
+<p class="caption">
+
+Gráfico 12 - Evolução das Taxas de Mortalidade por Estado na Região
+Nordeste
+
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Sul-1.png" alt="Gráfico 13 - Evolução das Taxas de Mortalidade por Estado na Região Sul" width="100%" />
+
+<p class="caption">
+
+Gráfico 13 - Evolução das Taxas de Mortalidade por Estado na Região Sul
+
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Norte-1.png" alt="Gráfico 14 - Evolução das Taxas de Mortalidade por Estado na Região Norte" width="100%" />
+
+<p class="caption">
+
+Gráfico 14 - Evolução das Taxas de Mortalidade por Estado na Região
+Norte
+
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Centro_Oeste-1.png" alt="Gráfico 15 - Evolução das Taxas de Mortalidade por Estado da Região Centro-Oeste" width="100%" />
+
+<p class="caption">
+
+Gráfico 15 - Evolução das Taxas de Mortalidade por Estado da Região
+Centro-Oeste
+
+</p>
+
+</div>
+
+Vamos olhar o histórico da Taxa de Mortalidade (consolidada) no Brasil:
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Taxa_de_Mortalidade_no_Brasil-1.gif" alt="Gráfico 16 - Animação da Evolução da Taxa de Mortalidade no Brasil" width="100%" />
+
+<p class="caption">
+
+Gráfico 16 - Animação da Evolução da Taxa de Mortalidade no Brasil
 
 </p>
 
@@ -422,11 +495,11 @@ Região Sudeste, o contágio acumulado por grupo de 100 mil habitantes.
 
 <div class="figure" style="text-align: center">
 
-<img src="man/figures/README-Contagios Acumulados por 100 mil habitantes-1.png" alt="Gráfico 12 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sudeste" width="100%" />
+<img src="docs/README-Contagios_Acumulados_por_100_mil_habitantes-1.png" alt="Gráfico 17 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sudeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 12 - Contágios Acumulados por 100 mil habitantes nos Municípios
+Gráfico 17 - Contágios Acumulados por 100 mil habitantes nos Municípios
 da Região Sudeste
 
 </p>
