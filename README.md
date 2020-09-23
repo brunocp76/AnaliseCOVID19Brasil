@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-22 20:49:35
+#> Atualizacao de dados iniciada em 2020-09-22 23:18:32
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.39 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 14.86 segundos.
 #> 
 #> 
 #> 
@@ -76,27 +76,27 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 63.88 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 61.78 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.45 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 1.42 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.46 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.37 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 83.18 segundos.
+#> O processamento foi concluido em 81.43 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
@@ -149,28 +149,28 @@ bases_derivadas()
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.73 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.75 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.63 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.65 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.58 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.54 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.37 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.35 segundos.
 #> 
 #> 
 #> 
@@ -183,7 +183,7 @@ bases_derivadas()
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 21.67 segundos.
+#> O processamento foi concluido em 21.65 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -341,6 +341,8 @@ contágio e a ocorrência do óbito.
 
 Vamos ver isso…
 
+### Correlação entre Contágios e Óbitos
+
 <div class="figure" style="text-align: center">
 
 <img src="docs/README-Correlacao_Cruzada_entre_Contagios_e_Obitos-1.png" alt="Gráfico 07 - Correlação Cruzada entre Contágios e Óbitos" width="100%" />
@@ -383,6 +385,8 @@ Gráfico 09 - Volumes de Novos Óbitos por Estado
 </p>
 
 </div>
+
+### Taxa de Mortalidade
 
 Também gostaria de tratar do problema de subnotificações. Para isso,
 vamos olhar as taxas de mortalidade dentre os casos detectados com a
@@ -487,6 +491,8 @@ Gráfico 16 - Animação da Evolução da Taxa de Mortalidade no Brasil
 </p>
 
 </div>
+
+### Contágios por 100 mil habitantes
 
 E para não me esquecer demostrar uma das métricas normalizadas, um
 gráfico de mapa com 2 camadas, municípios e estados. Avaliando, na

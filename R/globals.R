@@ -88,6 +88,7 @@ utils::globalVariables(
       "sumario_regioes_brasil",
       "sumario_regioes_saude",
       "uf",
-      "uf_temp"
+      "uf_temp",
+      "<<-"
    )
 )
