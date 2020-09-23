@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-22 23:18:32
+#> Atualizacao de dados iniciada em 2020-09-23 01:40:02
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.86 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 15.03 segundos.
 #> 
 #> 
 #> 
@@ -76,27 +76,27 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 61.78 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 63.73 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.42 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 1.46 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.37 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.42 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 81.43 segundos.
+#> O processamento foi concluido em 83.64 segundos.
 #> 
 #> Segue um resumo da base:
 #> 
@@ -142,35 +142,35 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 1.11 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 1.13 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.75 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.81 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.65 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.64 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.54 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.56 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.35 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.37 segundos.
 #> 
 #> 
 #> 
@@ -183,7 +183,7 @@ bases_derivadas()
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 21.65 segundos.
+#> O processamento foi concluido em 21.76 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -226,45 +226,36 @@ observações:
 
 ### Contágios
 
+#### Novos Contágios por Estado/Região
+
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Maiores_Contagios_nos_Estados-1.gif" alt="Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia" width="100%" />
+<img src="docs/README-Volumes_de_Novos_Contagios_por_Estado-1.png" alt="Gráfico 01 - Volumes de Novos Contágios por Estado" width="100%" />
 
 <p class="caption">
 
-Gráfico 01 - Animação dos 5 estados com maiores volumes de Contágio pela
+Gráfico 01 - Volumes de Novos Contágios por Estado
+
+</p>
+
+</div>
+
+#### Olhando de Perto os 5 estados com o maior número de contágios
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Maiores_Contagios_nos_Estados-1.gif" alt="Gráfico 02 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia" width="100%" />
+
+<p class="caption">
+
+Gráfico 02 - Animação dos 5 estados com maiores volumes de Contágio pela
 Pandemia
 
 </p>
 
 </div>
 
-### Óbitos
-
-<div class="figure" style="text-align: center">
-
-<img src="docs/README-Maiores_Obitos_nos_Estados-1.gif" alt="Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia" width="100%" />
-
-<p class="caption">
-
-Gráfico 02 - Animação dos 5 estados com maiores volumes de Óbitos pela
-Pandemia
-
-</p>
-
-</div>
-
-De certa forma, era esperado que os estados com maior população tivessem
-os maiores volumes tanto de contágios quanto de óbitos.
-
-Para isso eu construí uma série de indicadores ditos normalizados, tais
-como volumes de contágios e óbitos por grupo de 100 mil habitantes.
-
-Mas antes disso, pensemos na pergunta sobre se a pandemia está
-arrefecendo ou não… Vejamos os volumes de contágios e óbitos novos
-diários, com o já conhecido ajuste de média móvel.
-
-Primeiro os volumes diários de contágios…
+#### Volumes Diários de Contágios Brasil (com ajuste de Média Móvel de 7 dias)
 
 <div class="figure" style="text-align: center">
 
@@ -278,51 +269,197 @@ Gráfico 03 - Volumes Diários de Novos Contágios no Brasil
 
 </div>
 
-…e em seguida dos volumes diários de óbitos.
+#### Volumes Diários de Contágios por Região/Estado (com ajuste de Média Móvel de 7 dias)
+
+##### Sudeste
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Volumes_Diarios_de_Obitos-1.png" alt="Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil" width="100%" />
+<img src="docs/README-Volumes_Estaduais_de_Contagios_Sudeste-1.png" alt="Gráfico 04 - Volumes Diários de Novos Contágios por Estado da Região Sudeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 04 - Volumes Diários de Novos Óbitos no Brasil
+Gráfico 04 - Volumes Diários de Novos Contágios por Estado da Região
+Sudeste
 
 </p>
 
 </div>
 
-A pandemia parece ter diminuído de patamar, mas não dá para descansar…
-
-Da forma como este pacote foi construído para ser simples de atualizar
-os dados, nos próximos dias podemos ver a provável consequência das
-frequentes aglomerações vistas recentemente…
-
-Vamos olhar mais de perto este indicador nos estados:
-
-Primeiro os volumes diários de contágios…
+##### Nordeste
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Volumes_Estaduais_de_Contagios-1.png" alt="Gráfico 05 - Volumes Diários de Novos Contágios por Estado" width="100%" />
+<img src="docs/README-Volumes_Estaduais_de_Contagios_Nordeste-1.png" alt="Gráfico 05 - Volumes Diários de Novos Contágios por Estado da Região Nordeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 05 - Volumes Diários de Novos Contágios por Estado
+Gráfico 05 - Volumes Diários de Novos Contágios por Estado da Região
+Nordeste
 
 </p>
 
 </div>
 
-…e em seguida dos volumes diários de óbitos.
+##### Sul
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Volumes_Estaduais_de_Obitos-1.png" alt="Gráfico 06 - Volumes Diários de Novos Óbitos por Estado" width="100%" />
+<img src="docs/README-Volumes_Estaduais_de_Contagios_Sul-1.png" alt="Gráfico 06 - Volumes Diários de Novos Contágios por Estado da Região Sul" width="100%" />
 
 <p class="caption">
 
-Gráfico 06 - Volumes Diários de Novos Óbitos por Estado
+Gráfico 06 - Volumes Diários de Novos Contágios por Estado da Região Sul
+
+</p>
+
+</div>
+
+##### Centro-Oeste
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Volumes_Estaduais_de_Contagios_Centro_Oeste-1.png" alt="Gráfico 07 - Volumes Diários de Novos Contágios por Estado da Região Centro-Oeste" width="100%" />
+
+<p class="caption">
+
+Gráfico 07 - Volumes Diários de Novos Contágios por Estado da Região
+Centro-Oeste
+
+</p>
+
+</div>
+
+##### Norte
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Volumes_Estaduais_de_Contagios_Norte-1.png" alt="Gráfico 08 - Volumes Diários de Novos Contágios por Estado da Região Norte" width="100%" />
+
+<p class="caption">
+
+Gráfico 08 - Volumes Diários de Novos Contágios por Estado da Região
+Norte
+
+</p>
+
+</div>
+
+### Óbitos
+
+#### Novos Óbitos por Estado/Região
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Volumes_de_Novos_Obitos_por_Estado-1.png" alt="Gráfico 09 - Volumes de Novos Óbitos por Estado" width="100%" />
+
+<p class="caption">
+
+Gráfico 09 - Volumes de Novos Óbitos por Estado
+
+</p>
+
+</div>
+
+#### Olhando de Perto os 5 estados com o maior número de óbitos
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Maiores_Obitos_nos_Estados-1.gif" alt="Gráfico 10 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia" width="100%" />
+
+<p class="caption">
+
+Gráfico 10 - Animação dos 5 estados com maiores volumes de Óbitos pela
+Pandemia
+
+</p>
+
+</div>
+
+#### Volumes Diários de Óbitos Brasil (com ajuste de Média Móvel de 7 dias)
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Volumes_Diarios_de_Obitos-1.png" alt="Gráfico 11 - Volumes Diários de Novos Óbitos no Brasil" width="100%" />
+
+<p class="caption">
+
+Gráfico 11 - Volumes Diários de Novos Óbitos no Brasil
+
+</p>
+
+</div>
+
+#### Volumes Diários de Óbitos por Região/Estado (com ajuste de Média Móvel de 7 dias)
+
+##### Sudeste
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Volumes_Estaduais_de_Obitos_Sudeste-1.png" alt="Gráfico 12 - Volumes Diários de Novos Óbitos por Estado da Região Sudeste" width="100%" />
+
+<p class="caption">
+
+Gráfico 12 - Volumes Diários de Novos Óbitos por Estado da Região
+Sudeste
+
+</p>
+
+</div>
+
+##### Nordeste
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Volumes_Estaduais_de_Obitos_Nordeste-1.png" alt="Gráfico 13 - Volumes Diários de Novos Óbitos por Estado da Região Nordeste" width="100%" />
+
+<p class="caption">
+
+Gráfico 13 - Volumes Diários de Novos Óbitos por Estado da Região
+Nordeste
+
+</p>
+
+</div>
+
+##### Sul
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Volumes_Estaduais_de_Obitos_Sul-1.png" alt="Gráfico 14 - Volumes Diários de Novos Óbitos por Estado da Região Sul" width="100%" />
+
+<p class="caption">
+
+Gráfico 14 - Volumes Diários de Novos Óbitos por Estado da Região Sul
+
+</p>
+
+</div>
+
+##### Centro-Oeste
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Volumes_Estaduais_de_Obitos_Centro_Oeste-1.png" alt="Gráfico 15 - Volumes Diários de Novos Óbitos por Estado da Região Centro-Oeste" width="100%" />
+
+<p class="caption">
+
+Gráfico 15 - Volumes Diários de Novos Óbitos por Estado da Região
+Centro-Oeste
+
+</p>
+
+</div>
+
+##### Norte
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Volumes_Estaduais_de_Obitos_Norte-1.png" alt="Gráfico 16 - Volumes Diários de Novos Óbitos por Estado da Região Norte" width="100%" />
+
+<p class="caption">
+
+Gráfico 16 - Volumes Diários de Novos Óbitos por Estado da Região Norte
 
 </p>
 
@@ -339,17 +476,15 @@ Esses casos antigos também nos levam a outra questão por conta da
 possibilidade de transmissão assintomática, o tempo entre a detecção do
 contágio e a ocorrência do óbito.
 
-Vamos ver isso…
-
 ### Correlação entre Contágios e Óbitos
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Correlacao_Cruzada_entre_Contagios_e_Obitos-1.png" alt="Gráfico 07 - Correlação Cruzada entre Contágios e Óbitos" width="100%" />
+<img src="docs/README-Correlacao_Cruzada_entre_Contagios_e_Obitos-1.png" alt="Gráfico 17 - Correlação Cruzada entre Contágios e Óbitos" width="100%" />
 
 <p class="caption">
 
-Gráfico 07 - Correlação Cruzada entre Contágios e Óbitos
+Gráfico 17 - Correlação Cruzada entre Contágios e Óbitos
 
 </p>
 
@@ -358,135 +493,114 @@ Gráfico 07 - Correlação Cruzada entre Contágios e Óbitos
 Podemos ver, até da maneira como (não) são feitas as notificações no
 Brasil, que as maiores correlações são múltiplos de semanas inteiras…
 
-Voltemos a comparar os volumes de contágios e óbitos por estados:
-
-Ordenarei as regiões pelo tamanho da população.
-
-<div class="figure" style="text-align: center">
-
-<img src="docs/README-Volumes_de_Novos_Contagios_por_Estado-1.png" alt="Gráfico 08 - Volumes de Novos Contágios por Estado" width="100%" />
-
-<p class="caption">
-
-Gráfico 08 - Volumes de Novos Contágios por Estado
-
-</p>
-
-</div>
-
-<div class="figure" style="text-align: center">
-
-<img src="docs/README-Volumes_de_Novos_Obitos_por_Estado-1.png" alt="Gráfico 09 - Volumes de Novos Óbitos por Estado" width="100%" />
-
-<p class="caption">
-
-Gráfico 09 - Volumes de Novos Óbitos por Estado
-
-</p>
-
-</div>
-
 ### Taxa de Mortalidade
 
-Também gostaria de tratar do problema de subnotificações. Para isso,
-vamos olhar as taxas de mortalidade dentre os casos detectados com a
-COVID-19.
+Uma vez que temos as quantidades de contágios e de óbitos, podemos
+calcular a Taxa de Mortalidade (Número de Mortos / Número de Contágios)
 
-É sabido que em países que conseguem adotar a testagem em massa, a taxa
-de mortalidade, numa média de toda a população, fica em torno de 1%.
+É sabido que em países que conseguem adotar a testagem em massa, numa
+média de toda a população, a taxa de mortalidade fica **em torno de
+1%**.
 
-Vamos ver como fica no Brasil.
+#### Mortalidade no Mapa
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxas_de_Mortalidade_no_Brasil-1.png" alt="Gráfico 10 - Taxas de Mortalidade por Estado" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_no_Brasil-1.png" alt="Gráfico 18 - Taxas de Mortalidade por Estado" width="100%" />
 
 <p class="caption">
 
-Gráfico 10 - Taxas de Mortalidade por Estado
+Gráfico 18 - Taxas de Mortalidade por Estado
 
 </p>
 
 </div>
 
-Vamos ver o histórico desta taxa de mortalidade (a razão entre a
-quantidade de óbitos e a quantidade de contágios).
+#### Evolução Histórica das Taxas de Mortalidade no Brasil
 
-Ordenarei as regiões pelo tamanho da população.
+##### Sudeste
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxas_de_Mortalidade_por_Estados_do_Sudeste-1.png" alt="Gráfico 11 - Evolução das Taxas de Mortalidade por Estado na Região Sudeste" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estados_do_Sudeste-1.png" alt="Gráfico 19 - Evolução das Taxas de Mortalidade por Estado na Região Sudeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 11 - Evolução das Taxas de Mortalidade por Estado na Região
+Gráfico 19 - Evolução das Taxas de Mortalidade por Estado na Região
 Sudeste
 
 </p>
 
 </div>
 
+##### Nordeste
+
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Nordeste-1.png" alt="Gráfico 12 - Evolução das Taxas de Mortalidade por Estado na Região Nordeste" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Nordeste-1.png" alt="Gráfico 20 - Evolução das Taxas de Mortalidade por Estado na Região Nordeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 12 - Evolução das Taxas de Mortalidade por Estado na Região
+Gráfico 20 - Evolução das Taxas de Mortalidade por Estado na Região
 Nordeste
 
 </p>
 
 </div>
 
+##### Sul
+
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Sul-1.png" alt="Gráfico 13 - Evolução das Taxas de Mortalidade por Estado na Região Sul" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Sul-1.png" alt="Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região Sul" width="100%" />
 
 <p class="caption">
 
-Gráfico 13 - Evolução das Taxas de Mortalidade por Estado na Região Sul
+Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região Sul
 
 </p>
 
 </div>
 
-<div class="figure" style="text-align: center">
-
-<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Norte-1.png" alt="Gráfico 14 - Evolução das Taxas de Mortalidade por Estado na Região Norte" width="100%" />
-
-<p class="caption">
-
-Gráfico 14 - Evolução das Taxas de Mortalidade por Estado na Região
-Norte
-
-</p>
-
-</div>
+##### Centro-Oeste
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Centro_Oeste-1.png" alt="Gráfico 15 - Evolução das Taxas de Mortalidade por Estado da Região Centro-Oeste" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Centro_Oeste-1.png" alt="Gráfico 22 - Evolução das Taxas de Mortalidade por Estado da Região Centro-Oeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 15 - Evolução das Taxas de Mortalidade por Estado da Região
+Gráfico 22 - Evolução das Taxas de Mortalidade por Estado da Região
 Centro-Oeste
 
 </p>
 
 </div>
 
-Vamos olhar o histórico da Taxa de Mortalidade (consolidada) no Brasil:
+##### Norte
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxa_de_Mortalidade_no_Brasil-1.gif" alt="Gráfico 16 - Animação da Evolução da Taxa de Mortalidade no Brasil" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Norte-1.png" alt="Gráfico 23 - Evolução das Taxas de Mortalidade por Estado na Região Norte" width="100%" />
 
 <p class="caption">
 
-Gráfico 16 - Animação da Evolução da Taxa de Mortalidade no Brasil
+Gráfico 23 - Evolução das Taxas de Mortalidade por Estado na Região
+Norte
+
+</p>
+
+</div>
+
+##### Brasil (animado)
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Taxa_de_Mortalidade_no_Brasil-1.gif" alt="Gráfico 24 - Animação da Evolução da Taxa de Mortalidade no Brasil" width="100%" />
+
+<p class="caption">
+
+Gráfico 24 - Animação da Evolução da Taxa de Mortalidade no Brasil
 
 </p>
 
@@ -500,11 +614,11 @@ Região Sudeste, o contágio acumulado por grupo de 100 mil habitantes.
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Contagios_Acumulados_por_100_mil_habitantes-1.png" alt="Gráfico 17 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sudeste" width="100%" />
+<img src="docs/README-Contagios_Acumulados_por_100_mil_habitantes-1.png" alt="Gráfico 25 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sudeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 17 - Contágios Acumulados por 100 mil habitantes nos Municípios
+Gráfico 25 - Contágios Acumulados por 100 mil habitantes nos Municípios
 da Região Sudeste
 
 </p>
