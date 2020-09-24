@@ -96,7 +96,7 @@ Com os dados atualizados e organizados, podemos fazer as primeiras observações
 
 #### Novos Contágios por Estado/Região
 
-```{r Volumes_de_Novos_Contagios_por_Estado, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 01 - Volumes de Novos Contágios por Estado"}
+```{r Volumes_de_Novos_Contagios_por_Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 01 - Volumes de Novos Contágios por Estado"}
 covid_estados %>%
    dplyr::mutate(
       estado = forcats::fct_reorder(.f = uf, .x = contagios_novos, .desc = TRUE),
@@ -115,9 +115,9 @@ covid_estados %>%
 ```
 
 
-#### Olhando de Perto os 5 estados com o maior número de contágios
+#### Olhando de perto os 5 estados com o maior número de contágios
 
-```{r Maiores_Contagios_nos_Estados, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 02 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia"}
+```{r Maiores_Contagios_nos_Estados, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 02 - Animação dos 5 estados com maiores volumes de Contágio pela Pandemia"}
 covid_estados %>%
    dplyr::group_by(uf, date) %>%
    dplyr::summarise(contagios_acumulados = sum(contagios_acumulados)) %>%
@@ -148,7 +148,7 @@ covid_estados %>%
 
 #### Volumes Diários de Contágios Brasil (com ajuste de Média Móvel de 7 dias)
 
-```{r Volumes_Diarios_de_Contagios, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 03 - Volumes Diários de Novos Contágios no Brasil"}
+```{r Volumes_Diarios_de_Contagios, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 03 - Volumes Diários de Novos Contágios no Brasil"}
 covid_brasil %>%
    ggplot2::ggplot() +
    ggplot2::geom_col(ggplot2::aes(x = date, y = contagios_novos, fill = contagios_novos), color = "cyan", show.legend = FALSE) +
@@ -169,7 +169,7 @@ covid_brasil %>%
 
 ##### Sudeste
 
-```{r Volumes_Estaduais_de_Contagios_Sudeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 04 - Volumes Diários de Novos Contágios por Estado da Região Sudeste"}
+```{r Volumes_Estaduais_de_Contagios_Sudeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 04 - Volumes Diários de Novos Contágios por Estado da Região Sudeste"}
 covid_estados %>%
    dplyr::filter(regiao == "Sudeste") %>% 
    dplyr::mutate(
@@ -215,7 +215,7 @@ covid_estados %>%
 
 ##### Sul
 
-```{r Volumes_Estaduais_de_Contagios_Sul, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 06 - Volumes Diários de Novos Contágios por Estado da Região Sul"}
+```{r Volumes_Estaduais_de_Contagios_Sul, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 4, fig.cap = "Gráfico 06 - Volumes Diários de Novos Contágios por Estado da Região Sul"}
 covid_estados %>%
    dplyr::filter(regiao == "Sul") %>% 
    dplyr::mutate(
@@ -238,7 +238,7 @@ covid_estados %>%
 
 ##### Centro-Oeste
 
-```{r Volumes_Estaduais_de_Contagios_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 07 - Volumes Diários de Novos Contágios por Estado da Região Centro-Oeste"}
+```{r Volumes_Estaduais_de_Contagios_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 07 - Volumes Diários de Novos Contágios por Estado da Região Centro-Oeste"}
 covid_estados %>%
    dplyr::filter(regiao == "Centro-Oeste") %>% 
    dplyr::mutate(
@@ -287,7 +287,7 @@ covid_estados %>%
 
 #### Novos Óbitos por Estado/Região
 
-```{r Volumes_de_Novos_Obitos_por_Estado, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 09 - Volumes de Novos Óbitos por Estado"}
+```{r Volumes_de_Novos_Obitos_por_Estado, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 09 - Volumes de Novos Óbitos por Estado"}
 covid_estados %>%
    dplyr::mutate(
       estado = forcats::fct_reorder(.f = uf, .x = obitos_novos, .desc = TRUE),
@@ -306,9 +306,9 @@ covid_estados %>%
 ```
 
 
-#### Olhando de Perto os 5 estados com o maior número de óbitos
+#### Olhando de perto os 5 estados com o maior número de óbitos
 
-```{r Maiores_Obitos_nos_Estados, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 10 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia"}
+```{r Maiores_Obitos_nos_Estados, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 10 - Animação dos 5 estados com maiores volumes de Óbitos pela Pandemia"}
 covid_estados %>%
    dplyr::group_by(uf, date) %>%
    dplyr::summarise(obitos_acumulados = sum(obitos_acumulados)) %>%
@@ -339,7 +339,7 @@ covid_estados %>%
 
 #### Volumes Diários de Óbitos Brasil (com ajuste de Média Móvel de 7 dias)
 
-```{r Volumes_Diarios_de_Obitos, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 11 - Volumes Diários de Novos Óbitos no Brasil"}
+```{r Volumes_Diarios_de_Obitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 11 - Volumes Diários de Novos Óbitos no Brasil"}
 covid_brasil %>%
    ggplot2::ggplot() +
    ggplot2::geom_col(ggplot2::aes(x = date, y = obitos_novos, fill = obitos_novos), color = "cyan", show.legend = FALSE) +
@@ -360,7 +360,7 @@ covid_brasil %>%
 
 ##### Sudeste
 
-```{r Volumes_Estaduais_de_Obitos_Sudeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 12 - Volumes Diários de Novos Óbitos por Estado da Região Sudeste"}
+```{r Volumes_Estaduais_de_Obitos_Sudeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 12 - Volumes Diários de Novos Óbitos por Estado da Região Sudeste"}
 covid_estados %>%
    dplyr::filter(regiao == "Sudeste") %>% 
    dplyr::mutate(
@@ -406,7 +406,7 @@ covid_estados %>%
 
 ##### Sul
 
-```{r Volumes_Estaduais_de_Obitos_Sul, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 14 - Volumes Diários de Novos Óbitos por Estado da Região Sul"}
+```{r Volumes_Estaduais_de_Obitos_Sul, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 4, fig.cap = "Gráfico 14 - Volumes Diários de Novos Óbitos por Estado da Região Sul"}
 covid_estados %>%
    dplyr::filter(regiao == "Sul") %>% 
    dplyr::mutate(
@@ -429,7 +429,7 @@ covid_estados %>%
 
 ##### Centro-Oeste
 
-```{r Volumes_Estaduais_de_Obitos_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 15 - Volumes Diários de Novos Óbitos por Estado da Região Centro-Oeste"}
+```{r Volumes_Estaduais_de_Obitos_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 15 - Volumes Diários de Novos Óbitos por Estado da Região Centro-Oeste"}
 covid_estados %>%
    dplyr::filter(regiao == "Centro-Oeste") %>% 
    dplyr::mutate(
@@ -482,7 +482,7 @@ Esses casos antigos também nos levam a outra questão por conta da possibilidad
 
 ### Correlação entre Contágios e Óbitos
 
-```{r Correlacao_Cruzada_entre_Contagios_e_Obitos, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 17 - Correlação Cruzada entre Contágios e Óbitos"}
+```{r Correlacao_Cruzada_entre_Contagios_e_Obitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 17 - Correlação Cruzada entre Contágios e Óbitos"}
 teste <- covid %>%
    dplyr::select(
       date,
@@ -531,7 +531,7 @@ Uma vez que temos as quantidades de contágios e de óbitos, podemos calcular a 
 
 #### Mortalidade no Mapa
 
-```{r Taxas_de_Mortalidade_no_Brasil, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 18 - Taxas de Mortalidade por Estado"}
+```{r Taxas_de_Mortalidade_no_Brasil, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 11, fig.cap = "Gráfico 18 - Taxas de Mortalidade por Estado"}
 tabela_ufs <- geobr::read_state(
    code_state = "all",
    year = 2019,
@@ -578,7 +578,7 @@ covid_estados %>%
 
 ##### Sudeste
 
-```{r Taxas_de_Mortalidade_por_Estados_do_Sudeste, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 19 - Evolução das Taxas de Mortalidade por Estado na Região Sudeste"}
+```{r Taxas_de_Mortalidade_por_Estados_do_Sudeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 19 - Evolução das Taxas de Mortalidade por Estado na Região Sudeste"}
 covid_estados %>%
    dplyr::filter(regiao == "Sudeste") %>%
    dplyr::mutate(
@@ -601,7 +601,7 @@ covid_estados %>%
 
 ##### Nordeste
 
-```{r Taxas_de_Mortalidade_por_Estado_do_Nordeste, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 20 - Evolução das Taxas de Mortalidade por Estado na Região Nordeste"}
+```{r Taxas_de_Mortalidade_por_Estado_do_Nordeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 20 - Evolução das Taxas de Mortalidade por Estado na Região Nordeste"}
 covid_estados %>%
    dplyr::filter(regiao == "Nordeste") %>%
    dplyr::mutate(
@@ -624,7 +624,7 @@ covid_estados %>%
 
 ##### Sul
 
-```{r Taxas_de_Mortalidade_por_Estado_do_Sul, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região Sul"}
+```{r Taxas_de_Mortalidade_por_Estado_do_Sul, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 4, fig.cap = "Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região Sul"}
 covid_estados %>%
    dplyr::filter(regiao == "Sul") %>%
    dplyr::mutate(
@@ -647,7 +647,7 @@ covid_estados %>%
 
 ##### Centro-Oeste
 
-```{r Taxas_de_Mortalidade_por_Estado_do_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 22 - Evolução das Taxas de Mortalidade por Estado da Região Centro-Oeste"}
+```{r Taxas_de_Mortalidade_por_Estado_do_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 22 - Evolução das Taxas de Mortalidade por Estado da Região Centro-Oeste"}
 covid_estados %>%
    dplyr::filter(regiao == "Centro-Oeste") %>%
    dplyr::mutate(
@@ -670,7 +670,7 @@ covid_estados %>%
 
 ##### Norte
 
-```{r Taxas_de_Mortalidade_por_Estado_do_Norte, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 23 - Evolução das Taxas de Mortalidade por Estado na Região Norte"}
+```{r Taxas_de_Mortalidade_por_Estado_do_Norte, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 23 - Evolução das Taxas de Mortalidade por Estado na Região Norte"}
 covid_estados %>%
    dplyr::filter(regiao == "Norte") %>%
    dplyr::mutate(
@@ -693,7 +693,7 @@ covid_estados %>%
 
 ##### Brasil (animado)
 
-```{r Taxa_de_Mortalidade_no_Brasil, echo = F, warning = F, message = F, fig.align = "center", fig.cap = "Gráfico 24 - Animação da Evolução da Taxa de Mortalidade no Brasil"}
+```{r Taxa_de_Mortalidade_no_Brasil, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 24 - Animação da Evolução da Taxa de Mortalidade no Brasil"}
 covid_brasil %>%
    ggplot2::ggplot() +
    ggplot2::geom_line(ggplot2::aes(x = date, y = taxa_mortalidade), color = "red", size = 1L) +
