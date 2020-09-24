@@ -373,42 +373,98 @@ covid_cidades %>%
 # Analisando as bases de dados de mapas -----------------------------------
 cls()
 
-states_small <- geobr::read_state(
-   code_state = "all",
-   year = 2019,
-   simplified = TRUE,
-   showProgress = TRUE
+
+system.time(
+   states_small <- geobr::read_state(
+      code_state = "all",
+      year = 2019,
+      simplified = TRUE,
+      showProgress = TRUE
+   )
 )
 
-states_big <- geobr::read_state(
-   code_state = "all",
-   year = 2019,
-   simplified = FALSE,
-   showProgress = TRUE
+system.time(
+   states_big <- geobr::read_state(
+      code_state = "all",
+      year = 2019,
+      simplified = FALSE,
+      showProgress = TRUE
+   )
 )
 
-cities_small <- geobr::read_municipality(
-   code_muni = "all",
-   year = 2019,
-   simplified = TRUE,
-   showProgress = TRUE
+system.time(
+   cities_small <- geobr::read_municipality(
+      code_muni = "all",
+      year = 2019,
+      simplified = TRUE,
+      showProgress = TRUE
+   )
 )
 
-cities_big <- geobr::read_municipality(
-   code_muni = "all",
-   year = 2019,
-   simplified = FALSE,
-   showProgress = TRUE
+system.time(
+   cities_big <- geobr::read_municipality(
+      code_muni = "all",
+      year = 2019,
+      simplified = FALSE,
+      showProgress = TRUE
+   )
 )
 
-object.size(states_small)
-object.size(states_big)
-object.size(cities_small)
-object.size(cities_big)
 
-sum(sf::st_area(x = states_small))
-sum(sf::st_area(x = states_big))
-sum(sf::st_area(x = cities_small))
-sum(sf::st_area(x = cities_big))
+scales::comma(
+   x = as.integer(object.size(states_small)),
+   accuracy = 1,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+scales::comma(
+   x = as.integer(object.size(states_big)),
+   accuracy = 1,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+scales::comma(
+   x = as.integer(object.size(cities_small)),
+   accuracy = 1,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+scales::comma(
+   x = as.integer(object.size(cities_big)),
+   accuracy = 1,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+scales::comma(
+   x = as.double(sum(sf::st_area(x = states_small))),
+   accuracy = 0.01,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+scales::comma(
+   x = as.double(sum(sf::st_area(x = states_big))),
+   accuracy = 0.01,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+scales::comma(
+   x = as.double(sum(sf::st_area(x = cities_small))),
+   accuracy = 0.01,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+scales::comma(
+   x = as.double(sum(sf::st_area(x = cities_big))),
+   accuracy = 0.01,
+   big.mark = ".",
+   decimal.mark = ","
+)
 
 rm(states_small, states_big, cities_small, cities_big)
