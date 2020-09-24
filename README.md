@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-24 09:39:22
+#> Atualizacao de dados iniciada em 2020-09-24 13:07:33
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 15.04 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 29.64 segundos.
 #> 
 #> 
 #> 
@@ -76,27 +76,27 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 64.73 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 75.84 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.45 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 2.04 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.26 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 4.03 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 84.48 segundos.
+#> O processamento foi concluido em 111.55 segundos.
 #> 
 #> Segue um meta-resumo da base:
 #> 
@@ -142,48 +142,48 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 1.11 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 1.43 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.74 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 15.94 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.62 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 3.34 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.71 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 4.66 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.36 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.89 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.26 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.34 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 21.8 segundos.
+#> O processamento foi concluido em 28.6 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -255,7 +255,7 @@ Pandemia
 
 </div>
 
-#### Volumes Diários de Contágios Brasil (com ajuste de Média Móvel de 7 dias)
+#### Volumes Diários de Contágios Brasil
 
 <div class="figure" style="text-align: center">
 
@@ -376,7 +376,7 @@ Pandemia
 
 </div>
 
-#### Volumes Diários de Óbitos Brasil (com ajuste de Média Móvel de 7 dias)
+#### Volumes Diários de Óbitos Brasil
 
 <div class="figure" style="text-align: center">
 
@@ -516,17 +516,31 @@ Gráfico 18 - Taxas de Mortalidade por Estado
 
 </div>
 
+#### Animação da Evolução Histórica das Taxas de Mortalidade no Brasil
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Taxa_de_Mortalidade_no_Brasil-1.gif" alt="Gráfico 19 - Animação da Evolução da Taxa de Mortalidade no Brasil" width="100%" />
+
+<p class="caption">
+
+Gráfico 19 - Animação da Evolução da Taxa de Mortalidade no Brasil
+
+</p>
+
+</div>
+
 #### Evolução Histórica das Taxas de Mortalidade no Brasil
 
 ##### Sudeste
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxas_de_Mortalidade_por_Estados_do_Sudeste-1.png" alt="Gráfico 19 - Evolução das Taxas de Mortalidade por Estado na Região Sudeste" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estados_do_Sudeste-1.png" alt="Gráfico 20 - Evolução das Taxas de Mortalidade por Estado na Região Sudeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 19 - Evolução das Taxas de Mortalidade por Estado na Região
+Gráfico 20 - Evolução das Taxas de Mortalidade por Estado na Região
 Sudeste
 
 </p>
@@ -537,11 +551,11 @@ Sudeste
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Nordeste-1.png" alt="Gráfico 20 - Evolução das Taxas de Mortalidade por Estado na Região Nordeste" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Nordeste-1.png" alt="Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região Nordeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 20 - Evolução das Taxas de Mortalidade por Estado na Região
+Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região
 Nordeste
 
 </p>
@@ -552,11 +566,11 @@ Nordeste
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Sul-1.png" alt="Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região Sul" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Sul-1.png" alt="Gráfico 22 - Evolução das Taxas de Mortalidade por Estado na Região Sul" width="100%" />
 
 <p class="caption">
 
-Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região Sul
+Gráfico 22 - Evolução das Taxas de Mortalidade por Estado na Região Sul
 
 </p>
 
@@ -566,11 +580,11 @@ Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região Sul
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Centro_Oeste-1.png" alt="Gráfico 22 - Evolução das Taxas de Mortalidade por Estado da Região Centro-Oeste" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Centro_Oeste-1.png" alt="Gráfico 23 - Evolução das Taxas de Mortalidade por Estado da Região Centro-Oeste" width="100%" />
 
 <p class="caption">
 
-Gráfico 22 - Evolução das Taxas de Mortalidade por Estado da Região
+Gráfico 23 - Evolução das Taxas de Mortalidade por Estado da Região
 Centro-Oeste
 
 </p>
@@ -581,26 +595,12 @@ Centro-Oeste
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Norte-1.png" alt="Gráfico 23 - Evolução das Taxas de Mortalidade por Estado na Região Norte" width="100%" />
+<img src="docs/README-Taxas_de_Mortalidade_por_Estado_do_Norte-1.png" alt="Gráfico 24 - Evolução das Taxas de Mortalidade por Estado na Região Norte" width="100%" />
 
 <p class="caption">
 
-Gráfico 23 - Evolução das Taxas de Mortalidade por Estado na Região
+Gráfico 24 - Evolução das Taxas de Mortalidade por Estado na Região
 Norte
-
-</p>
-
-</div>
-
-##### Brasil (animado)
-
-<div class="figure" style="text-align: center">
-
-<img src="docs/README-Taxa_de_Mortalidade_no_Brasil-1.gif" alt="Gráfico 24 - Animação da Evolução da Taxa de Mortalidade no Brasil" width="100%" />
-
-<p class="caption">
-
-Gráfico 24 - Animação da Evolução da Taxa de Mortalidade no Brasil
 
 </p>
 
@@ -608,18 +608,78 @@ Gráfico 24 - Animação da Evolução da Taxa de Mortalidade no Brasil
 
 ### Contágios por 100 mil habitantes
 
-E para não me esquecer demostrar uma das métricas normalizadas, um
-gráfico de mapa com 2 camadas, municípios e estados. Avaliando, na
-Região Sudeste, o contágio acumulado por grupo de 100 mil habitantes.
+Segue o contágio acumulado por grupo de 100 mil habitantes.
+
+#### Sudeste
 
 <div class="figure" style="text-align: center">
 
-<img src="docs/README-Contagios_Acumulados_por_100_mil_habitantes-1.png" alt="Gráfico 25 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sudeste" width="100%" />
+<img src="docs/README-Contagios_Acumulados_por_100_mil_hab_Sudeste-1.png" alt="Gráfico 25 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sudeste" width="100%" />
 
 <p class="caption">
 
 Gráfico 25 - Contágios Acumulados por 100 mil habitantes nos Municípios
 da Região Sudeste
+
+</p>
+
+</div>
+
+#### Nordeste
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Contagios_Acumulados_por_100_mil_hab_Nordeste-1.png" alt="Gráfico 26 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Nordeste" width="100%" />
+
+<p class="caption">
+
+Gráfico 26 - Contágios Acumulados por 100 mil habitantes nos Municípios
+da Região Nordeste
+
+</p>
+
+</div>
+
+#### Sul
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Contagios_Acumulados_por_100_mil_hab_Sul-1.png" alt="Gráfico 27 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sul" width="100%" />
+
+<p class="caption">
+
+Gráfico 27 - Contágios Acumulados por 100 mil habitantes nos Municípios
+da Região Sul
+
+</p>
+
+</div>
+
+#### Centro-Oeste
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Contagios_Acumulados_por_100_mil_hab_Centro_Oeste-1.png" alt="Gráfico 28 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Centro-Oeste" width="100%" />
+
+<p class="caption">
+
+Gráfico 28 - Contágios Acumulados por 100 mil habitantes nos Municípios
+da Região Centro-Oeste
+
+</p>
+
+</div>
+
+#### Norte
+
+<div class="figure" style="text-align: center">
+
+<img src="docs/README-Contagios_Acumulados_por_100_mil_hab_Norte-1.png" alt="Gráfico 29 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Norte" width="100%" />
+
+<p class="caption">
+
+Gráfico 29 - Contágios Acumulados por 100 mil habitantes nos Municípios
+da Região Norte
 
 </p>
 

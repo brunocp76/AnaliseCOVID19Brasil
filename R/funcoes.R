@@ -30,8 +30,13 @@ atualiza_dados <- function() {
    tempo_semana_epid <- as.double(system.time(load(file = "data/semana_epid.rda",
                                                    envir = globalenv()))[3])
    tempo_infos_municip <- as.double(system.time(deriva_codigo_municipio())[3])
+   tempo_mapa_estados <- as.double(system.time(load(file = "data/tabela_ufs.rda",
+                                                    envir = globalenv()))[3])
+   tempo_mapa_municip <- as.double(system.time(load(file = "data/tabela_mun.rda",
+                                                   envir = globalenv()))[3])
    cat("\n", "Concluida a carga de Informacoes Auxiliares em ",
-       sum(tempo_infos_geo, tempo_semana_epid, tempo_infos_municip),
+       sum(tempo_infos_geo, tempo_semana_epid, tempo_infos_municip,
+           tempo_mapa_estados, tempo_mapa_municip),
        " segundos.", "\n\n", sep = "")
 
    cat("\n\n", "Etapa 4: Organizando todas as informacoes levantadas.",
@@ -44,7 +49,8 @@ atualiza_dados <- function() {
    cat("\n\n", "Parabens! Agora voce esta com a base atualizada!",
        "\n\n", "O processamento foi concluido em ",
        sum(tempo_covid_brasilio, tempo_covid_minister, tempo_infos_geo,
-           tempo_semana_epid, tempo_infos_municip, tempo_base_covid),
+           tempo_semana_epid, tempo_infos_municip,
+           tempo_mapa_estados, tempo_mapa_municip, tempo_base_covid),
        " segundos.", "\n\n", "Segue um meta-resumo da base:", "\n\n", sep = "")
 
    rm(semana_epid, envir = globalenv())

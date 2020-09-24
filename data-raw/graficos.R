@@ -250,12 +250,6 @@ tibble(lags, correlacoes) %>%
 
 
 # Mapas -------------------------------------------------------------------
-tabela_ufs <- geobr::read_state(
-   code_state = "all",
-   year = 2019,
-   showProgress = TRUE
-)
-
 sum(sf::st_area(x = tabela_ufs))
 
 covid_estados %>%
@@ -291,12 +285,6 @@ covid_estados %>%
       legend.title = element_blank()
    )
 
-
-tabela_mun <- geobr::read_municipality(
-   code_muni = "all",
-   year = 2019,
-   showProgress = TRUE
-)
 
 sum(sf::st_area(x = tabela_mun))
 
@@ -340,3 +328,44 @@ covid_cidades %>%
       legend.key.size = unit(1, "cm"),
       legend.title = element_blank()
    )
+
+covid_cidades %>%
+   filter(regiao == "Nordeste") %>%
+   arrange(cod_ibge, date) %>%
+   group_by(cod_ibge) %>%
+   filter(date == max(date, na.rm = TRUE)) %>%
+   ungroup() %>%
+   arrange(uf, date) %>%
+   left_join(
+      y = tabela_ufs,
+      by = c("uf" = "abbrev_state")
+   ) %>%
+   select(geom_uf = geom, everything()) %>%
+   arrange(cod_ibge, date) %>%
+   left_join(
+      y = tabela_mun,
+      by = c("cod_ibge" = "code_muni")
+   ) %>%
+   select(geom_mun = geom, everything()) %>%
+   ggplot() +
+   geom_sf(aes(geometry = geom_mun, fill = contagios_acumulados_100k), color = "darkcyan") +
+   geom_sf(aes(geometry = geom_uf), alpha = 0, color = "blue", size = 1L) +
+   scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red"
+   ) +
+   # scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
+   # scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
+   labs(
+      x = "Longitude",
+      y = "Latitude",
+      title = "Contágios Acumulados na Região Nordeste",
+      subtitle = "Por grupo de 100 mil habitantes"
+   ) +
+   tema_bruno() +
+   theme(
+      legend.key.size = unit(1, "cm"),
+      legend.title = element_blank()
+   )
+6

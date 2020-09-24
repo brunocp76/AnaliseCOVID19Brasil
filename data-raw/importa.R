@@ -619,7 +619,7 @@ rm(coords_munic, area_munic)
 cls()
 
 vroom::vroom(
-   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD-14-09-2020.csv"
+   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD-21-09-2020.csv"
    , delim = ";"
    , col_names = TRUE
    , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")
@@ -820,6 +820,33 @@ infos_chaves %>%
 
 infos_chaves %>%
    summary()
+
+
+
+# Conseguindo os Dados de Mapas -------------------------------------------
+cls()
+
+tabela_ufs <<- geobr::read_state(
+   code_state = "all",
+   year = 2019,
+   showProgress = TRUE
+)
+
+tabela_mun <<- geobr::read_municipality(
+   code_muni = "all",
+   year = 2019,
+   showProgress = TRUE
+)
+
+# Rápida Conferência...
+tabela_ufs %>% glimpse()
+
+tabela_mun %>% glimpse()
+
+sum(sf::st_area(x = tabela_ufs))
+
+sum(sf::st_area(x = tabela_mun))
+
 
 
 # Organizando as Informações que temos... ---------------------------------
@@ -1145,6 +1172,42 @@ saveRDS(
 )
 
 
+## Base Auxiliar - Dados de Mapas dos Estados
+cls()
+
+tabela_ufs %>%
+   glimpse()
+
+tabela_ufs %>%
+   object.size()
+
+saveRDS(
+   object = tabela_ufs,
+   file = "data-raw/tabela_ufs.rds",
+   ascii = FALSE,
+   version = 3,
+   compress = "xz"
+)
+
+
+## Base Auxiliar - Dados de Mapas dos Municípios
+cls()
+
+tabela_mun %>%
+   glimpse()
+
+tabela_mun %>%
+   object.size()
+
+saveRDS(
+   object = tabela_mun,
+   file = "data-raw/tabela_mun.rds",
+   ascii = FALSE,
+   version = 3,
+   compress = "xz"
+)
+
+
 ## code to prepare `infos_geograficas` dataset goes here
 
 usethis::use_data(
@@ -1160,6 +1223,28 @@ usethis::use_data(
 
 usethis::use_data(
    semana_epid,
+   internal = FALSE,
+   overwrite = TRUE,
+   compress = "xz",
+   version = 3
+)
+
+
+## code to prepare `tabela_ufs` dataset goes here
+
+usethis::use_data(
+   tabela_ufs,
+   internal = FALSE,
+   overwrite = TRUE,
+   compress = "xz",
+   version = 3
+)
+
+
+## code to prepare `tabela_mun` dataset goes here
+
+usethis::use_data(
+   tabela_mun,
    internal = FALSE,
    overwrite = TRUE,
    compress = "xz",

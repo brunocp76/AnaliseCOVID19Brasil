@@ -436,7 +436,7 @@ processa_final <- function() {
 #'
 #' @export
 backup_base <- function() {
-   cat("\n", "Fazendo copia de seguranca da base mais atualizada disponivel",
+   cat("\n", "Fazendo copia de seguranca da base mais atualizadas disponivel",
        "\n\n", "Por favor aguarde...")
 
    saveRDS(

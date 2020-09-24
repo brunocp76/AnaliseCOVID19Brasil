@@ -146,7 +146,7 @@ covid_estados %>%
 ```
 
 
-#### Volumes Diários de Contágios Brasil (com ajuste de Média Móvel de 7 dias)
+#### Volumes Diários de Contágios Brasil
 
 ```{r Volumes_Diarios_de_Contagios, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 03 - Volumes Diários de Novos Contágios no Brasil"}
 covid_brasil %>%
@@ -159,7 +159,7 @@ covid_brasil %>%
       x = "Data",
       y = "Novos Contágios",
       title = "Volumes Diários de Novos Contágios",
-      subtitle = "Em todo o Brasil"
+      subtitle = "Com a Média Móvel de 7 dias"
    )
 ```
 
@@ -337,7 +337,7 @@ covid_estados %>%
 ```
 
 
-#### Volumes Diários de Óbitos Brasil (com ajuste de Média Móvel de 7 dias)
+#### Volumes Diários de Óbitos Brasil
 
 ```{r Volumes_Diarios_de_Obitos, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 11 - Volumes Diários de Novos Óbitos no Brasil"}
 covid_brasil %>%
@@ -350,7 +350,7 @@ covid_brasil %>%
       x = "Data",
       y = "Novos Óbitos",
       title = "Volumes Diários de Novos Óbitos",
-      subtitle = "Em todo o Brasil"
+      subtitle = "Com a Média Móvel de 7 dias"
    )
 ```
 
@@ -513,7 +513,14 @@ dplyr::tibble(lags, correlacoes) %>%
    ) +
    ggplot2::scale_x_continuous(breaks = seq(0, 50, 2)) +
    ggplot2::scale_y_continuous(breaks = seq(0, 0.7, 0.1)) +
-   tema_bruno()
+   tema_bruno() +
+   ggplot2::theme(
+      panel.grid.major.x = ggplot2::element_line(
+         color = "#324C63",
+         size = 0.5,
+         linetype = "dashed"
+      )
+)
 
 rm(teste, correlacoes, lags, k)
 ```
@@ -530,14 +537,26 @@ Uma vez que temos as quantidades de contágios e de óbitos, podemos calcular a 
 
 
 #### Mortalidade no Mapa
+```{r Gerando_os_Mapas_em_HD, echo = F, warning = F, message = F}
+rm(tabela_ufs, tabela_mun)
 
-```{r Taxas_de_Mortalidade_no_Brasil, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 11, fig.cap = "Gráfico 18 - Taxas de Mortalidade por Estado"}
 tabela_ufs <- geobr::read_state(
    code_state = "all",
    year = 2019,
+   simplified = FALSE,
    showProgress = FALSE
 )
 
+tabela_mun <- geobr::read_municipality(
+   code_muni = "all",
+   year = 2019,
+   simplified = FALSE,
+   showProgress = FALSE
+)
+
+```
+
+```{r Taxas_de_Mortalidade_no_Brasil, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 11, fig.cap = "Gráfico 18 - Taxas de Mortalidade por Estado"}
 covid_estados %>%
    dplyr::arrange(uf, date) %>%
    dplyr::group_by(uf) %>%
@@ -573,12 +592,29 @@ covid_estados %>%
 ```
 
 
+#### Animação da Evolução Histórica das Taxas de Mortalidade no Brasil
+
+```{r Taxa_de_Mortalidade_no_Brasil, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 19 - Animação da Evolução da Taxa de Mortalidade no Brasil"}
+covid_brasil %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_line(ggplot2::aes(x = date, y = taxa_mortalidade), color = "red", size = 1L) +
+   ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   tema_bruno() +
+   ggplot2::labs(
+      x = "Mês",
+      y = "Taxa de Mortalidade (Óbitos / Contágios)",
+      title = "Taxa de Mortalidade (Consolidada Brasil)"
+   ) +
+   gganimate::transition_reveal(date, keep_last = TRUE)
+```
+
+
 #### Evolução Histórica das Taxas de Mortalidade no Brasil
 
 
 ##### Sudeste
 
-```{r Taxas_de_Mortalidade_por_Estados_do_Sudeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 19 - Evolução das Taxas de Mortalidade por Estado na Região Sudeste"}
+```{r Taxas_de_Mortalidade_por_Estados_do_Sudeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 20 - Evolução das Taxas de Mortalidade por Estado na Região Sudeste"}
 covid_estados %>%
    dplyr::filter(regiao == "Sudeste") %>%
    dplyr::mutate(
@@ -601,7 +637,7 @@ covid_estados %>%
 
 ##### Nordeste
 
-```{r Taxas_de_Mortalidade_por_Estado_do_Nordeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 20 - Evolução das Taxas de Mortalidade por Estado na Região Nordeste"}
+```{r Taxas_de_Mortalidade_por_Estado_do_Nordeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região Nordeste"}
 covid_estados %>%
    dplyr::filter(regiao == "Nordeste") %>%
    dplyr::mutate(
@@ -624,7 +660,7 @@ covid_estados %>%
 
 ##### Sul
 
-```{r Taxas_de_Mortalidade_por_Estado_do_Sul, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 4, fig.cap = "Gráfico 21 - Evolução das Taxas de Mortalidade por Estado na Região Sul"}
+```{r Taxas_de_Mortalidade_por_Estado_do_Sul, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 4, fig.cap = "Gráfico 22 - Evolução das Taxas de Mortalidade por Estado na Região Sul"}
 covid_estados %>%
    dplyr::filter(regiao == "Sul") %>%
    dplyr::mutate(
@@ -647,7 +683,7 @@ covid_estados %>%
 
 ##### Centro-Oeste
 
-```{r Taxas_de_Mortalidade_por_Estado_do_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 22 - Evolução das Taxas de Mortalidade por Estado da Região Centro-Oeste"}
+```{r Taxas_de_Mortalidade_por_Estado_do_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 23 - Evolução das Taxas de Mortalidade por Estado da Região Centro-Oeste"}
 covid_estados %>%
    dplyr::filter(regiao == "Centro-Oeste") %>%
    dplyr::mutate(
@@ -670,7 +706,7 @@ covid_estados %>%
 
 ##### Norte
 
-```{r Taxas_de_Mortalidade_por_Estado_do_Norte, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 23 - Evolução das Taxas de Mortalidade por Estado na Região Norte"}
+```{r Taxas_de_Mortalidade_por_Estado_do_Norte, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 24 - Evolução das Taxas de Mortalidade por Estado na Região Norte"}
 covid_estados %>%
    dplyr::filter(regiao == "Norte") %>%
    dplyr::mutate(
@@ -691,40 +727,14 @@ covid_estados %>%
 ```
 
 
-##### Brasil (animado)
-
-```{r Taxa_de_Mortalidade_no_Brasil, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 7, fig.cap = "Gráfico 24 - Animação da Evolução da Taxa de Mortalidade no Brasil"}
-covid_brasil %>%
-   ggplot2::ggplot() +
-   ggplot2::geom_line(ggplot2::aes(x = date, y = taxa_mortalidade), color = "red", size = 1L) +
-   ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
-   tema_bruno() +
-   ggplot2::labs(
-      x = "Mês",
-      y = "Taxa de Mortalidade (Óbitos / Contágios)",
-      title = "Taxa de Mortalidade (Consolidada Brasil)"
-   ) +
-   gganimate::transition_reveal(date, keep_last = TRUE)
-```
-
-
 ### Contágios por 100 mil habitantes
 
-E para não me esquecer demostrar uma das métricas normalizadas, um gráfico de mapa com 2 camadas, municípios e estados. Avaliando, na Região Sudeste, o contágio acumulado por grupo de 100 mil habitantes.
+Segue o contágio acumulado por grupo de 100 mil habitantes.
 
-```{r Contagios_Acumulados_por_100_mil_habitantes, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 25 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sudeste"}
-tabela_ufs <- geobr::read_state(
-   code_state = "all",
-   year = 2019,
-   showProgress = FALSE
-)
 
-tabela_mun <- geobr::read_municipality(
-   code_muni = "all",
-   year = 2019,
-   showProgress = FALSE
-)
+#### Sudeste
 
+```{r Contagios_Acumulados_por_100_mil_hab_Sudeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 10, fig.cap = "Gráfico 25 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sudeste"}
 covid_cidades %>%
    dplyr::filter(regiao == "Sudeste") %>%
    dplyr::arrange(cod_ibge, date) %>%
@@ -757,6 +767,190 @@ covid_cidades %>%
       x = "Longitude",
       y = "Latitude",
       title = "Contágios Acumulados na Região Sudeste",
+      subtitle = "Por grupo de 100 mil habitantes"
+   ) +
+   tema_bruno() +
+   ggplot2::theme(
+      legend.key.size = ggplot2::unit(1, "cm"),
+      legend.title = ggplot2::element_blank()
+   )
+```
+
+
+#### Nordeste
+
+
+```{r Contagios_Acumulados_por_100_mil_hab_Nordeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 10, fig.height = 12, fig.cap = "Gráfico 26 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Nordeste"}
+covid_cidades %>%
+   dplyr::filter(regiao == "Nordeste") %>%
+   dplyr::arrange(cod_ibge, date) %>%
+   dplyr::group_by(cod_ibge) %>%
+   dplyr::filter(date == max(date, na.rm = TRUE)) %>%
+   dplyr::ungroup() %>%
+   dplyr::arrange(uf, date) %>%
+   dplyr::left_join(
+      y = tabela_ufs,
+      by = c("uf" = "abbrev_state")
+   ) %>%
+   dplyr::select(geom_uf = geom, dplyr::everything()) %>%
+   dplyr::arrange(cod_ibge, date) %>%
+   dplyr::left_join(
+      y = tabela_mun,
+      by = c("cod_ibge" = "code_muni")
+   ) %>%
+   dplyr::select(geom_mun = geom, dplyr::everything()) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom_mun, fill = contagios_acumulados_100k), color = "darkcyan") +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom_uf), alpha = 0, color = "blue", size = 1L) +
+   ggplot2::scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red"
+   ) +
+   # ggplot2::scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
+   # ggplot2::scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
+   ggplot2::labs(
+      x = "Longitude",
+      y = "Latitude",
+      title = "Contágios Acumulados na Região Nordeste",
+      subtitle = "Por grupo de 100 mil habitantes"
+   ) +
+   tema_bruno() +
+   ggplot2::theme(
+      legend.key.size = ggplot2::unit(1, "cm"),
+      legend.title = ggplot2::element_blank()
+   )
+```
+
+
+#### Sul
+
+
+```{r Contagios_Acumulados_por_100_mil_hab_Sul, echo = F, warning = F, message = F, fig.align = "center", fig.width = 10, fig.height = 13, fig.cap = "Gráfico 27 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Sul"}
+covid_cidades %>%
+   dplyr::filter(regiao == "Sul") %>%
+   dplyr::arrange(cod_ibge, date) %>%
+   dplyr::group_by(cod_ibge) %>%
+   dplyr::filter(date == max(date, na.rm = TRUE)) %>%
+   dplyr::ungroup() %>%
+   dplyr::arrange(uf, date) %>%
+   dplyr::left_join(
+      y = tabela_ufs,
+      by = c("uf" = "abbrev_state")
+   ) %>%
+   dplyr::select(geom_uf = geom, dplyr::everything()) %>%
+   dplyr::arrange(cod_ibge, date) %>%
+   dplyr::left_join(
+      y = tabela_mun,
+      by = c("cod_ibge" = "code_muni")
+   ) %>%
+   dplyr::select(geom_mun = geom, dplyr::everything()) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom_mun, fill = contagios_acumulados_100k), color = "darkcyan") +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom_uf), alpha = 0, color = "blue", size = 1L) +
+   ggplot2::scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red"
+   ) +
+   # ggplot2::scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
+   # ggplot2::scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
+   ggplot2::labs(
+      x = "Longitude",
+      y = "Latitude",
+      title = "Contágios Acumulados na Região Sul",
+      subtitle = "Por grupo de 100 mil habitantes"
+   ) +
+   tema_bruno() +
+   ggplot2::theme(
+      legend.key.size = ggplot2::unit(1, "cm"),
+      legend.title = ggplot2::element_blank()
+   )
+```
+
+
+#### Centro-Oeste
+
+
+```{r Contagios_Acumulados_por_100_mil_hab_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 10, fig.height = 12, fig.cap = "Gráfico 28 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Centro-Oeste"}
+covid_cidades %>%
+   dplyr::filter(regiao == "Centro-Oeste") %>%
+   dplyr::arrange(cod_ibge, date) %>%
+   dplyr::group_by(cod_ibge) %>%
+   dplyr::filter(date == max(date, na.rm = TRUE)) %>%
+   dplyr::ungroup() %>%
+   dplyr::arrange(uf, date) %>%
+   dplyr::left_join(
+      y = tabela_ufs,
+      by = c("uf" = "abbrev_state")
+   ) %>%
+   dplyr::select(geom_uf = geom, dplyr::everything()) %>%
+   dplyr::arrange(cod_ibge, date) %>%
+   dplyr::left_join(
+      y = tabela_mun,
+      by = c("cod_ibge" = "code_muni")
+   ) %>%
+   dplyr::select(geom_mun = geom, dplyr::everything()) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom_mun, fill = contagios_acumulados_100k), color = "darkcyan") +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom_uf), alpha = 0, color = "blue", size = 1L) +
+   ggplot2::scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red"
+   ) +
+   # ggplot2::scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
+   # ggplot2::scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
+   ggplot2::labs(
+      x = "Longitude",
+      y = "Latitude",
+      title = "Contágios Acumulados na Região Centro-Oeste",
+      subtitle = "Por grupo de 100 mil habitantes"
+   ) +
+   tema_bruno() +
+   ggplot2::theme(
+      legend.key.size = ggplot2::unit(1, "cm"),
+      legend.title = ggplot2::element_blank()
+   )
+```
+
+
+#### Norte
+
+
+```{r Contagios_Acumulados_por_100_mil_hab_Norte, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 9, fig.cap = "Gráfico 29 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Norte"}
+covid_cidades %>%
+   dplyr::filter(regiao == "Norte") %>%
+   dplyr::arrange(cod_ibge, date) %>%
+   dplyr::group_by(cod_ibge) %>%
+   dplyr::filter(date == max(date, na.rm = TRUE)) %>%
+   dplyr::ungroup() %>%
+   dplyr::arrange(uf, date) %>%
+   dplyr::left_join(
+      y = tabela_ufs,
+      by = c("uf" = "abbrev_state")
+   ) %>%
+   dplyr::select(geom_uf = geom, dplyr::everything()) %>%
+   dplyr::arrange(cod_ibge, date) %>%
+   dplyr::left_join(
+      y = tabela_mun,
+      by = c("cod_ibge" = "code_muni")
+   ) %>%
+   dplyr::select(geom_mun = geom, dplyr::everything()) %>%
+   ggplot2::ggplot() +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom_mun, fill = contagios_acumulados_100k), color = "darkcyan") +
+   ggplot2::geom_sf(ggplot2::aes(geometry = geom_uf), alpha = 0, color = "blue", size = 1L) +
+   ggplot2::scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red"
+   ) +
+   # ggplot2::scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
+   # ggplot2::scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
+   ggplot2::labs(
+      x = "Longitude",
+      y = "Latitude",
+      title = "Contágios Acumulados na Região Norte",
       subtitle = "Por grupo de 100 mil habitantes"
    ) +
    tema_bruno() +
