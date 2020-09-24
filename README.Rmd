@@ -153,6 +153,9 @@ covid_brasil %>%
    ggplot2::ggplot() +
    ggplot2::geom_col(ggplot2::aes(x = date, y = contagios_novos, fill = contagios_novos), color = "cyan", show.legend = FALSE) +
    ggplot2::geom_line(ggplot2::aes(x = date, y = contagios_novos_mm7), color = "yellow", size = 1.5) +
+   ggplot2::theme(
+      plot.subtitle = ggplot2::element_text(hjust = 1, face = "bold.italic", size = 12, color = "yellow")
+   ) +
    ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
    tema_bruno() +
    ggplot2::labs(
@@ -344,6 +347,9 @@ covid_brasil %>%
    ggplot2::ggplot() +
    ggplot2::geom_col(ggplot2::aes(x = date, y = obitos_novos, fill = obitos_novos), color = "cyan", show.legend = FALSE) +
    ggplot2::geom_line(ggplot2::aes(x = date, y = obitos_novos_mm7), color = "red", size = 1.5) +
+   ggplot2::theme(
+      plot.subtitle = ggplot2::element_text(hjust = 1, face = "bold.italic", size = 12, color = "red")
+   ) +
    ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
    tema_bruno() +
    ggplot2::labs(
@@ -504,6 +510,7 @@ for (k in lags) {
 
 dplyr::tibble(lags, correlacoes) %>%
    ggplot2::ggplot(ggplot2::aes(x = lags, y = correlacoes)) +
+   ggplot2::geom_vline(xintercept = 0, color = "#324C63", size = 1L) +
    ggplot2::geom_point(color = "yellow") +
    ggplot2::geom_line(color = "green") +
    ggplot2::labs(
@@ -512,7 +519,7 @@ dplyr::tibble(lags, correlacoes) %>%
       title = "Correlação Cruzada entre Contágios e Óbitos"
    ) +
    ggplot2::scale_x_continuous(breaks = seq(0, 50, 2)) +
-   ggplot2::scale_y_continuous(breaks = seq(0, 0.7, 0.1)) +
+   ggplot2::scale_y_continuous(breaks = seq(0, 0.7, 0.1), labels = scales::percent) +
    tema_bruno() +
    ggplot2::theme(
       panel.grid.major.x = ggplot2::element_line(
@@ -522,7 +529,7 @@ dplyr::tibble(lags, correlacoes) %>%
       )
 )
 
-rm(teste, correlacoes, lags, k)
+rm(teste, correlacoes, lags, k, tmp)
 ```
 
 Podemos ver, até da maneira como (não) são feitas as notificações no Brasil, que as maiores correlações são múltiplos de semanas inteiras...
@@ -599,6 +606,7 @@ covid_brasil %>%
    ggplot2::ggplot() +
    ggplot2::geom_line(ggplot2::aes(x = date, y = taxa_mortalidade), color = "red", size = 1L) +
    ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   ggplot2::scale_y_continuous(labels = scales::percent) +
    tema_bruno() +
    ggplot2::labs(
       x = "Mês",
@@ -624,6 +632,7 @@ covid_estados %>%
    ggplot2::ggplot() +
    ggplot2::geom_line(ggplot2::aes(x = date, y = taxa_mortalidade), color = "red") +
    ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   ggplot2::scale_y_continuous(labels = scales::percent) +
    tema_bruno() +
    ggplot2::labs(
       x = "Mês",
@@ -647,6 +656,7 @@ covid_estados %>%
    ggplot2::ggplot() +
    ggplot2::geom_line(ggplot2::aes(x = date, y = taxa_mortalidade), color = "red") +
    ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   ggplot2::scale_y_continuous(labels = scales::percent) +
    tema_bruno() +
    ggplot2::labs(
       x = "Mês",
@@ -670,6 +680,7 @@ covid_estados %>%
    ggplot2::ggplot() +
    ggplot2::geom_line(ggplot2::aes(x = date, y = taxa_mortalidade), color = "red") +
    ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   ggplot2::scale_y_continuous(labels = scales::percent) +
    tema_bruno() +
    ggplot2::labs(
       x = "Mês",
@@ -693,6 +704,7 @@ covid_estados %>%
    ggplot2::ggplot() +
    ggplot2::geom_line(ggplot2::aes(x = date, y = taxa_mortalidade), color = "red") +
    ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   ggplot2::scale_y_continuous(labels = scales::percent) +
    tema_bruno() +
    ggplot2::labs(
       x = "Mês",
@@ -716,6 +728,7 @@ covid_estados %>%
    ggplot2::ggplot() +
    ggplot2::geom_line(ggplot2::aes(x = date, y = taxa_mortalidade), color = "red") +
    ggplot2::scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   ggplot2::scale_y_continuous(labels = scales::percent) +
    tema_bruno() +
    ggplot2::labs(
       x = "Mês",
@@ -808,7 +821,7 @@ covid_cidades %>%
       high = "red"
    ) +
    # ggplot2::scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
-   # ggplot2::scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
+   ggplot2::scale_y_continuous(limits = c(-19, -1), breaks = seq(-19, -1, 2)) +
    ggplot2::labs(
       x = "Longitude",
       y = "Latitude",
