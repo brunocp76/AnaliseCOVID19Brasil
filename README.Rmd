@@ -542,8 +542,6 @@ Uma vez que temos as quantidades de contágios e de óbitos, podemos calcular a 
 
 É sabido que em países que conseguem adotar a testagem em massa, numa média de toda a população, a taxa de mortalidade fica **em torno de 1%**.
 
-
-#### Mortalidade no Mapa
 ```{r Gerando_os_Mapas_em_HD, echo = F, warning = F, message = F}
 rm(tabela_ufs, tabela_mun)
 
@@ -563,11 +561,15 @@ tabela_mun <- geobr::read_municipality(
 
 ```
 
+
+#### Mortalidade no Mapa
+
 ```{r Taxas_de_Mortalidade_no_Brasil, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 11, fig.cap = "Gráfico 18 - Taxas de Mortalidade por Estado"}
 covid_estados %>%
    dplyr::arrange(uf, date) %>%
    dplyr::group_by(uf) %>%
    dplyr::filter(date == max(date, na.rm = TRUE)) %>%
+   dplyr::mutate(taxa_mortalidade = 100 * taxa_mortalidade) %>% 
    dplyr::ungroup() %>%
    dplyr::select(-c(contagios_novos_100k:obitos_acumulados_ln)) %>%
    dplyr::arrange(uf, date) %>%
@@ -588,13 +590,14 @@ covid_estados %>%
    ggplot2::labs(
       x = "Longitude",
       y = "Latitude",
-      title = "Taxa de Mortalidade da COVID-19",
+      title = "Taxa de Mortalidade da COVID-19 (%)",
       subtitle = "Óbitos / Contágios"
    ) +
    tema_bruno() +
    ggplot2::theme(
       legend.key.size = ggplot2::unit(1, "cm"),
-      legend.title = ggplot2::element_blank()
+      legend.title = ggplot2::element_blank(),
+      legend.text = ggplot2::element_text(face = "bold", size = 11)
    )
 ```
 
@@ -793,7 +796,7 @@ covid_cidades %>%
 #### Nordeste
 
 
-```{r Contagios_Acumulados_por_100_mil_hab_Nordeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 10, fig.height = 12, fig.cap = "Gráfico 26 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Nordeste"}
+```{r Contagios_Acumulados_por_100_mil_hab_Nordeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 13, fig.cap = "Gráfico 26 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Nordeste"}
 covid_cidades %>%
    dplyr::filter(regiao == "Nordeste") %>%
    dplyr::arrange(cod_ibge, date) %>%
@@ -820,8 +823,8 @@ covid_cidades %>%
       mid = "white",
       high = "red"
    ) +
-   # ggplot2::scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
-   ggplot2::scale_y_continuous(limits = c(-19, -1), breaks = seq(-19, -1, 2)) +
+   # ggplot2::scale_x_continuous(limits = c(-50, -32), breaks = seq(-50, -32, 2)) +
+   # ggplot2::scale_y_continuous(limits = c(-19, -1), breaks = seq(-19, -1, 2)) +
    ggplot2::labs(
       x = "Longitude",
       y = "Latitude",
@@ -866,8 +869,8 @@ covid_cidades %>%
       mid = "white",
       high = "red"
    ) +
-   # ggplot2::scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
-   # ggplot2::scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
+   # ggplot2::scale_x_continuous(limits = c(-58, -48), breaks = seq(-58, -48, 2)) +
+   # ggplot2::scale_y_continuous(limits = c(-34, -22), breaks = seq(-34, -22, 2)) +
    ggplot2::labs(
       x = "Longitude",
       y = "Latitude",
@@ -885,7 +888,7 @@ covid_cidades %>%
 #### Centro-Oeste
 
 
-```{r Contagios_Acumulados_por_100_mil_hab_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 10, fig.height = 12, fig.cap = "Gráfico 28 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Centro-Oeste"}
+```{r Contagios_Acumulados_por_100_mil_hab_Centro_Oeste, echo = F, warning = F, message = F, fig.align = "center", fig.width = 11, fig.height = 13, fig.cap = "Gráfico 28 - Contágios Acumulados por 100 mil habitantes nos Municípios da Região Centro-Oeste"}
 covid_cidades %>%
    dplyr::filter(regiao == "Centro-Oeste") %>%
    dplyr::arrange(cod_ibge, date) %>%
@@ -912,8 +915,8 @@ covid_cidades %>%
       mid = "white",
       high = "red"
    ) +
-   # ggplot2::scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
-   # ggplot2::scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
+   # ggplot2::scale_x_continuous(limits = c(-63, -45), breaks = seq(-63, -45, 2)) +
+   # ggplot2::scale_y_continuous(limits = c(-25, -07), breaks = seq(-25, -07, 2)) +
    ggplot2::labs(
       x = "Longitude",
       y = "Latitude",
@@ -958,8 +961,8 @@ covid_cidades %>%
       mid = "white",
       high = "red"
    ) +
-   # ggplot2::scale_x_continuous(limits = c(-54, -38), breaks = seq(-54, -38, 2)) +
-   # ggplot2::scale_y_continuous(limits = c(-26, -14), breaks = seq(-26, -14, 2)) +
+   # ggplot2::scale_x_continuous(limits = c(-75, -45), breaks = seq(-75, -45, 2)) +
+   # ggplot2::scale_y_continuous(limits = c(-14, +06), breaks = seq(-14, +06, 2)) +
    ggplot2::labs(
       x = "Longitude",
       y = "Latitude",
