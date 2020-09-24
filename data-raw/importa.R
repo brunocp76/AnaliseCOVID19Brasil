@@ -826,13 +826,13 @@ infos_chaves %>%
 # Conseguindo os Dados de Mapas -------------------------------------------
 cls()
 
-tabela_ufs <<- geobr::read_state(
+tabela_ufs <- geobr::read_state(
    code_state = "all",
    year = 2019,
    showProgress = TRUE
 )
 
-tabela_mun <<- geobr::read_municipality(
+tabela_mun <- geobr::read_municipality(
    code_muni = "all",
    year = 2019,
    showProgress = TRUE

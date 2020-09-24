@@ -373,6 +373,21 @@ covid_cidades %>%
 # Analisando as bases de dados de mapas -----------------------------------
 cls()
 
+system.time(
+   region_small <- geobr::read_region(
+      year = 2018,
+      simplified = TRUE,
+      showProgress = TRUE
+   )
+)
+
+system.time(
+   region_big <- geobr::read_region(
+      year = 2018,
+      simplified = FALSE,
+      showProgress = TRUE
+   )
+)
 
 system.time(
    states_small <- geobr::read_state(
@@ -412,6 +427,20 @@ system.time(
 
 
 scales::comma(
+   x = as.integer(object.size(region_small)),
+   accuracy = 1,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+scales::comma(
+   x = as.integer(object.size(region_big)),
+   accuracy = 1,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+scales::comma(
    x = as.integer(object.size(states_small)),
    accuracy = 1,
    big.mark = ".",
@@ -435,6 +464,21 @@ scales::comma(
 scales::comma(
    x = as.integer(object.size(cities_big)),
    accuracy = 1,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+
+scales::comma(
+   x = as.double(sum(sf::st_area(x = region_small))),
+   accuracy = 0.01,
+   big.mark = ".",
+   decimal.mark = ","
+)
+
+scales::comma(
+   x = as.double(sum(sf::st_area(x = region_big))),
+   accuracy = 0.01,
    big.mark = ".",
    decimal.mark = ","
 )
@@ -467,4 +511,4 @@ scales::comma(
    decimal.mark = ","
 )
 
-rm(states_small, states_big, cities_small, cities_big)
+rm(region_small, region_big, states_small, states_big, cities_small, cities_big)
