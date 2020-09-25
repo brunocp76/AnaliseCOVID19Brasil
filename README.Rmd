@@ -42,13 +42,34 @@ devtools::install_github("brunocp76/AnaliseCOVID19Brasil")
 
 Como disse, os primeiros propósitos deste pacotes são ser simples do usuário utilizar e poder atualizar os dados antes de proceder à qualquer análise. Então começamos assim:
 
-```{r Carregando a biblioteca e atualizando os dados, warning=FALSE}
+```{r Carregando a biblioteca e atualizando os dados, warning = FALSE}
 library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 ```
 
-A função `atualiza_dados()` é uma das funções principais, pois aciona uma série de funções menores, cada uma fazendo uma parte do processo de obter pela internet os dados mais atualizados de fontes diferentes e de combinar todos eles em uma única base.
+Talvez você repare que os totais consolidados da data mais recente disponível (no caso, `r covid %>% dplyr::summarise(data_mais_recente = max(date)) %>% as.data.frame()`) não batem exatamente com os números oficiais ou o dos telejornais. Se esta discrepância existe entre o governo e a imprensa por motivos políticos que eu não discutirei aqui, eu entendo que aqui basta que os números estejam bem próximos aos números veiculados pela grande imprensa.
+
+```{r Gerando um resumo da base atualizada, echo = FALSE}
+covid %>%
+   dplyr::summarise(
+      ultima_data = max(date, na.rm = TRUE),
+      total_contagios = scales::comma(
+         sum(contagios_novos, na.rm = TRUE), big.mark = ".", decimal.mark = ","
+      ),
+      total_obitos = scales::comma(
+         sum(obitos_novos, na.rm = TRUE), big.mark = ".", decimal.mark = ","
+      ),
+      taxa_mortalidade = scales::percent(
+         sum(obitos_novos, na.rm = TRUE) / sum(contagios_novos, na.rm = TRUE),
+         big.mark = ".", decimal.mark = ",", accuracy = 0.01
+      )
+   ) %>% as.data.frame()
+```
+
+Mais uma vez, o meu enfoque aqui é ter estes dados sendo facilmente atualizados e viabilizando as análises que apresentarei mais para frente.
+
+Para isso, a função `atualiza_dados()` é uma das funções principais, pois aciona uma série de funções menores, cada uma fazendo uma parte do processo de obter pela internet os dados mais atualizados de fontes diferentes e de combinar todos eles em uma única base.
 
 Desta forma, depois de executada esta função você terá a base `covid` construída com dados atualizados disponíveis tanto no portal [Brasil.io](https://brasil.io/) quanto no [Ministério da Saúde](https://covid.saude.gov.br/)
 

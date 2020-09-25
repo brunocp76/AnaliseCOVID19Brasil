@@ -45,7 +45,6 @@ atualiza_dados <- function() {
    cat("\n", "Concluida a organizacao de todas as informacoes levantadas em ",
        tempo_base_covid, " segundos.", "\n\n", sep = "")
 
-
    cat("\n\n", "Parabens! Agora voce esta com a base atualizada!",
        "\n\n", "O processamento foi concluido em ",
        sum(tempo_covid_brasilio, tempo_covid_minister, tempo_infos_geo,
