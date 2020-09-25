@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-24 18:03:32
+#> Atualizacao de dados iniciada em 2020-09-25 11:00:50
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 14.04 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 15.46 segundos.
 #> 
 #> 
 #> 
@@ -76,31 +76,31 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 62.51 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 65.83 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.48 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 2.3 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.24 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.35 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 81.27 segundos.
+#> O processamento foi concluido em 86.94 segundos.
 #> 
 #> Segue um meta-resumo da base:
 #> 
-#> Rows: 1,009,248
+#> Rows: 1,014,816
 #> Columns: 18
 #> $ date                 <date> 2020-03-27, 2020-03-28, 2020-03-29, 2020-03-3...
 #> $ semana_epidem        <int> 13, 13, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15...
@@ -142,42 +142,42 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 1.07 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 1.1 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.66 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.65 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.62 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.65 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.73 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.59 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.36 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.44 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.25 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.26 segundos.
 #> 
 #> 
 #> 

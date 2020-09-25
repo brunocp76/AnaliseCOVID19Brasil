@@ -130,7 +130,7 @@ covid_estados %>%
          dplyr::nth(5)
    ) %>%
    dplyr::filter(num_contagios >= limite) %>%
-   dplyr::mutate(contagios_acumulados_por_mil = contagios_acumulados / 1000) %>% 
+   dplyr::mutate(contagios_acumulados_por_mil = contagios_acumulados / 1000) %>%
    ggplot2::ggplot(ggplot2::aes(y = contagios_acumulados_por_mil, x = date, color = uf)) +
    ggplot2::labs(
       x = "Data",
