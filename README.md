@@ -46,7 +46,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-25 19:00:00
+#> Atualizacao de dados iniciada em 2020-09-26 22:13:34
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -67,7 +67,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 15.35 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 15.14 segundos.
 #> 
 #> 
 #> 
@@ -76,31 +76,31 @@ atualiza_dados()
 #> Por favor aguarde mais um pouco...
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 64.24 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 66.05 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.5 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 2.56 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.46 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.4 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 84.55 segundos.
+#> O processamento foi concluido em 87.15 segundos.
 #> 
 #> Segue um meta-resumo da base:
 #> 
-#> Rows: 1,020,567
+#> Rows: 1,026,136
 #> Columns: 18
 #> $ date                 <date> 2020-03-27, 2020-03-28, 2020-03-29, 2020-03-3...
 #> $ semana_epidem        <int> 13, 13, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15...
@@ -123,14 +123,14 @@ atualiza_dados()
 ```
 
 Talvez você repare que os totais consolidados da data mais recente
-disponível (no caso, 2020-09-25) não batem exatamente com os números
+disponível (no caso, 2020-09-26) não batem exatamente com os números
 oficiais ou o dos telejornais. Se esta discrepância existe entre o
 governo e a imprensa por motivos políticos que eu não discutirei aqui,
 eu entendo que aqui basta que os números estejam bem próximos aos
 números veiculados pela grande imprensa.
 
     #>   ultima_data total_contagios total_obitos taxa_mortalidade
-    #> 1  2020-09-25       4.672.868      140.429            3,01%
+    #> 1  2020-09-26       4.701.054      141.296            3,01%
 
 Mais uma vez, o meu enfoque aqui é ter estes dados sendo facilmente
 atualizados e viabilizando as análises que apresentarei mais para
@@ -163,21 +163,21 @@ bases_derivadas()
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.58 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.56 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.68 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.65 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.63 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.69 segundos.
 #> 
 #> 
 #> 
@@ -191,17 +191,18 @@ bases_derivadas()
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.26 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.28 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 21.55 segundos.
+#> O processamento foi concluido em 21.58 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
-#> [4] "covid_estados"        "covid_regioes_brasil" "covid_regioes_saude"
+#> [4] "covid_estados"        "covid_regioes_brasil" "covid_regioes_saude" 
+#> [7] "tabela_mun"           "tabela_ufs"
 ```
 
 A função `bases_derivadas()` é outra das funções principais, pois parte
