@@ -558,6 +558,7 @@ Podemos ver, até da maneira como (não) são feitas as notificações no Brasil
 
 ### Taxa de Mortalidade
 
+
 Uma vez que temos as quantidades de contágios e de óbitos, podemos calcular a Taxa de Mortalidade (Número de Mortos / Número de Contágios)
 
 É sabido que em países que conseguem adotar a testagem em massa, numa média de toda a população, a taxa de mortalidade fica **em torno de 1%**.
