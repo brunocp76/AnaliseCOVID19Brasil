@@ -9,7 +9,6 @@ cls <- function() cat("\f")
 #'
 #' @return Base importada e tratada da COVID do Portal Brasil.io.
 #'
-#' @export
 le_brasil_io <- function() {
    covid_brasilio <<- datacovidbr::brasilio(silent = TRUE) %>%
       dplyr::filter(
@@ -92,107 +91,219 @@ le_brasil_io <- function() {
 
 #' Importa dados da COVID do Ministerio da Saude
 #'
-#' Realiza a importacao e o tratamento dos dados da COVID-19 do Ministerio da Saude.
+#' Realiza a importacao e o tratamento dos dados da COVID-19 do Ministerio da Saude (ou de seu backup).
 #'
 #' ATENCAO: Esta sub-funcao consome muita memoria e leva algum tempo. Por favor aguarde...
 #'
 #' @return Base importada e tratada da COVID do Ministerio da Saude.
 #'
-#' @export
 le_ministerio <- function() {
-   covid_ministerio <<- datacovidbr::brMinisterioSaude(silent = TRUE) %>%
-      # Filtrando só as linhas necessárias...
-      dplyr::filter(
-         regiao != "Brasil",
-         !is.na(municipio),
-         !is.na(codmun)
-      ) %>%
-      # Organizando a bagunça dos nomes e reposicionando as colunas...
-      dplyr::select(
-         date,
-         semana_epidem = semanaEpi,
-         regiao,
-         estado,
-         municipio,
-         cod_uf = coduf,
-         cod_mun = codmun,
-         cod_regiao_saude = codRegiaoSaude,
-         nome_regiao_saude = nomeRegiaoSaude,
-         pop_tcu_2019 = populacaoTCU2019,
-         contagios_novos = casosNovos,
-         obitos_novos = obitosNovos,
-         contagios_acumulados = casosAcumulado,
-         obitos_acumulados = obitosAcumulado,
-         interior_metropol = `interior/metropolitana`
-      ) %>%
-      # Deixando a base (bem) mais leve...
-      dplyr::mutate(
-         dplyr::across(
-            .cols = c(
-               semana_epidem,
-               cod_uf,
-               cod_mun,
-               cod_regiao_saude,
-               pop_tcu_2019,
-               contagios_novos,
-               obitos_novos,
-               contagios_acumulados,
-               obitos_acumulados,
-               interior_metropol
-            ),
-            .fns = ~ as.integer(.x)
-         )
-      ) %>%
-      # Deixando a base (um pouco) mais leve...
-      dplyr::mutate(
-         dplyr::across(
-            .cols = c(
+   covid_ministerio <<-
+      tryCatch({
+         datacovidbr::brMinisterioSaude(silent = TRUE) %>%
+            # Filtrando so as linhas necessárias...
+            dplyr::filter(
+               regiao != "Brasil",
+               !is.na(municipio),
+               !is.na(codmun)
+            ) %>%
+            # Organizando a bagunca dos nomes e reposicionando as colunas...
+            dplyr::select(
+               date,
+               semana_epidem = semanaEpi,
                regiao,
                estado,
                municipio,
-               nome_regiao_saude
-            ),
-            .fns = ~ stringi::stri_trans_general(
-               str = stringr::str_trim(.x),
-               id = "Latin-ASCII"
-            )
-         )
-      ) %>%
-      # Deixando a base (um pouco) mais ajeitada...
-      dplyr::mutate(
-         dplyr::across(
-            .cols = c(
-               nome_regiao_saude
-            ),
-            .fns = ~ stringr::str_replace_all(
-               string =
-                  stringr::str_replace_all(
+               cod_uf = coduf,
+               cod_mun = codmun,
+               cod_regiao_saude = codRegiaoSaude,
+               nome_regiao_saude = nomeRegiaoSaude,
+               pop_tcu_2019 = populacaoTCU2019,
+               # em_acompanh_novos = emAcompanhamentoNovos,
+               contagios_novos = casosNovos,
+               obitos_novos = obitosNovos,
+               # recuperados_novos = Recuperadosnovos,
+               contagios_acumulados = casosAcumulado,
+               obitos_acumulados = obitosAcumulado,
+               interior_metropol = `interior/metropolitana`
+            ) %>%
+            # Deixando a base (bem) mais leve...
+            dplyr::mutate(
+               dplyr::across(
+                  .cols = c(
+                     semana_epidem,
+                     cod_uf,
+                     cod_mun,
+                     cod_regiao_saude,
+                     pop_tcu_2019,
+                     contagios_novos,
+                     obitos_novos,
+                     contagios_acumulados,
+                     obitos_acumulados,
+                     interior_metropol
+                  ),
+                  .fns = ~ as.integer(.x)
+               )
+            ) %>%
+            # Deixando a base (um pouco) mais leve...
+            dplyr::mutate(
+               dplyr::across(
+                  .cols = c(
+                     regiao,
+                     estado,
+                     municipio,
+                     nome_regiao_saude
+                  ),
+                  .fns = ~ stringi::stri_trans_general(
+                     str = stringr::str_trim(.x),
+                     id = "Latin-ASCII"
+                  )
+               )
+            ) %>%
+            # Deixando a base (um pouco) mais ajeitada...
+            dplyr::mutate(
+               dplyr::across(
+                  .cols = c(
+                     nome_regiao_saude
+                  ),
+                  .fns = ~ stringr::str_replace_all(
                      string =
                         stringr::str_replace_all(
                            string =
-                              stringr::str_to_title(
-                                 string = .x,
-                                 locale = "pt_BR"
+                              stringr::str_replace_all(
+                                 string =
+                                    stringr::str_to_title(
+                                       string = .x,
+                                       locale = "pt_BR"
+                                    ),
+                                 pattern = " Da ",
+                                 replacement = " da "
                               ),
-                           pattern = " Da ",
-                           replacement = " da "
-                        ),
-                     pattern = " Do ",
-                     replacement = " do "
+                           pattern = " Do ",
+                           replacement = " do "
+                        )
+                     ,
+                     pattern = " De ",
+                     replacement = " de "
                   )
-               ,
-               pattern = " De ",
-               replacement = " de "
-            )
-         )
-      ) %>%
-      # Ordenando para auxiliar no cruzamento dos dados...
-      dplyr::arrange(
-         cod_mun,
-         date,
-         estado,
-         municipio
-      )
+               )
+            ) %>%
+            # Ordenando para auxiliar no cruzamento dos dados...
+            dplyr::arrange(
+               cod_mun,
+               date,
+               estado,
+               municipio
+            ) %>%
+            # Garantindo que todos os nomes estejam arrumados...
+            janitor::clean_names()
+      },
+      # warning = function(w) {
+      #    warning-handler-code
+      # },
+      error = function(e) {
+         cls()
+         cat("Encontrei um erro na funcao brMinisterioSaude, entao lerei o arquivo de backup...\n\n")
+         readRDS("data-raw/backup_covid_ministerio.rds")
+      },
+      finally = {
+         cat("Pronto!\n\n")
+      })
+
+
+      # datacovidbr::brMinisterioSaude(silent = TRUE) %>%
+      # # Filtrando só as linhas necessárias...
+      # dplyr::filter(
+      #    regiao != "Brasil",
+      #    !is.na(municipio),
+      #    !is.na(codmun)
+      # ) %>%
+      # # Organizando a bagunça dos nomes e reposicionando as colunas...
+      # dplyr::select(
+      #    date,
+      #    semana_epidem = semanaEpi,
+      #    regiao,
+      #    estado,
+      #    municipio,
+      #    cod_uf = coduf,
+      #    cod_mun = codmun,
+      #    cod_regiao_saude = codRegiaoSaude,
+      #    nome_regiao_saude = nomeRegiaoSaude,
+      #    pop_tcu_2019 = populacaoTCU2019,
+      #    contagios_novos = casosNovos,
+      #    obitos_novos = obitosNovos,
+      #    contagios_acumulados = casosAcumulado,
+      #    obitos_acumulados = obitosAcumulado,
+      #    interior_metropol = `interior/metropolitana`
+      # ) %>%
+      # # Deixando a base (bem) mais leve...
+      # dplyr::mutate(
+      #    dplyr::across(
+      #       .cols = c(
+      #          semana_epidem,
+      #          cod_uf,
+      #          cod_mun,
+      #          cod_regiao_saude,
+      #          pop_tcu_2019,
+      #          contagios_novos,
+      #          obitos_novos,
+      #          contagios_acumulados,
+      #          obitos_acumulados,
+      #          interior_metropol
+      #       ),
+      #       .fns = ~ as.integer(.x)
+      #    )
+      # ) %>%
+      # # Deixando a base (um pouco) mais leve...
+      # dplyr::mutate(
+      #    dplyr::across(
+      #       .cols = c(
+      #          regiao,
+      #          estado,
+      #          municipio,
+      #          nome_regiao_saude
+      #       ),
+      #       .fns = ~ stringi::stri_trans_general(
+      #          str = stringr::str_trim(.x),
+      #          id = "Latin-ASCII"
+      #       )
+      #    )
+      # ) %>%
+      # # Deixando a base (um pouco) mais ajeitada...
+      # dplyr::mutate(
+      #    dplyr::across(
+      #       .cols = c(
+      #          nome_regiao_saude
+      #       ),
+      #       .fns = ~ stringr::str_replace_all(
+      #          string =
+      #             stringr::str_replace_all(
+      #                string =
+      #                   stringr::str_replace_all(
+      #                      string =
+      #                         stringr::str_to_title(
+      #                            string = .x,
+      #                            locale = "pt_BR"
+      #                         ),
+      #                      pattern = " Da ",
+      #                      replacement = " da "
+      #                   ),
+      #                pattern = " Do ",
+      #                replacement = " do "
+      #             )
+      #          ,
+      #          pattern = " De ",
+      #          replacement = " de "
+      #       )
+      #    )
+      # ) %>%
+      # # Ordenando para auxiliar no cruzamento dos dados...
+      # dplyr::arrange(
+      #    cod_mun,
+      #    date,
+      #    estado,
+      #    municipio
+      # )
 
    return(covid_ministerio)
 }
@@ -202,7 +313,6 @@ le_ministerio <- function() {
 #'
 #' @return Dados auxiliares relacionados ao Codigio de Municipio.
 #'
-#' @export
 deriva_codigo_municipio <- function() {
    infos_chaves <<- covid_brasilio %>%
       dplyr::mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
@@ -273,7 +383,6 @@ deriva_codigo_municipio <- function() {
 #'
 #' @return Base Final atualizada e enriquecida.
 #'
-#' @export
 processa_final <- function() {
    covid <<- covid_brasilio %>%
       dplyr::mutate(cod_mun = as.integer(trunc(cod_ibge / 10))) %>%
@@ -434,7 +543,6 @@ processa_final <- function() {
 #'
 #' @return Backup da base mais atualizada disponivel.
 #'
-#' @export
 backup_base <- function() {
    cat("\n", "Fazendo copia de seguranca da base mais atualizadas disponivel",
        "\n\n", "Por favor aguarde...")
@@ -454,7 +562,6 @@ backup_base <- function() {
 #'
 #' @return Arquivos com as sumarizacoes de Area e Populacao 2019.
 #'
-#' @export
 sumarios_derivacoes <- function() {
    sumario_regioes_saude <<- covid %>%
       dplyr::group_by(cod_ibge) %>%
@@ -534,7 +641,6 @@ sumarios_derivacoes <- function() {
 #'
 #' @return Base Derivada ao nivel de Cidades.
 #'
-#' @export
 base_cidades <- function() {
    covid_cidades <<- covid %>%
       dplyr::arrange(cod_ibge, date) %>%
@@ -647,7 +753,6 @@ base_cidades <- function() {
 #'
 #' @return Base Derivada ao nivel de Regioes de Saude.
 #'
-#' @export
 base_regioes_saude <- function() {
    covid_regioes_saude <<- covid %>%
       dplyr::select(
@@ -823,7 +928,6 @@ base_regioes_saude <- function() {
 #'
 #' @return Base Derivada ao nivel de Estados.
 #'
-#' @export
 base_estados <- function() {
    covid_estados <<- covid %>%
       dplyr::select(
@@ -993,7 +1097,6 @@ base_estados <- function() {
 #'
 #' @return Base Derivada ao nivel de Regioes do Brasil.
 #'
-#' @export
 base_regioes_brasil <- function() {
    covid_regioes_brasil <<- covid %>%
       dplyr::select(
@@ -1162,7 +1265,6 @@ base_regioes_brasil <- function() {
 #'
 #' @return Base Derivada ao nivel de Brasil.
 #'
-#' @export
 base_brasil <- function() {
    covid_brasil <<- covid %>%
       dplyr::select(
@@ -1320,7 +1422,6 @@ base_brasil <- function() {
 #'
 #' @return Um tema definido para construcao de graficos.
 #'
-#' @export
 tema_bruno <- function() {
    ggplot2::theme(
       # Bloco sobre a legenda...

@@ -10,7 +10,7 @@ le_ministerio()
 Base importada e tratada da COVID do Ministerio da Saude.
 }
 \description{
-Realiza a importacao e o tratamento dos dados da COVID-19 do Ministerio da Saude.
+Realiza a importacao e o tratamento dos dados da COVID-19 do Ministerio da Saude (ou de seu backup).
 }
 \details{
 ATENCAO: Esta sub-funcao consome muita memoria e leva algum tempo. Por favor aguarde...

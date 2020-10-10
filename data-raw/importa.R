@@ -300,103 +300,116 @@ covid_brasilio %>%
 
 
 # Dados do Ministério da Saúde --------------------------------------------
-datacovidbr::brMinisterioSaude(silent = TRUE) %>%
-   # Filtrando só as linhas necessárias...
-   filter(
-      regiao != "Brasil",
-      !is.na(municipio),
-      !is.na(codmun)
-   ) %>%
-   # Organizando a bagunça dos nomes e reposicionando as colunas...
-   select(
-      date,
-      semana_epidem = semanaEpi,
-      regiao,
-      estado,
-      municipio,
-      cod_uf = coduf,
-      cod_mun = codmun,
-      cod_regiao_saude = codRegiaoSaude,
-      nome_regiao_saude = nomeRegiaoSaude,
-      pop_tcu_2019 = populacaoTCU2019,
-      # em_acompanh_novos = emAcompanhamentoNovos,
-      contagios_novos = casosNovos,
-      obitos_novos = obitosNovos,
-      # recuperados_novos = Recuperadosnovos,
-      contagios_acumulados = casosAcumulado,
-      obitos_acumulados = obitosAcumulado,
-      interior_metropol = `interior/metropolitana`
-   ) %>%
-   # Deixando a base (bem) mais leve...
-   mutate(
-      across(
-         .cols = c(
-            semana_epidem,
-            cod_uf,
-            cod_mun,
-            cod_regiao_saude,
-            pop_tcu_2019,
-            contagios_novos,
-            obitos_novos,
-            contagios_acumulados,
-            obitos_acumulados,
-            interior_metropol
-         ),
-         .fns = ~ as.integer(.x)
-      )
-   ) %>%
-   # Deixando a base (um pouco) mais leve...
-   mutate(
-      across(
-         .cols = c(
-            regiao,
-            estado,
-            municipio,
-            nome_regiao_saude
-         ),
-         .fns = ~ stringi::stri_trans_general(
-            str = stringr::str_trim(.x),
-            id = "Latin-ASCII"
+tryCatch({
+   datacovidbr::brMinisterioSaude(silent = TRUE) %>%
+      # Filtrando só as linhas necessárias...
+      filter(
+         regiao != "Brasil",
+         !is.na(municipio),
+         !is.na(codmun)
+      ) %>%
+      # Organizando a bagunça dos nomes e reposicionando as colunas...
+      select(
+         date,
+         semana_epidem = semanaEpi,
+         regiao,
+         estado,
+         municipio,
+         cod_uf = coduf,
+         cod_mun = codmun,
+         cod_regiao_saude = codRegiaoSaude,
+         nome_regiao_saude = nomeRegiaoSaude,
+         pop_tcu_2019 = populacaoTCU2019,
+         # em_acompanh_novos = emAcompanhamentoNovos,
+         contagios_novos = casosNovos,
+         obitos_novos = obitosNovos,
+         # recuperados_novos = Recuperadosnovos,
+         contagios_acumulados = casosAcumulado,
+         obitos_acumulados = obitosAcumulado,
+         interior_metropol = `interior/metropolitana`
+      ) %>%
+      # Deixando a base (bem) mais leve...
+      mutate(
+         across(
+            .cols = c(
+               semana_epidem,
+               cod_uf,
+               cod_mun,
+               cod_regiao_saude,
+               pop_tcu_2019,
+               contagios_novos,
+               obitos_novos,
+               contagios_acumulados,
+               obitos_acumulados,
+               interior_metropol
+            ),
+            .fns = ~ as.integer(.x)
          )
-      )
-   ) %>%
-   # Deixando a base (um pouco) mais ajeitada...
-   mutate(
-      across(
-         .cols = c(
-            nome_regiao_saude
-         ),
-         .fns = ~ stringr::str_replace_all(
-            string =
-               stringr::str_replace_all(
-                  string =
-                     stringr::str_replace_all(
-                        string =
-                           stringr::str_to_title(
-                              string = .x,
-                              locale = "pt_BR"
-                           ),
-                        pattern = " Da ",
-                        replacement = " da "
-                     ),
-                  pattern = " Do ",
-                  replacement = " do "
-               )
-            ,
-            pattern = " De ",
-            replacement = " de "
+      ) %>%
+      # Deixando a base (um pouco) mais leve...
+      mutate(
+         across(
+            .cols = c(
+               regiao,
+               estado,
+               municipio,
+               nome_regiao_saude
+            ),
+            .fns = ~ stringi::stri_trans_general(
+               str = stringr::str_trim(.x),
+               id = "Latin-ASCII"
+            )
          )
-      )
-   ) %>%
-   # Ordenando para auxiliar no cruzamento dos dados...
-   arrange(
-      cod_mun,
-      date,
-      estado,
-      municipio
-   ) %>%
-   # Garantindo que todos os nomes estejam arrumados...
-   janitor::clean_names() -> covid_ministerio
+      ) %>%
+      # Deixando a base (um pouco) mais ajeitada...
+      mutate(
+         across(
+            .cols = c(
+               nome_regiao_saude
+            ),
+            .fns = ~ stringr::str_replace_all(
+               string =
+                  stringr::str_replace_all(
+                     string =
+                        stringr::str_replace_all(
+                           string =
+                              stringr::str_to_title(
+                                 string = .x,
+                                 locale = "pt_BR"
+                              ),
+                           pattern = " Da ",
+                           replacement = " da "
+                        ),
+                     pattern = " Do ",
+                     replacement = " do "
+                  )
+               ,
+               pattern = " De ",
+               replacement = " de "
+            )
+         )
+      ) %>%
+      # Ordenando para auxiliar no cruzamento dos dados...
+      arrange(
+         cod_mun,
+         date,
+         estado,
+         municipio
+      ) %>%
+      # Garantindo que todos os nomes estejam arrumados...
+      janitor::clean_names()
+},
+# warning = function(w) {
+#    warning-handler-code
+# },
+error = function(e) {
+   cls()
+   cat("Encontrei um erro na função brMinisterioSaude, então lerei o arquivo de backup...\n\n")
+   readRDS("data-raw/backup_covid_ministerio.rds")
+},
+finally = {
+   cat("Pronto!\n\n")
+}) -> covid_ministerio
 
 # Rápida conferência...
 cls()
@@ -619,7 +632,7 @@ rm(coords_munic, area_munic)
 cls()
 
 vroom::vroom(
-   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD-21-09-2020.csv"
+   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD-05-10-2020.csv"
    , delim = ";"
    , col_names = TRUE
    , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")
@@ -1136,6 +1149,24 @@ saveRDS(
 )
 
 
+## Base Auxiliar - Primeiras Semanas Epidemiológicas
+cls()
+
+semana_epid %>%
+   glimpse()
+
+semana_epid %>%
+   object.size()
+
+saveRDS(
+   object = semana_epid,
+   file = "data-raw/semanas_epidemiologicas.rds",
+   ascii = FALSE,
+   version = 3,
+   compress = "xz"
+)
+
+
 ## Base Auxiliar - Informações Geográficas
 cls()
 
@@ -1154,18 +1185,18 @@ saveRDS(
 )
 
 
-## Base Auxiliar - Primeiras Semanas Epidemiológicas
+## Base Backup - Ministerio da Saude
 cls()
 
-semana_epid %>%
+covid_ministerio %>%
    glimpse()
 
-semana_epid %>%
+covid_ministerio %>%
    object.size()
 
 saveRDS(
-   object = semana_epid,
-   file = "data-raw/semanas_epidemiologicas.rds",
+   object = covid_ministerio,
+   file = "data-raw/backup_covid_ministerio.rds",
    ascii = FALSE,
    version = 3,
    compress = "xz"
