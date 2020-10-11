@@ -46,12 +46,13 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2020-09-29 10:47:42
+#> Atualizacao de dados iniciada em 2020-10-10 23:34:00
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
 #> Por favor aguarde...
-#> Parsed with column specification:
+#> 
+#> -- Column specification ---------------------------------
 #> cols(
 #>   date = col_date(format = ""),
 #>   state = col_character(),
@@ -62,12 +63,13 @@ atualiza_dados()
 #>   order_for_place = col_double(),
 #>   is_last = col_logical(),
 #>   estimated_population_2019 = col_double(),
+#>   estimated_population = col_double(),
 #>   city_ibge_code = col_double(),
 #>   confirmed_per_100k_inhabitants = col_double(),
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 15.4 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 16.71 segundos.
 #> 
 #> 
 #> 
@@ -75,32 +77,36 @@ atualiza_dados()
 #> 
 #> Por favor aguarde mais um pouco...
 #> 
+#> Encontrei um erro na funcao brMinisterioSaude, entao lerei o arquivo de backup...
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 65.06 segundos.
+#> Pronto!
+#> 
+#> 
+#> Concluida a importacao de dados do Ministerio da Saude em 184.44 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 1.54 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 2.37 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 3.48 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 3.84 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 85.48 segundos.
+#> O processamento foi concluido em 207.36 segundos.
 #> 
 #> Segue um meta-resumo da base:
 #> 
-#> Rows: 1,037,274
+#> Rows: 1,098,874
 #> Columns: 18
 #> $ date                 <date> 2020-03-27, 2020-03-28, 2020-03-29, 2020-03-3...
 #> $ semana_epidem        <int> 13, 13, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15...
@@ -123,14 +129,14 @@ atualiza_dados()
 ```
 
 Talvez você repare que os totais consolidados da data mais recente
-disponível (no caso, 2020-09-28) não batem exatamente com os números
+disponível (no caso, 2020-10-10) não batem exatamente com os números
 oficiais ou o dos telejornais. Se esta discrepância existe entre o
 governo e a imprensa por motivos políticos que eu não discutirei aqui,
 eu entendo que aqui basta que os números estejam bem próximos aos
 números veiculados pela grande imprensa.
 
     #>   ultima_data total_contagios total_obitos taxa_mortalidade
-    #> 1  2020-09-28       4.728.481      141.946            3,00%
+    #> 1  2020-10-10       5.037.422      149.523            2,97%
 
 Mais uma vez, o meu enfoque aqui é ter estes dados sendo facilmente
 atualizados e viabilizando as análises que apresentarei mais para
@@ -142,7 +148,7 @@ processo de obter pela internet os dados mais atualizados de fontes
 diferentes e de combinar todos eles em uma única base.
 
 Desta forma, depois de executada esta função você terá a base `covid`
-construída com dados atualizados disponíveis tanto no portal
+construída com dados disponíveis tanto no portal
 [Brasil.io](https://brasil.io/) quanto no [Ministério da
 Saúde](https://covid.saude.gov.br/)
 
@@ -156,52 +162,53 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 1.1 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 1.11 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.62 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 11.98 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.67 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 2.82 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.84 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 3.76 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.59 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 2.67 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.25 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.26 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 22.07 segundos.
+#> O processamento foi concluido em 22.6 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
-#> [4] "covid_estados"        "covid_regioes_brasil" "covid_regioes_saude"
+#> [4] "covid_estados"        "covid_regioes_brasil" "covid_regioes_saude" 
+#> [7] "tabela_mun"           "tabela_ufs"
 ```
 
 A função `bases_derivadas()` é outra das funções principais, pois parte

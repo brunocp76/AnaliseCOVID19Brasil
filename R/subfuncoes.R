@@ -1422,6 +1422,7 @@ base_brasil <- function() {
 #'
 #' @return Um tema definido para construcao de graficos.
 #'
+#' @export
 tema_bruno <- function() {
    ggplot2::theme(
       # Bloco sobre a legenda...
