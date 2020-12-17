@@ -202,8 +202,7 @@ le_ministerio <- function() {
       #    warning-handler-code
       # },
       error = function(e) {
-         cls()
-         cat("Encontrei um erro na funcao brMinisterioSaude, entao lerei o arquivo de backup...\n\n")
+         cat("\n\nEncontrei um erro na funcao brMinisterioSaude, entao lerei o arquivo de backup...\n\n")
          readRDS("data-raw/backup_covid_ministerio.rds")
       },
       finally = {
