@@ -302,6 +302,29 @@ covid_brasilio %>%
 # Dados do Ministério da Saúde --------------------------------------------
 tryCatch({
    datacovidbr::brMinisterioSaude(silent = TRUE) %>%
+      separate(
+         col = 1,
+         into = c(
+            'regiao',
+            'estado',
+            'municipio',
+            'coduf',
+            'codmun',
+            'codRegiaoSaude',
+            'nomeRegiaoSaude',
+            'date',
+            'semanaEpi',
+            'populacaoTCU2019',
+            'casosAcumulado',
+            'casosNovos',
+            'obitosAcumulado',
+            'obitosNovos',
+            'Recuperadosnovos',
+            'emAcompanhamentoNovos',
+            'interior/metropolitana'
+         ),
+         sep = ";",
+         convert = TRUE) %>%
       # Filtrando só as linhas necessárias...
       filter(
          regiao != "Brasil",
