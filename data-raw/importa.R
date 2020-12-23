@@ -367,6 +367,12 @@ tryCatch({
                interior_metropol
             ),
             .fns = ~ as.integer(.x)
+         ),
+         across(
+            .cols = c(
+               date
+            ),
+            .fns = ~ as.Date(.x)
          )
       ) %>%
       # Deixando a base (um pouco) mais leve...
@@ -655,7 +661,7 @@ rm(coords_munic, area_munic)
 cls()
 
 vroom::vroom(
-   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD-05-10-2020.csv"
+   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD-14-12-2020.csv"
    , delim = ";"
    , col_names = TRUE
    , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")
