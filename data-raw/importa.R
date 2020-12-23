@@ -325,10 +325,12 @@ tryCatch({
          ),
          sep = ";",
          convert = TRUE) %>%
+      # Cuidando da Compatibilidade...
+      as_tibble() %>%
       # Filtrando só as linhas necessárias...
       filter(
          regiao != "Brasil",
-         !is.na(municipio),
+         trimws(municipio) != "",
          !is.na(codmun)
       ) %>%
       # Organizando a bagunça dos nomes e reposicionando as colunas...
@@ -418,6 +420,8 @@ tryCatch({
             )
          )
       ) %>%
+      # Insistindo na Consistencia...
+      filter(!is.na(date)) %>%
       # Ordenando para auxiliar no cruzamento dos dados...
       arrange(
          cod_mun,

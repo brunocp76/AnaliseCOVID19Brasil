@@ -101,13 +101,38 @@ le_ministerio <- function() {
    covid_ministerio <<-
       tryCatch({
          datacovidbr::brMinisterioSaude(silent = TRUE) %>%
-            # Filtrando so as linhas necessárias...
+            tidyr::separate(
+               col = 1,
+               into = c(
+                  'regiao',
+                  'estado',
+                  'municipio',
+                  'coduf',
+                  'codmun',
+                  'codRegiaoSaude',
+                  'nomeRegiaoSaude',
+                  'date',
+                  'semanaEpi',
+                  'populacaoTCU2019',
+                  'casosAcumulado',
+                  'casosNovos',
+                  'obitosAcumulado',
+                  'obitosNovos',
+                  'Recuperadosnovos',
+                  'emAcompanhamentoNovos',
+                  'interior/metropolitana'
+               ),
+               sep = ";",
+               convert = TRUE) %>%
+            # Cuidando da Compatibilidade...
+            as_tibble() %>%
+            # Filtrando só as linhas necessárias...
             dplyr::filter(
                regiao != "Brasil",
-               !is.na(municipio),
+               trimws(municipio) != "",
                !is.na(codmun)
             ) %>%
-            # Organizando a bagunca dos nomes e reposicionando as colunas...
+            # Organizando a bagunça dos nomes e reposicionando as colunas...
             dplyr::select(
                date,
                semana_epidem = semanaEpi,
@@ -129,7 +154,7 @@ le_ministerio <- function() {
             ) %>%
             # Deixando a base (bem) mais leve...
             dplyr::mutate(
-               dplyr::across(
+               across(
                   .cols = c(
                      semana_epidem,
                      cod_uf,
@@ -143,11 +168,17 @@ le_ministerio <- function() {
                      interior_metropol
                   ),
                   .fns = ~ as.integer(.x)
+               ),
+               across(
+                  .cols = c(
+                     date
+                  ),
+                  .fns = ~ as.Date(.x)
                )
             ) %>%
             # Deixando a base (um pouco) mais leve...
             dplyr::mutate(
-               dplyr::across(
+               across(
                   .cols = c(
                      regiao,
                      estado,
@@ -162,7 +193,7 @@ le_ministerio <- function() {
             ) %>%
             # Deixando a base (um pouco) mais ajeitada...
             dplyr::mutate(
-               dplyr::across(
+               across(
                   .cols = c(
                      nome_regiao_saude
                   ),
@@ -188,6 +219,8 @@ le_ministerio <- function() {
                   )
                )
             ) %>%
+            # Insistindo na Consistencia...
+            dplyr::filter(!is.na(date)) %>%
             # Ordenando para auxiliar no cruzamento dos dados...
             dplyr::arrange(
                cod_mun,
