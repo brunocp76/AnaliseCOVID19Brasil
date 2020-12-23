@@ -69,7 +69,7 @@ covid %>%
 
 Mais uma vez, o meu enfoque aqui é ter estes dados sendo facilmente atualizados e viabilizando as análises que apresentarei mais para frente.
 
-Para isso, a função `atualiza_dados()` é uma das funções principais, pois aciona uma série de funções menores, cada uma fazendo uma parte do processo de obter pela internet os dados mais atualizados de fontes diferentes e de combinar todos eles em uma única base.
+Para isso, a função `atualiza_dados()` é uma das funções principais, pois aciona uma série de funções menores, cada uma fazendo uma parte do processo de obter pela internet os dados mais atualizados possíveis de fontes diferentes e de combinar todos eles em uma única base.
 
 Desta forma, depois de executada esta função você terá a base `covid` construída com dados disponíveis tanto no portal [Brasil.io](https://brasil.io/) quanto no [Ministério da Saúde](https://covid.saude.gov.br/)
 
