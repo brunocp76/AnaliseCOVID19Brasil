@@ -125,7 +125,7 @@ le_ministerio <- function() {
                sep = ";",
                convert = TRUE) %>%
             # Cuidando da Compatibilidade...
-            as_tibble() %>%
+            tidyr::as_tibble() %>%
             # Filtrando só as linhas necessárias...
             dplyr::filter(
                regiao != "Brasil",
@@ -154,7 +154,7 @@ le_ministerio <- function() {
             ) %>%
             # Deixando a base (bem) mais leve...
             dplyr::mutate(
-               across(
+               dplyr::across(
                   .cols = c(
                      semana_epidem,
                      cod_uf,
@@ -169,7 +169,7 @@ le_ministerio <- function() {
                   ),
                   .fns = ~ as.integer(.x)
                ),
-               across(
+               dplyr::across(
                   .cols = c(
                      date
                   ),
@@ -178,7 +178,7 @@ le_ministerio <- function() {
             ) %>%
             # Deixando a base (um pouco) mais leve...
             dplyr::mutate(
-               across(
+               dplyr::across(
                   .cols = c(
                      regiao,
                      estado,
@@ -193,7 +193,7 @@ le_ministerio <- function() {
             ) %>%
             # Deixando a base (um pouco) mais ajeitada...
             dplyr::mutate(
-               across(
+               dplyr::across(
                   .cols = c(
                      nome_regiao_saude
                   ),

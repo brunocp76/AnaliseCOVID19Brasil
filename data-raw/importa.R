@@ -885,9 +885,9 @@ tabela_mun <- geobr::read_municipality(
 )
 
 # Rápida Conferência...
-tabela_ufs %>% glimpse()
+tabela_ufs %>% dplyr::glimpse()
 
-tabela_mun %>% glimpse()
+tabela_mun %>% dplyr::glimpse()
 
 sum(sf::st_area(x = tabela_ufs))
 
