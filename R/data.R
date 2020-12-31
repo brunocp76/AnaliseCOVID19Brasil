@@ -15,9 +15,9 @@
 
 #' Informacoes Auxiliares sobre as Semanas Epidemiologicas.
 #'
-#' Um Banco de Dados auxiliares sobre as primeiras Semanas Epidemiologicas para uso nas analises. Este banco de dados cobre as primeiras 52 semanas epidemiologicas, uma vez que as bases de dados atualizadas contem informacao somente a partir da semana epidemiologica 9.
+#' Um Banco de Dados auxiliares sobre as primeiras Semanas Epidemiologicas para uso nas analises. Este banco de dados cobre as primeiras 53 semanas epidemiologicas, uma vez que as bases de dados atualizadas contem informacao somente a partir da semana epidemiologica 9.
 #'
-#' @format Uma tibble com 274 linhas e 2 colunas:
+#' @format Uma tibble com 365 linhas e 2 colunas:
 #' \describe{
 #'   \item{date}{Data}
 #'   \item{semana_epidem}{Semana Epidemiologica correspondente a data}
