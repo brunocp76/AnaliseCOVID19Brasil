@@ -152,8 +152,33 @@ animacao_contagios_ufs <- covid_estados %>%
    tema_bruno() +
    gganimate::transition_reveal(date)
 
+animacao_contagios_ufs <- covid_estados %>%
+   group_by(uf, date) %>%
+   summarise(contagios_acumulados_ln = sum(contagios_acumulados_ln)) %>%
+   mutate(num_contagios = max(contagios_acumulados_ln)) %>%
+   ungroup() %>%
+   mutate(
+      limite = num_contagios %>%
+         unique() %>%
+         sort(decreasing = TRUE) %>%
+         nth(10)
+   ) %>%
+   filter(num_contagios >= limite) %>%
+   ggplot(aes(y = contagios_acumulados_ln, x = date, color = uf)) +
+   labs(
+      x = "Data",
+      y = "Contágios Acumulados",
+      title = "Contágios Acumulados",
+      subtitle = "Nos 10 maiores estados"
+   ) +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   geom_line(show.legend = FALSE) +
+   geom_label(aes(label = uf), show.legend = FALSE) +
+   tema_bruno() +
+   gganimate::transition_reveal(date)
 
-# Gráfico mesclando linhas e colunas - Como os do jornal... ---------------
+
+# Gráfico mesclando linhas e colunas - Novos Contágios... -----------------
 covid_brasil %>%
    mutate(
       contag_novos_mm7 = last(contagios_novos_mm7)
@@ -168,6 +193,92 @@ covid_brasil %>%
       y = "Novos Contágios",
       title = "Volumes Diários de Novos Contágios",
       subtitle = "Em todo o Brasil"
+   )
+
+covid_estados %>%
+   filter(uf == "SP") %>%
+   mutate(
+      contag_novos_mm7 = last(contagios_novos_mm7)
+   ) %>%
+   ggplot() +
+   geom_col(aes(x = date, y = contagios_novos, fill = contagios_novos), color = "cyan", show.legend = FALSE) +
+   geom_line(aes(x = date, y = contagios_novos_mm7), color = "yellow", size = 1L) +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   tema_bruno() +
+   labs(
+      x = "Data",
+      y = "Novos Contágios",
+      title = "Volumes Diários de Novos Contágios",
+      subtitle = "Estado de São Paulo"
+   )
+
+covid_cidades %>%
+   filter(municipio == "Atibaia") %>%
+   mutate(
+      contag_novos_mm7 = last(contagios_novos_mm7)
+   ) %>%
+   ggplot() +
+   geom_col(aes(x = date, y = contagios_novos, fill = contagios_novos), color = "cyan", show.legend = FALSE) +
+   geom_line(aes(x = date, y = contagios_novos_mm7), color = "yellow", size = 1L) +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   tema_bruno() +
+   labs(
+      x = "Data",
+      y = "Novos Contágios",
+      title = "Volumes Diários de Novos Contágios",
+      subtitle = "Cidade de Atibaia/SP"
+   )
+
+
+# Gráfico mesclando linhas e colunas - Novos Óbitos... --------------------
+covid_brasil %>%
+   mutate(
+      obt_novos_mm7 = last(obitos_novos_mm7)
+   ) %>%
+   ggplot() +
+   geom_col(aes(x = date, y = obitos_novos, fill = obitos_novos), color = "cyan", show.legend = FALSE) +
+   geom_line(aes(x = date, y = obitos_novos_mm7), color = "red", size = 1L) +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   tema_bruno() +
+   labs(
+      x = "Data",
+      y = "Novos Óbitos",
+      title = "Volumes Diários de Novos Óbitos",
+      subtitle = "Em todo o Brasil"
+   )
+
+covid_estados %>%
+   filter(uf == "SP") %>%
+   mutate(
+      obt_novos_mm7 = last(obitos_novos_mm7)
+   ) %>%
+   ggplot() +
+   geom_col(aes(x = date, y = obitos_novos, fill = obitos_novos), color = "cyan", show.legend = FALSE) +
+   geom_line(aes(x = date, y = obitos_novos_mm7), color = "red", size = 1L) +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   tema_bruno() +
+   labs(
+      x = "Data",
+      y = "Novos Óbitos",
+      title = "Volumes Diários de Novos Óbitos",
+      subtitle = "Estado de São Paulo"
+   )
+
+covid_cidades %>%
+   filter(municipio == "Atibaia") %>%
+   mutate(
+      obt_novos_mm7 = last(obitos_novos_mm7)
+   ) %>%
+   ggplot() +
+   geom_col(aes(x = date, y = obitos_novos, fill = obitos_novos), color = "cyan", show.legend = FALSE) +
+   geom_line(aes(x = date, y = obitos_novos_mm7), color = "red", size = 1L) +
+   scale_x_date(date_breaks = "1 month", date_labels = "%m/%Y") +
+   tema_bruno() +
+   labs(
+      x = "Data",
+      y = "Novos Óbitos",
+      title = "Volumes Diários de Novos Óbitos",
+      subtitle = "Cidade de Atibaia/SP"
    )
 
 
