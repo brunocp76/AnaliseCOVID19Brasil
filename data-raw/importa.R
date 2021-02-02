@@ -666,7 +666,6 @@ cls()
 
 vroom::vroom(
    file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD-18-01-2021.csv"
-   # file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2021/INFLUD21-18-01-2021.csv"
    , delim = ";"
    , col_names = TRUE
    , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")
@@ -697,7 +696,43 @@ vroom::vroom(
       sem_pri_sint,
       data_notif,
       sem_notif
-   ) -> temp_sem_epid
+   ) -> temp_sem_epid_2020
+
+vroom::vroom(
+   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2021/INFLUD21-25-01-2021.csv"
+   , delim = ";"
+   , col_names = TRUE
+   , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")
+   # , n_max = 5
+   , trim_ws = TRUE
+   # , num_threads = 4
+) %>%
+   mutate(
+      data_pri_sin = lubridate::dmy(DT_SIN_PRI),
+      sem_pri_sint = as.integer(SEM_PRI + 53L),
+      data_notif = lubridate::dmy(DT_NOTIFIC),
+      sem_notif = as.integer(SEM_NOT + 53L)
+   ) %>%
+   select(
+      data_pri_sin,
+      sem_pri_sint,
+      data_notif,
+      sem_notif
+   ) %>%
+   arrange(
+      data_pri_sin,
+      sem_pri_sint,
+      data_notif,
+      sem_notif
+   ) %>%
+   distinct(
+      data_pri_sin,
+      sem_pri_sint,
+      data_notif,
+      sem_notif
+   ) -> temp_sem_epid_2021
+
+temp_sem_epid <- rbind(temp_sem_epid_2020, temp_sem_epid_2021)
 
 # Rápida conferência...
 cls()
@@ -769,7 +804,7 @@ sem_pri_sint %>%
       semana_epidem
    ) -> semana_epid
 
-rm(temp_sem_epid, sem_pri_sint, sem_notif)
+rm(temp_sem_epid, sem_pri_sint, sem_notif, temp_sem_epid_2020, temp_sem_epid_2021)
 
 # Rápida conferência...
 cls()
@@ -886,14 +921,17 @@ tabela_mun <- geobr::read_municipality(
 )
 
 # Rápida Conferência...
-tabela_ufs %>% dplyr::glimpse()
+tabela_ufs %>% glimpse()
 
-tabela_mun %>% dplyr::glimpse()
+tabela_mun %>% glimpse()
 
 sum(sf::st_area(x = tabela_ufs))
 
 sum(sf::st_area(x = tabela_mun))
 
+tabela_ufs %>% object.size()
+
+tabela_mun %>% object.size()
 
 
 # Organizando as Informações que temos... ---------------------------------
