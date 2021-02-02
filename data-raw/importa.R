@@ -147,6 +147,7 @@ covid_R4DS2 %>%
 covid_R4DS2 %>%
    select(
       date,
+      semana_epidem,
       em_acompanh_novos,
       contagios_novos,
       obitos_novos,
@@ -687,8 +688,8 @@ vroom::vroom(
    ) %>%
    arrange(
       data_pri_sin,
-      sem_pri_sint,
       data_notif,
+      sem_pri_sint,
       sem_notif
    ) %>%
    distinct(
@@ -715,8 +716,8 @@ vroom::vroom(
    ) %>%
    select(
       data_pri_sin,
-      sem_pri_sint,
       data_notif,
+      sem_pri_sint,
       sem_notif
    ) %>%
    arrange(
@@ -748,6 +749,10 @@ temp_sem_epid %>%
       date = data_pri_sin,
       sem_pri_sint
    ) %>%
+   filter(
+      !is.na(date),
+      !is.na(sem_pri_sint)
+   ) %>%
    arrange(
       date,
       sem_pri_sint
@@ -761,6 +766,10 @@ temp_sem_epid %>%
    select(
       date = data_notif,
       sem_notif
+   ) %>%
+   filter(
+      !is.na(date),
+      !is.na(sem_notif)
    ) %>%
    arrange(
       date,
