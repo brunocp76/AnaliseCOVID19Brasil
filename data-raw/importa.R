@@ -1200,6 +1200,24 @@ semana_epid %>%
 
 # Salvando arquivos temporários... ----------------------------------------
 
+## Base Auxiliar - Primeiras Semanas Epidemiológicas
+cls()
+
+semana_epid %>%
+   glimpse()
+
+semana_epid %>%
+   object.size()
+
+saveRDS(
+   object = semana_epid,
+   file = "data-raw/semanas_epidemiologicas.rds",
+   ascii = FALSE,
+   version = 3,
+   compress = "xz"
+)
+
+
 ## Base Principal - COVID
 cls()
 
@@ -1215,24 +1233,6 @@ covid %>%
 saveRDS(
    object = covid,
    file = "data-raw/covid.rds",
-   ascii = FALSE,
-   version = 3,
-   compress = "xz"
-)
-
-
-## Base Auxiliar - Primeiras Semanas Epidemiológicas
-cls()
-
-semana_epid %>%
-   glimpse()
-
-semana_epid %>%
-   object.size()
-
-saveRDS(
-   object = semana_epid,
-   file = "data-raw/semanas_epidemiologicas.rds",
    ascii = FALSE,
    version = 3,
    compress = "xz"
