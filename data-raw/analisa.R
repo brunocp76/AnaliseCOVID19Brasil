@@ -927,6 +927,15 @@ covid_brasil %>%
 # Conferindo as Versões Sumarizadas ---------------------------------------
 cls()
 
+covid %>% filter(date > max(date) - 7) %>% group_by(date) %>%
+   summarise(
+      # data_max = max(date, na.rm = TRUE),
+      # area_sum = sum(area_km2, na.rm = TRUE),
+      # pop_sum = sum(pop_2019, na.rm = TRUE),
+      cont_sum = sum(contagios_acumulados, na.rm = TRUE),
+      obit_sum = sum(obitos_acumulados, na.rm = TRUE)
+   )
+
 covid %>% group_by(cod_ibge) %>% filter(date == max(date)) %>% ungroup() %>%
    summarise(
       data_max = max(date, na.rm = TRUE),
