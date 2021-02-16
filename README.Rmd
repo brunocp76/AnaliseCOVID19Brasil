@@ -1,5 +1,8 @@
 ---
 output: github_document
+title: "Analise da COVID-19 no Brasil"
+author: "Bruno Cesar Pasquini"
+date: `r Sys.Date()`
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
