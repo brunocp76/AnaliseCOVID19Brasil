@@ -48,7 +48,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2021-02-17 21:46:08
+#> Atualizacao de dados iniciada em 2021-02-22 23:57:09
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -71,7 +71,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 30.17 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 30.47 segundos.
 #> 
 #> 
 #> 
@@ -82,61 +82,61 @@ atualiza_dados()
 #> Pronto!
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 440.98 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 527.28 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 3.28 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 4.15 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 5.57 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 5.21 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 480 segundos.
+#> O processamento foi concluido em 567.11 segundos.
 #> 
 #> Segue um meta-resumo da base:
 #> 
-#> Rows: 1,828,148
+#> Rows: 1,856,022
 #> Columns: 18
-#> $ date                 <date> 2020-03-27, 2020-03-28, 2020-03-29, 2020-03-3...
-#> $ semana_epidem        <int> 13, 13, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15...
-#> $ cod_ibge             <int> 1100015, 1100015, 1100015, 1100015, 1100015, 1...
-#> $ lat                  <dbl> -11.9283, -11.9283, -11.9283, -11.9283, -11.92...
-#> $ lon                  <dbl> -61.9953, -61.9953, -61.9953, -61.9953, -61.99...
-#> $ area_km2             <dbl> 7067.025, 7067.025, 7067.025, 7067.025, 7067.0...
-#> $ capital              <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
-#> $ interior_metropol    <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
-#> $ pop_2019             <int> 22945, 22945, 22945, 22945, 22945, 22945, 2294...
-#> $ municipio            <chr> "Alta Floresta D'Oeste", "Alta Floresta D'Oest...
-#> $ cod_regiao_saude     <dbl> 11005, 11005, 11005, 11005, 11005, 11005, 1100...
-#> $ nome_regiao_saude    <chr> "Zona da Mata", "Zona da Mata", "Zona da Mata"...
-#> $ uf                   <chr> "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO"...
-#> $ regiao               <chr> "Norte", "Norte", "Norte", "Norte", "Norte", "...
-#> $ contagios_novos      <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
-#> $ obitos_novos         <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
-#> $ contagios_acumulados <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
-#> $ obitos_acumulados    <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+#> $ date                 <date> 2020-03-27, 2020-03-28, 2020-03-29, 2020-03-30, ~
+#> $ semana_epidem        <int> 13, 13, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 1~
+#> $ cod_ibge             <int> 1100015, 1100015, 1100015, 1100015, 1100015, 1100~
+#> $ lat                  <dbl> -11.9283, -11.9283, -11.9283, -11.9283, -11.9283,~
+#> $ lon                  <dbl> -61.9953, -61.9953, -61.9953, -61.9953, -61.9953,~
+#> $ area_km2             <dbl> 7067.025, 7067.025, 7067.025, 7067.025, 7067.025,~
+#> $ capital              <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+#> $ interior_metropol    <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+#> $ pop_2019             <int> 22945, 22945, 22945, 22945, 22945, 22945, 22945, ~
+#> $ municipio            <chr> "Alta Floresta D'Oeste", "Alta Floresta D'Oeste",~
+#> $ cod_regiao_saude     <dbl> 11005, 11005, 11005, 11005, 11005, 11005, 11005, ~
+#> $ nome_regiao_saude    <chr> "Zona da Mata", "Zona da Mata", "Zona da Mata", "~
+#> $ uf                   <chr> "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "~
+#> $ regiao               <chr> "Norte", "Norte", "Norte", "Norte", "Norte", "Nor~
+#> $ contagios_novos      <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+#> $ obitos_novos         <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+#> $ contagios_acumulados <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+#> $ obitos_acumulados    <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
 ```
 
 Talvez você repare que os totais consolidados da data mais recente
-disponível (no caso, 2021-02-17) não batem exatamente com os números
+disponível (no caso, 2021-02-22) não batem exatamente com os números
 oficiais ou o dos telejornais. Se esta discrepância existe entre o
 governo e a imprensa por motivos políticos que eu não discutirei aqui,
 eu entendo que aqui basta que os números estejam bem próximos aos
 números veiculados pela grande imprensa.
 
     #>   ultima_data total_contagios total_obitos taxa_mortalidade
-    #> 1  2021-02-17       9.935.377      241.469            2,43%
+    #> 1  2021-02-22      10.153.673      246.713            2,43%
 
 Mais uma vez, o meu enfoque aqui é ter estes dados sendo facilmente
 atualizados e viabilizando as análises que apresentarei mais para
@@ -162,48 +162,48 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 2.23 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 2.25 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 12.87 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 12.9 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 4.42 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 4.49 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 7.03 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 6.83 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 4.52 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 4.96 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.33 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.36 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 31.4 segundos.
+#> O processamento foi concluido em 31.79 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -635,4 +635,4 @@ Ainda que este processo seja muito pouco estocástico e dependa muito do
 Meu desejo é o de continuar incluindo novas análises e funcionalidades
 neste pacote. Espero que tenha o tempo necessário para isso.
 
-Atualização dos Dados no GitHub - 17/02/2021.
+Atualização dos Dados no GitHub - 22/02/2021.
