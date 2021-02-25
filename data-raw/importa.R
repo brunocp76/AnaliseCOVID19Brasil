@@ -1205,7 +1205,7 @@ semana_epid %>%
       data_min = min(date, na.rm = TRUE),
       data_max = max(date, na.rm = TRUE),
       data_qtd = n_distinct(date)
-   )
+   ) %>% tail(15)
 
 
 # Salvando arquivos temporários... ----------------------------------------

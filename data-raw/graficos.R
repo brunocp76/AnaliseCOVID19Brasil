@@ -75,6 +75,7 @@ covid_cidades %>%
    ylim(c(0, 300))
 
 covid_estados %>%
+   filter(contagios_novos >= 0) %>%
    mutate(
       estado = forcats::fct_reorder(.f = uf, .x = contagios_novos, .desc = TRUE)
    ) %>%
@@ -88,6 +89,7 @@ covid_estados %>%
    tema_bruno()
 
 covid_estados %>%
+   filter(obitos_novos >= 0) %>%
    mutate(
       estado = forcats::fct_reorder(.f = uf, .x = obitos_novos, .desc = TRUE)
    ) %>%
@@ -215,7 +217,12 @@ covid_estados %>%
 covid_cidades %>%
    filter(municipio == "Atibaia") %>%
    mutate(
-      contag_novos_mm7 = last(contagios_novos_mm7)
+      contag_novos_mm7 = last(contagios_novos_mm7),
+      contagios_novos = ifelse(
+         test = contagios_novos > 0,
+         yes = contagios_novos,
+         no = 0
+      )
    ) %>%
    ggplot() +
    geom_col(aes(x = date, y = contagios_novos, fill = contagios_novos), color = "cyan", show.legend = FALSE) +
@@ -267,7 +274,12 @@ covid_estados %>%
 covid_cidades %>%
    filter(municipio == "Atibaia") %>%
    mutate(
-      obt_novos_mm7 = last(obitos_novos_mm7)
+      obt_novos_mm7 = last(obitos_novos_mm7),
+      obitos_novos = ifelse(
+         test = obitos_novos > 0,
+         yes = obitos_novos,
+         no = 0
+      )
    ) %>%
    ggplot() +
    geom_col(aes(x = date, y = obitos_novos, fill = obitos_novos), color = "cyan", show.legend = FALSE) +
@@ -289,6 +301,7 @@ covid_estados %>%
    ggplot() +
    geom_line(aes(x = date, y = taxa_mortalidade), color = "red") +
    scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   scale_y_continuous(labels = scales::percent) +
    tema_bruno() +
    labs(
       x = "Mês",
@@ -302,6 +315,7 @@ covid_estados %>%
 ggplot(covid_estados) +
    aes(x = date, y = contagios_novos_mm7) +
    scale_x_date(date_breaks = "1 month", date_labels = "%m") +
+   # scale_y_continuous(labels = scales::percent) +
    geom_line(colour = "cyan") +
    labs(
       x = "Mês",

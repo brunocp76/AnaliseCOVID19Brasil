@@ -1002,3 +1002,4 @@ covid_brasil %>% filter(date == max(date)) %>%
       cont_sum = sum(contagios_acumulados, na.rm = TRUE),
       obit_sum = sum(obitos_acumulados, na.rm = TRUE)
    )
+
