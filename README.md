@@ -48,7 +48,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2021-02-24 21:49:23
+#> Atualizacao de dados iniciada em 2021-02-25 20:30:47
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -71,7 +71,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 30.27 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 27.94 segundos.
 #> 
 #> 
 #> 
@@ -82,14 +82,14 @@ atualiza_dados()
 #> Pronto!
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 452.14 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 451.25 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 3.28 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 4.17 segundos.
 #> 
 #> 
 #> 
@@ -102,11 +102,11 @@ atualiza_dados()
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 490.98 segundos.
+#> O processamento foi concluido em 488.65 segundos.
 #> 
 #> Segue um meta-resumo da base:
 #> 
-#> Rows: 1,867,150
+#> Rows: 1,872,708
 #> Columns: 18
 #> $ date                 <date> 2020-03-27, 2020-03-28, 2020-03-29, 2020-03-30, ~
 #> $ semana_epidem        <int> 13, 13, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 1~
@@ -129,14 +129,14 @@ atualiza_dados()
 ```
 
 Talvez você repare que os totais consolidados da data mais recente
-disponível (no caso, 2021-02-24) não batem exatamente com os números
+disponível (no caso, 2021-02-25) não batem exatamente com os números
 oficiais ou o dos telejornais. Se esta discrepância existe entre o
 governo e a imprensa por motivos políticos que eu não discutirei aqui,
 eu entendo que aqui basta que os números estejam bem próximos aos
 números veiculados pela grande imprensa.
 
     #>   ultima_data total_contagios total_obitos taxa_mortalidade
-    #> 1  2021-02-24      10.281.584      249.478            2,43%
+    #> 1  2021-02-25      10.346.707      250.944            2,43%
 
 Mais uma vez, o meu enfoque aqui é ter estes dados sendo facilmente
 atualizados e viabilizando as análises que apresentarei mais para
@@ -162,48 +162,48 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 2.21 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 2.23 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 12.74 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 12.84 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 4.53 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 4.49 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 7.05 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 6.82 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 4.59 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 4.54 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.36 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.34 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 31.48 segundos.
+#> O processamento foi concluido em 31.26 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -635,4 +635,4 @@ Ainda que este processo seja muito pouco estocástico e dependa muito do
 Meu desejo é o de continuar incluindo novas análises e funcionalidades
 neste pacote. Espero que tenha o tempo necessário para isso.
 
-Atualização dos Dados no GitHub - 24/02/2021.
+Atualização dos Dados no GitHub - 25/02/2021.
