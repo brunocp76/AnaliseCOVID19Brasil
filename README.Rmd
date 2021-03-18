@@ -502,11 +502,7 @@ covid_estados %>%
    ggplot2::facet_wrap(ggplot2::vars(uf), scales = "free")
 ```
 
-Algumas coisas aqui já chamam a atenção: O pico de contágios no estado de Santa Catarina, o volume negativo expressivo de contágios no Ceará e o volume expressivo de óbitos em Minas Gerais.
-
-Possivelmente por conta da contabilização de casos antigos não processados.
-
-Esses casos antigos também nos levam a outra questão por conta da possibilidade de transmissão assintomática, o tempo entre a detecção do contágio e a ocorrência do óbito.
+Algumas coisas também nos levam a outra questão por conta da possibilidade de transmissão assintomática, o tempo entre a detecção do contágio e a ocorrência do óbito.
 
 
 
@@ -1010,4 +1006,4 @@ Ainda gostaria de poder explorar algumas questões de séries temporais... Com a
 
 Meu desejo é o de continuar incluindo novas análises e funcionalidades neste pacote. Espero que tenha o tempo necessário para isso.
 
-Atualização dos Dados no GitHub - 16/03/2021.
+Atualização dos Dados no GitHub - 17/03/2021.
