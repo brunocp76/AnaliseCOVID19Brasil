@@ -48,7 +48,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2021-03-30 23:12:36
+#> Atualizacao de dados iniciada em 2021-03-31 22:17:18
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -71,7 +71,7 @@ atualiza_dados()
 #>   death_rate = col_double()
 #> )
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 34.84 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 77.02 segundos.
 #> 
 #> 
 #> 
@@ -82,31 +82,31 @@ atualiza_dados()
 #> Pronto!
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 501.34 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 504.21 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 4.26 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 4.27 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 5.9 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 6.11 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 546.34 segundos.
+#> O processamento foi concluido em 591.61 segundos.
 #> 
 #> Segue um meta-resumo da base:
 #> 
-#> Rows: 2,056,542
+#> Rows: 2,062,112
 #> Columns: 18
 #> $ date                 <date> 2020-03-27, 2020-03-28, 2020-03-29, 2020-03-30, ~
 #> $ semana_epidem        <int> 13, 13, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 1~
@@ -129,14 +129,14 @@ atualiza_dados()
 ```
 
 Talvez você repare que os totais consolidados da data mais recente
-disponível (no caso, 2021-03-30) não batem exatamente com os números
+disponível (no caso, 2021-03-31) não batem exatamente com os números
 oficiais ou o dos telejornais. Se esta discrepância existe entre o
 governo e a imprensa por motivos políticos que eu não discutirei aqui,
 eu entendo que aqui basta que os números estejam bem próximos aos
 números veiculados pela grande imprensa.
 
     #>   ultima_data total_contagios total_obitos taxa_mortalidade
-    #> 1  2021-03-30      12.627.135      317.119            2,51%
+    #> 1  2021-03-31      12.718.008      320.989            2,52%
 
 Mais uma vez, o meu enfoque aqui é ter estes dados sendo facilmente
 atualizados e viabilizando as análises que apresentarei mais para
@@ -162,48 +162,48 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 2.32 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 2.28 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 13.4 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 13.49 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 4.94 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 4.98 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 7.24 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 7.6 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 4.76 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 4.91 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.41 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.38 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 33.07 segundos.
+#> O processamento foi concluido em 33.64 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -628,4 +628,4 @@ Ainda que este processo seja muito pouco estocástico e dependa muito do
 Meu desejo é o de continuar incluindo novas análises e funcionalidades
 neste pacote. Espero que tenha o tempo necessário para isso.
 
-Atualização dos Dados no GitHub - 30/03/2021.
+Atualização dos Dados no GitHub - 31/03/2021.
