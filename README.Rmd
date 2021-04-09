@@ -29,7 +29,7 @@ Aí você pode se perguntar...
 
 Se tantos pacotes já fazem análises de dados da COVID-19, por que usar este aqui ~~e não algum outro~~?
 
-Meu primeiro enfoque foi o de fazer um pacote que permita, *de maneira muito simples*, **atualizar** os dados da pandemia no Brasil **antes** de proceder às análises. Em outras palavras, toda a dinâmica da pandemia no Brasil vai se revelando conforme este pacote é utilizado ao longo do tempo.
+Meu primeiro enfoque foi o de fazer um pacote que permita, *de maneira muito simples*, **atualizar** os dados da pandemia no Brasil **antes** de proceder às análises. Em outras palavras, toda a triste dinâmica da pandemia no Brasil vai se revelando conforme este pacote é utilizado ao longo do tempo.
 
 ***
 
@@ -1006,4 +1006,4 @@ Ainda gostaria de poder explorar algumas questões de séries temporais... Com a
 
 Meu desejo é o de continuar incluindo novas análises e funcionalidades neste pacote. Espero que tenha o tempo necessário para isso.
 
-Atualização dos Dados no GitHub - 07/04/2021.
+Atualização dos Dados no GitHub - 08/04/2021.
