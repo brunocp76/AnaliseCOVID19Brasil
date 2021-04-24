@@ -2,6 +2,8 @@
 library(tidyr)
 library(dplyr)
 
+# logical_cores <- parallel::detectCores(logical = TRUE)
+
 cls <- function() cat("\f")
 
 
@@ -673,7 +675,7 @@ vroom::vroom(
    , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")
    # , n_max = 5
    , trim_ws = TRUE
-   # , num_threads = 4
+   , num_threads = parallel::detectCores(logical = TRUE)
 ) %>%
    mutate(
       data_pri_sin = lubridate::dmy(DT_SIN_PRI),
@@ -701,13 +703,13 @@ vroom::vroom(
    ) -> temp_sem_epid_2020
 
 vroom::vroom(
-   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2021/INFLUD21-12-04-2021.csv"
+   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2021/INFLUD21-19-04-2021.csv"
    , delim = ";"
    , col_names = TRUE
    , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")
    # , n_max = 5
    , trim_ws = TRUE
-   # , num_threads = 4
+   , num_threads = parallel::detectCores(logical = TRUE)
 ) %>%
    mutate(
       data_pri_sin = lubridate::dmy(DT_SIN_PRI),
