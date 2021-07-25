@@ -703,7 +703,7 @@ vroom::vroom(
    ) -> temp_sem_epid_2020
 
 vroom::vroom(
-   file = "https://opendatasus.saude.gov.br/dataset/9f76e80f-a2f1-4662-9e37-71084eae23e3/resource/42bd5e0e-d61a-4359-942e-ebc83391a137/download/influd21-18-06-2021.csv"
+   file = "https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2021/INFLUD21-19-07-2021.csv"
    , delim = ";"
    , col_names = TRUE
    , col_select = c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI")
