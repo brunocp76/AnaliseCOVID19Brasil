@@ -567,14 +567,14 @@ rm(tabela_ufs, tabela_mun)
 
 tabela_ufs <- geobr::read_state(
    code_state = "all",
-   year = 2019,
+   year = 2020,
    simplified = FALSE,
    showProgress = FALSE
 )
 
 tabela_mun <- geobr::read_municipality(
    code_muni = "all",
-   year = 2019,
+   year = 2020,
    simplified = FALSE,
    showProgress = FALSE
 )
@@ -1006,4 +1006,4 @@ Ainda gostaria de poder explorar algumas questões de séries temporais... Com a
 
 Meu desejo é o de continuar incluindo novas análises e funcionalidades neste pacote. Espero que tenha o tempo necessário para isso.
 
-Atualização dos Dados no GitHub - 09/02/2021.
+Atualização dos Dados no GitHub - 11/02/2021.
