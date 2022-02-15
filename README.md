@@ -48,12 +48,12 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2022-02-14 12:44:56
+#> Atualizacao de dados iniciada em 2022-02-15 13:11:51
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
 #> Por favor aguarde...
-#> Rows: 2793215 Columns: 13
+#> Rows: 2794056 Columns: 13
 #> -- Column specification --------------------------------------------------------
 #> Delimiter: ","
 #> chr  (3): state, city, place_type
@@ -64,7 +64,7 @@ atualiza_dados()
 #> i Use `spec()` to retrieve the full column specification for this data.
 #> i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 29.8 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 25.95 segundos.
 #> 
 #> 
 #> 
@@ -79,31 +79,31 @@ atualiza_dados()
 #> Pronto!
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 4.32 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 4.58 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 5.09 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 4.83 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 7.99 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 7.79 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 47.2 segundos.
+#> O processamento foi concluido em 43.15 segundos.
 #> 
 #> Segue um meta-resumo da base:
 #> 
-#> Rows: 3,105,620
+#> Rows: 3,106,433
 #> Columns: 18
 #> $ date                 <date> 2020-03-27, 2020-03-28, 2020-03-29, 2020-03-30, ~
 #> $ semana_epidem        <int> 13, 13, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 1~
@@ -133,7 +133,7 @@ eu entendo que aqui basta que os números estejam bem próximos aos
 números veiculados pela grande imprensa.
 
     #>   ultima_data total_contagios total_obitos taxa_mortalidade
-    #> 1  2022-02-13      22.890.884      609.910            2,66%
+    #> 1  2022-02-13      22.892.454      609.947            2,66%
 
 Mais uma vez, o meu enfoque aqui é ter estes dados sendo facilmente
 atualizados e viabilizando as análises que apresentarei mais para
@@ -166,41 +166,41 @@ bases_derivadas()
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 9.65 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 9.03 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 4.62 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 4.27 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 7.19 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 6.58 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 5.66 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 5.01 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.43 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.42 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 29.16 segundos.
+#> O processamento foi concluido em 26.92 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -404,4 +404,4 @@ Ainda que este processo seja muito pouco estocástico e dependa muito do
 Meu desejo é o de continuar incluindo novas análises e funcionalidades
 neste pacote. Espero que tenha o tempo necessário para isso.
 
-Atualização dos Dados no GitHub - 14/02/2021.
+Atualização dos Dados no GitHub - 15/02/2021.
