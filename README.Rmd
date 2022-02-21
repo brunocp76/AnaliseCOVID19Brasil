@@ -1006,4 +1006,4 @@ Ainda gostaria de poder explorar algumas questões de séries temporais... Com a
 
 Meu desejo é o de continuar incluindo novas análises e funcionalidades neste pacote. Espero que tenha o tempo necessário para isso.
 
-Atualização dos Dados no GitHub - 17/02/2021.
+Atualização dos Dados no GitHub - 21/02/2021.
