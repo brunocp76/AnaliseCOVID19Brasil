@@ -48,7 +48,7 @@ library(AnaliseCOVID19Brasil)
 
 atualiza_dados()
 #> 
-#> Atualizacao de dados iniciada em 2022-05-06 15:05:16
+#> Atualizacao de dados iniciada em 2022-05-25 10:05:01
 #> 
 #> Etapa 1: Carregando dados do Portal Brasil.io.
 #> 
@@ -64,7 +64,7 @@ atualiza_dados()
 #> i Use `spec()` to retrieve the full column specification for this data.
 #> i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 #> 
-#> Concluida a importacao de dados do Portal Brasil.io em 25.87 segundos.
+#> Concluida a importacao de dados do Portal Brasil.io em 25.18 segundos.
 #> 
 #> 
 #> 
@@ -79,27 +79,27 @@ atualiza_dados()
 #> Pronto!
 #> 
 #> 
-#> Concluida a importacao de dados do Ministerio da Saude em 4.47 segundos.
+#> Concluida a importacao de dados do Ministerio da Saude em 3.52 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Carregando Informacoes Auxiliares.
 #> 
 #> 
-#> Concluida a carga de Informacoes Auxiliares em 4.93 segundos.
+#> Concluida a carga de Informacoes Auxiliares em 3.97 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Organizando todas as informacoes levantadas.
 #> 
 #> 
-#> Concluida a organizacao de todas as informacoes levantadas em 8.78 segundos.
+#> Concluida a organizacao de todas as informacoes levantadas em 7.42 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com a base atualizada!
 #> 
-#> O processamento foi concluido em 44.05 segundos.
+#> O processamento foi concluido em 40.09 segundos.
 #> 
 #> Segue um meta-resumo da base:
 #> 
@@ -159,48 +159,48 @@ bases_derivadas()
 #> Etapa 1: Gerando as sumarizacoes de area e populacao.
 #> 
 #> 
-#> Concluida a geracao das sumarizacoes de area e populacao em 1.48 segundos.
+#> Concluida a geracao das sumarizacoes de area e populacao em 1.44 segundos.
 #> 
 #> 
 #> 
 #> Etapa 2: Gerando a Base Derivada ao Nivel de Cidades.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 9.87 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Cidades em 9.27 segundos.
 #> 
 #> 
 #> 
 #> Etapa 3: Gerando a Base Derivada ao Nivel de Regioes de Saude.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 5.31 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes de Saude em 4.33 segundos.
 #> 
 #> 
 #> 
 #> Etapa 4: Gerando a Base Derivada ao Nivel de Estados.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Estados em 6.17 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Estados em 5.64 segundos.
 #> 
 #> 
 #> 
 #> Etapa 5: Gerando a Base Derivada ao Nivel de Regioes do Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 4.97 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Regioes do Brasil em 4.69 segundos.
 #> 
 #> 
 #> 
 #> Etapa 6: Gerando a Base Derivada ao Nivel de Brasil.
 #> 
 #> 
-#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.41 segundos.
+#> Concluida a geracao da Base Derivada ao Nivel de Brasil em 0.38 segundos.
 #> 
 #> 
 #> 
 #> Parabens! Agora voce esta com todas as bases derivadas!
 #> 
-#> O processamento foi concluido em 28.21 segundos.
+#> O processamento foi concluido em 25.75 segundos.
 #> 
 #> Segue a relacao de bases disponiveis:
 #> [1] "covid"                "covid_brasil"         "covid_cidades"       
@@ -404,4 +404,4 @@ Ainda que este processo seja muito pouco estocástico e dependa muito do
 Meu desejo é o de continuar incluindo novas análises e funcionalidades
 neste pacote. Espero que tenha o tempo necessário para isso.
 
-Atualização dos Dados no GitHub - 06/05/2021.
+Atualização dos Dados no GitHub - 25/05/2021.
